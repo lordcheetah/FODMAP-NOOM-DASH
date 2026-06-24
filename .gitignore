@@ -1,0 +1,25 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.idea
+
+# Test / build artifacts
+coverage
+playwright-report
+test-results
+dev-dist
+
+# Supabase
+supabase/.temp

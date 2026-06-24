@@ -1,0 +1,24 @@
+# Netlify deploy config. (Vercel works too — it auto-detects Vite; add the same
+# SPA rewrite via vercel.json if you go that route.)
+#
+# Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in the Netlify site's
+# environment variables (Site settings -> Environment variables).
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# SPA fallback so client-side routes (e.g. /meals, /exercise) work on reload.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Let the service worker update promptly rather than being cached.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

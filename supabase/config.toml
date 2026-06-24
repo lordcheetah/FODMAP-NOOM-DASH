@@ -1,0 +1,12 @@
+# Minimal Supabase CLI config. Set project_id to your project ref before linking.
+project_id = "fodmap-noom-dash"
+
+[db]
+major_version = 15
+
+[auth]
+enable_signup = true
+# Single-user app: email/password is enough. Email confirmations can be disabled
+# for a personal project to skip the inbox round-trip.
+[auth.email]
+enable_confirmations = false
