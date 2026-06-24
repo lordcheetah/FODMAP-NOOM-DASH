@@ -1,30 +1,26 @@
 import { isSupabaseConfigured } from '@/lib/supabase'
-import { noomColor, lowFodmapSafe } from '@/lib/diet'
+import { noomColor, type FodmapLevel } from '@/lib/diet'
+import { NoomDot } from '@/components/diet/NoomDot'
+import { FodmapBadge } from '@/components/diet/FodmapBadge'
+import { Disclaimer } from '@/components/diet/Disclaimer'
 
 /**
- * Phase 0 placeholder dashboard. It exercises the real diet-logic functions so
- * the foundation is demonstrably wired up; Phase 1 replaces this with the live
- * daily food log and FODMAP/NOOM/DASH/fiber summaries.
+ * Phase 0/1 dashboard. Exercises the real diet-logic functions and the shared
+ * diet display components so the foundation stays demonstrably wired up. The
+ * live daily log lives on the Meals page.
  */
-const DEMO = [
+const DEMO: ReadonlyArray<{
+  name: string
+  cal: number
+  g: number
+  fructose: FodmapLevel
+  fructans: FodmapLevel
+}> = [
   { name: 'Spinach (1 cup)', cal: 7, g: 30, fructose: 'low', fructans: 'low' },
   { name: 'Onion (1/2 cup)', cal: 32, g: 80, fructose: 'low', fructans: 'high' },
   { name: 'Olive oil (1 tbsp)', cal: 119, g: 14, fructose: 'low', fructans: 'low' },
   { name: 'Unlabeled snack', cal: 200, g: 50, fructose: 'unknown', fructans: 'unknown' },
-] as const
-
-const SAFETY_LABEL: Record<string, string> = {
-  safe: 'Safe',
-  caution: 'Caution',
-  avoid: 'Avoid',
-  'not-verified': 'Not verified',
-}
-
-const COLOR_DOT: Record<string, string> = {
-  green: 'bg-noom-green',
-  yellow: 'bg-noom-yellow',
-  orange: 'bg-noom-orange',
-}
+]
 
 export default function Dashboard() {
   return (
@@ -32,8 +28,8 @@ export default function Dashboard() {
       <section className="rounded-lg border bg-card p-4 text-card-foreground">
         <h2 className="text-lg font-semibold">Welcome 👋</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Foundation is set up. Below is a live check that the diet logic works — Phase 1
-          replaces it with your real daily log.
+          Foundation is set up. Below is a live check that the diet logic works — head to
+          Meals for your real daily log.
         </p>
         <p className="mt-2 text-xs text-muted-foreground">
           Sync status:{' '}
@@ -46,42 +42,19 @@ export default function Dashboard() {
       <section className="rounded-lg border bg-card p-4 text-card-foreground">
         <h3 className="mb-3 text-sm font-semibold">Diet-logic preview</h3>
         <ul className="divide-y">
-          {DEMO.map((f) => {
-            const color = noomColor(f.cal, f.g)
-            const safety = lowFodmapSafe(f.fructose, f.fructans)
-            return (
-              <li key={f.name} className="flex items-center justify-between py-2 text-sm">
-                <span className="flex items-center gap-2">
-                  <span
-                    className={`inline-block h-3 w-3 rounded-full ${
-                      color ? COLOR_DOT[color] : 'bg-muted'
-                    }`}
-                    title={color ?? 'unknown'}
-                  />
-                  {f.name}
-                </span>
-                <span
-                  className={
-                    safety === 'safe'
-                      ? 'text-noom-green'
-                      : safety === 'avoid'
-                        ? 'text-destructive'
-                        : 'text-muted-foreground'
-                  }
-                >
-                  {SAFETY_LABEL[safety]}
-                </span>
-              </li>
-            )
-          })}
+          {DEMO.map((f) => (
+            <li key={f.name} className="flex items-center justify-between gap-3 py-2 text-sm">
+              <span className="flex min-w-0 items-center gap-2">
+                <NoomDot color={noomColor(f.cal, f.g)} />
+                <span className="truncate">{f.name}</span>
+              </span>
+              <FodmapBadge fructose={f.fructose} fructans={f.fructans} />
+            </li>
+          ))}
         </ul>
       </section>
 
-      <p className="px-1 text-[11px] leading-relaxed text-muted-foreground">
-        This app is an informational tool, not medical advice. FODMAP data is sourced from
-        public references and may be incomplete. Items shown as “Not verified” are not
-        confirmed safe.
-      </p>
+      <Disclaimer />
     </div>
   )
 }

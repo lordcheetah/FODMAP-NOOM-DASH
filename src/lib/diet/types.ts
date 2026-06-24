@@ -30,3 +30,6 @@ export type DashGroup =
   | 'nuts-seeds-legumes'
   | 'fats-oils'
   | 'sweets'
+
+/** Meal slots a food/recipe can be logged under. Mirrors the `meal_type` DB enum. */
+export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack'

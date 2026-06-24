@@ -2,6 +2,7 @@ import { Routes, Route, NavLink } from 'react-router-dom'
 import { Apple, Dumbbell, Home, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Dashboard from '@/pages/Dashboard'
+import Meals from '@/pages/Meals'
 import Login from '@/pages/Login'
 import { useAuth, isSupabaseConfigured } from '@/lib/auth'
 
@@ -61,7 +62,7 @@ export default function App() {
       <main className="flex-1 p-4 pb-24">
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/meals" element={<Placeholder title="Meals" />} />
+          <Route path="/meals" element={<Meals />} />
           <Route path="/exercise" element={<Placeholder title="Exercise" />} />
         </Routes>
       </main>

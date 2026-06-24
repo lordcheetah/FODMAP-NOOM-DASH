@@ -29,6 +29,23 @@ to ship in the client.
 - Enums encode the diet vocabulary: `fodmap_level` (incl. `unknown`), `noom_color`,
   `noom_category`, `dash_group`, `meal_type`.
 
+## Seeding the food/recipe data
+
+The cited dataset and digitized recipes live in `data/*.json`. Load them into your
+Supabase project with the seed script (idempotent — safe to re-run):
+
+1. Create a local, git-ignored `.env` at the repo root with these **server-only** vars
+   (note: NOT `VITE_`-prefixed, so they never reach the client bundle):
+   ```
+   SUPABASE_URL=https://your-ref.supabase.co
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-secret
+   ```
+   The `service_role` secret is under **Project Settings → API**. It bypasses RLS (required
+   to write global seed rows with `user_id = NULL`), so keep it local and never commit it.
+2. Apply migrations first (`0001_init.sql`, then `0002_seed_constraints.sql`).
+3. Run `npm run seed`. It upserts foods/recipes/recipe_ingredients/swaps and prints any
+   ingredient names that didn't match a food row.
+
 ## Conventions
 
 - Never write real keys into the repo. `.env.local` is git-ignored.

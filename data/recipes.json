@@ -1,0 +1,218 @@
+[
+  {
+    "name": "Spinach Tomato Frittata",
+    "prep_min": 15,
+    "servings": 4,
+    "cal_per_serving": 280,
+    "meal_type": "breakfast",
+    "instructions": [
+      "Preheat broiler.",
+      "Heat 1 tbsp. oil in a large nonstick ovenproof skillet over medium heat.",
+      "Add scallions and cook 1 minute, stirring or until softened.",
+      "Transfer scallions to a large bowl. Add spinach, eggs, and egg whites, and with a fork until well combined.",
+      "Heat remaining 1 tbsp. oil in skillet over medium heat. Pour egg mixture into skillet and scatter the tomatoes on top.",
+      "Cover skillet and cook 4 minutes, or until the eggs are set around the edges.",
+      "Place skillet in over and broil 4 minutes, or until the frittata is lightly browned and the center is set.",
+      "Top with the cheese, cover, and let stand 1 minute while cheese melts.",
+      "Cut frittata in 4 and serve each with 1 slice toast."
+    ],
+    "ingredients": [
+      { "raw_text": "2 tbsp. olive oil", "quantity": 2, "unit": "tbsp", "food_name": "Olive oil" },
+      { "raw_text": "2 scallions, thinly sliced", "quantity": 2, "unit": null, "food_name": "Scallions" },
+      { "raw_text": "3 large eggs, 5 large egg whites", "quantity": 3, "unit": "large", "food_name": "Eggs" },
+      { "raw_text": "4 - 1 oz. slices mozzarella cheese", "quantity": 4, "unit": "oz slice", "food_name": "Mozzarella cheese" },
+      { "raw_text": "1 cup grape or cherry tomatoes", "quantity": 1, "unit": "cup", "food_name": "Cherry tomatoes" },
+      { "raw_text": "2 cup spinach", "quantity": 2, "unit": "cup", "food_name": "Spinach" },
+      { "raw_text": "4 slices whole grain bread, toasted", "quantity": 4, "unit": "slice", "food_name": "Whole grain bread" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  },
+  {
+    "name": "Vegetarian Barley Soup",
+    "prep_min": 45,
+    "servings": 4,
+    "cal_per_serving": 132,
+    "meal_type": "lunch",
+    "instructions": [
+      "Coat bottom of large dutch oven pot with cooking spray and place over medium-high heat until hot.",
+      "Add onion, celery, parsley, and garlic and cook about 4 minutes, stirring frequently.",
+      "Add broth, tomatoes, carrots, barley, salt, pepper, oregano, thyme, and bay leaf and bring to a simmer, stirring occasionally. Cover the pot and simmer 20 minutes, stirring occasionally.",
+      "Stir in mushrooms and simmer 20 minutes, uncovered, stirring occasionally.",
+      "Remove and discard the bay leaf, and ladle soup into 4 bowls."
+    ],
+    "ingredients": [
+      { "raw_text": "2 cups mushroom, chopped", "quantity": 2, "unit": "cup", "food_name": "Mushrooms" },
+      { "raw_text": "1/2 cup onion, chopped", "quantity": 0.5, "unit": "cup", "food_name": "Onion" },
+      { "raw_text": "1/4 cup celery, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Celery" },
+      { "raw_text": "1 tbsp. parsley, chopped", "quantity": 1, "unit": "tbsp", "food_name": "Parsley" },
+      { "raw_text": "1/2 tsp. garlic, minced", "quantity": 0.5, "unit": "tsp", "food_name": "Garlic" },
+      { "raw_text": "3 1/2 cups vegetable broth", "quantity": 3.5, "unit": "cup", "food_name": "Vegetable broth" },
+      { "raw_text": "1 1/2 cups canned tomatoes, diced with liquid", "quantity": 1.5, "unit": "cup", "food_name": "Canned diced tomatoes" },
+      { "raw_text": "1/2 cup peeled, sliced carrots", "quantity": 0.5, "unit": "cup", "food_name": "Carrots" },
+      { "raw_text": "1/4 cup pearl barley", "quantity": 0.25, "unit": "cup", "food_name": "Pearl barley" },
+      { "raw_text": "1 bay leaf", "quantity": 1, "unit": null, "food_name": "Bay leaf" },
+      { "raw_text": "1/4 tsp. dried oregano", "quantity": 0.25, "unit": "tsp", "food_name": "Dried oregano" },
+      { "raw_text": "1/4 tsp. dried thyme", "quantity": 0.25, "unit": "tsp", "food_name": "Dried thyme" },
+      { "raw_text": "1/4 tsp. salt", "quantity": 0.25, "unit": "tsp", "food_name": "Salt" },
+      { "raw_text": "freshly ground black pepper", "quantity": null, "unit": null, "food_name": "Black pepper" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  },
+  {
+    "name": "Salmon with Tabbouleh Salad",
+    "prep_min": 30,
+    "servings": 4,
+    "cal_per_serving": 289,
+    "meal_type": "dinner",
+    "instructions": [
+      "Halve and thinly slice onion, quarter tomatoes, and halve olives.",
+      "In a large sauce pan, bring water to a boil. Turn off the heat, add the bulgur, cover, and set aside until cooked, about 30 minutes.",
+      "While bulgur cooks, sprinkle salmon with 1/2 tsp. each salt and pepper. Spray large, nonstick skillet with cooking spray and warm over medium-high heat. Add salmon and cook until opaque in the center, about 3 minutes on each side. Transfer salmon to a plate and let cool to room temperature.",
+      "Combine red onion, vinegar, oil, and the remaining 1/2 tsp. salt in a large bowl. Drain bulgur and add it to bowl with along with salad greens, tomato, basil, and olives, and toss salad to coat well.",
+      "Divide salad between 4 plates and top each with a salmon fillet."
+    ],
+    "ingredients": [
+      { "raw_text": "3 cups water", "quantity": 3, "unit": "cup", "food_name": "Water" },
+      { "raw_text": "1 cup bulgur", "quantity": 1, "unit": "cup", "food_name": "Bulgur" },
+      { "raw_text": "1 lb. skinless salmon, cut into 4 fillets", "quantity": 1, "unit": "lb", "food_name": "Salmon" },
+      { "raw_text": "1 tsp. salt", "quantity": 1, "unit": "tsp", "food_name": "Salt" },
+      { "raw_text": "1/2 tsp. pepper", "quantity": 0.5, "unit": "tsp", "food_name": "Black pepper" },
+      { "raw_text": "1 small red onion", "quantity": 1, "unit": "small", "food_name": "Red onion" },
+      { "raw_text": "2 tbsp. white wine vinegar", "quantity": 2, "unit": "tbsp", "food_name": "White wine vinegar" },
+      { "raw_text": "1 tbsp. extra-virgin olive oil", "quantity": 1, "unit": "tbsp", "food_name": "Olive oil" },
+      { "raw_text": "1 cup mixed baby salad greens", "quantity": 1, "unit": "cup", "food_name": "Mixed salad greens" },
+      { "raw_text": "4 plum tomatoes", "quantity": 4, "unit": null, "food_name": "Plum tomatoes" },
+      { "raw_text": "1/3 cup fresh basil, chopped", "quantity": 0.33, "unit": "cup", "food_name": "Fresh basil" },
+      { "raw_text": "8 pitted black olives", "quantity": 8, "unit": null, "food_name": "Black olives" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  },
+  {
+    "name": "Marinated Shrimp with Ginger, Lime, Cilantro and Honey",
+    "prep_min": 20,
+    "servings": 4,
+    "cal_per_serving": 100,
+    "meal_type": "dinner",
+    "instructions": [
+      "In a small bowl, whisk together lime juice, mustard, ginger, and honey. Then, add cilantro and scallions.",
+      "Place shrimp in a large resealable plastic bag and pour marinade over shrimp, coating them completely.",
+      "Let shrimp marinate in the refrigerator for at least 4 hours, preferably overnight.",
+      "Serve chilled over a bed of the salad greens."
+    ],
+    "ingredients": [
+      { "raw_text": "2 lbs. large shrimp, cooked", "quantity": 2, "unit": "lb", "food_name": "Shrimp" },
+      { "raw_text": "1/4 cup cilantro, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Cilantro" },
+      { "raw_text": "2 scallions, sliced (white part only)", "quantity": 2, "unit": null, "food_name": "Scallions" },
+      { "raw_text": "1 tbsp. honey", "quantity": 1, "unit": "tbsp", "food_name": "Honey" },
+      { "raw_text": "1 tbsp. dijon mustard", "quantity": 1, "unit": "tbsp", "food_name": "Dijon mustard" },
+      { "raw_text": "1 tsp. ginger, finely grated", "quantity": 1, "unit": "tsp", "food_name": "Ginger" },
+      { "raw_text": "juice of 2 limes", "quantity": 2, "unit": "lime", "food_name": "Lime juice" },
+      { "raw_text": "8 cups mixed salad greens (optional)", "quantity": 8, "unit": "cup", "food_name": "Mixed salad greens" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  },
+  {
+    "name": "Smoky Paprika Kale Chips",
+    "prep_min": 40,
+    "servings": 6,
+    "cal_per_serving": 149,
+    "meal_type": "snack",
+    "instructions": [
+      "Preheat your oven to 400 degrees.",
+      "Remove kale leaves from their stems and tear the leaves into large pieces.",
+      "Toss kale pieces with olive oil and smoked paprika in a large bowl.",
+      "Place kale on a baking sheet with parchment paper and roast about 30 minutes, until the greens are dry and crispy.",
+      "Remove from oven, sprinkle with sea salt, and serve."
+    ],
+    "ingredients": [
+      { "raw_text": "1 large bunch of kale", "quantity": 1, "unit": "bunch", "food_name": "Kale" },
+      { "raw_text": "1/4 cup olive oil", "quantity": 0.25, "unit": "cup", "food_name": "Olive oil" },
+      { "raw_text": "1 tbsp. smoked paprika", "quantity": 1, "unit": "tbsp", "food_name": "Smoked paprika" },
+      { "raw_text": "1/2 tsp. sea salt", "quantity": 0.5, "unit": "tsp", "food_name": "Sea salt" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  },
+  {
+    "name": "Chicken & Avocado Pita Pockets",
+    "prep_min": 15,
+    "servings": 4,
+    "cal_per_serving": 588,
+    "meal_type": "lunch",
+    "instructions": [
+      "Toss chicken, cheese, avocado, vegetables, and dressing until well combined.",
+      "Fill each pita half with approximately about 3/4 cup of chicken salad or 1/8 of the mixture."
+    ],
+    "ingredients": [
+      { "raw_text": "1 lb. cooked chicken breast, cut into 1/2-inch pieces", "quantity": 1, "unit": "lb", "food_name": "Chicken breast" },
+      { "raw_text": "1/4 cup reduced fat-cheddar cheese, shredded", "quantity": 0.25, "unit": "cup", "food_name": "Reduced-fat cheddar cheese" },
+      { "raw_text": "3/4 cup avocado, diced", "quantity": 0.75, "unit": "cup", "food_name": "Avocado" },
+      { "raw_text": "1/2 cup bell pepper, chopped and seeded", "quantity": 0.5, "unit": "cup", "food_name": "Bell pepper" },
+      { "raw_text": "1/2 cup celery, chopped", "quantity": 0.5, "unit": "cup", "food_name": "Celery" },
+      { "raw_text": "1/2 cup cucumber, chopped", "quantity": 0.5, "unit": "cup", "food_name": "Cucumber" },
+      { "raw_text": "1/2 cup carrot, peeled and chopped", "quantity": 0.5, "unit": "cup", "food_name": "Carrot" },
+      { "raw_text": "1/2 cup cauliflower florets, finely chopped", "quantity": 0.5, "unit": "cup", "food_name": "Cauliflower" },
+      { "raw_text": "1/4 cup red onion, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Red onion" },
+      { "raw_text": "6 tbsp. balsamic dressing", "quantity": 6, "unit": "tbsp", "food_name": "Balsamic dressing" },
+      { "raw_text": "4 6\" whole-wheat pitas, halved", "quantity": 4, "unit": null, "food_name": "Whole-wheat pita" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  },
+  {
+    "name": "Lean Pork Lettuce Wraps",
+    "prep_min": 40,
+    "servings": 2,
+    "cal_per_serving": 505,
+    "meal_type": "dinner",
+    "instructions": [
+      "Cook rice according to package. Mince ginger and garlic. Combine ginger and garlic with pork, and mix gently with your fingers to distribute the seasoning throughout the pork. Set aside.",
+      "Halve lettuce head, separate leaves, rinse well, and set aside to dry. Dice bell pepper and carrots, slice mushrooms, and mince jalapeno. Cut cucumber in half, scrape out seeds with a spoon, and dice remaining cucumber. Halve lime and juice.",
+      "Heat large nonstick skillet over medium-high heat, add pork mixture, and crumble with spoon as it cooks, about 5-7 minutes. Once browned, transfer pork and its juices to a large mixing bowl.",
+      "Return pan to stove over medium-low heat and add pepper, carrots, pepper, mushrooms, cucumber and jalapeno. Sauté for about 1 minute to warm. Add to cooked pork.",
+      "Whisk together soy sauce, sugar, and lime juice until sugar is dissolved. Add to cooked pork.",
+      "Separate pork mixture and rice onto two plates. Serve with lettuce on the side and assemble the wraps as you eat."
+    ],
+    "ingredients": [
+      { "raw_text": "1 head of boston bibb lettuce", "quantity": 1, "unit": "head", "food_name": "Boston bibb lettuce" },
+      { "raw_text": "1/2 cup whole grain rice, uncooked", "quantity": 0.5, "unit": "cup", "food_name": "Whole grain rice" },
+      { "raw_text": "8 oz. lean ground pork or chicken", "quantity": 8, "unit": "oz", "food_name": "Lean ground pork" },
+      { "raw_text": "1 tbsp. ginger", "quantity": 1, "unit": "tbsp", "food_name": "Ginger" },
+      { "raw_text": "6 cloves garlic", "quantity": 6, "unit": "clove", "food_name": "Garlic" },
+      { "raw_text": "1 small red bell pepper", "quantity": 1, "unit": "small", "food_name": "Red bell pepper" },
+      { "raw_text": "1 small cucumber", "quantity": 1, "unit": "small", "food_name": "Cucumber" },
+      { "raw_text": "2 medium carrots, peeled", "quantity": 2, "unit": "medium", "food_name": "Carrots" },
+      { "raw_text": "1/2 cup button mushrooms", "quantity": 0.5, "unit": "cup", "food_name": "Button mushrooms" },
+      { "raw_text": "1/2 jalapeno, seeded", "quantity": 0.5, "unit": null, "food_name": "Jalapeno" },
+      { "raw_text": "1 lime", "quantity": 1, "unit": null, "food_name": "Lime" },
+      { "raw_text": "1 tbsp. soy sauce", "quantity": 1, "unit": "tbsp", "food_name": "Soy sauce" },
+      { "raw_text": "1 tsp. brown sugar", "quantity": 1, "unit": "tsp", "food_name": "Brown sugar" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  },
+  {
+    "name": "Curried Cauliflower Soup",
+    "prep_min": 30,
+    "servings": 4,
+    "cal_per_serving": 139,
+    "meal_type": "lunch",
+    "instructions": [
+      "Heat oil in a 4-5 quart pot over medium heat.",
+      "Add onions and curry powder, cover, and cook 4 minutes.",
+      "Add cauliflower, broth, water and salt and bring to a simmer, stirring occasionally.",
+      "Cover pot and let simmer 15 minutes, stirring occasionally.",
+      "Purée soup in a blender or food processor.",
+      "Return soup to pot and stir in all but 2 tbsp. zucchini.",
+      "Once soup has reheated, label into 4 soup bowls and garnish with remaining zucchini."
+    ],
+    "ingredients": [
+      { "raw_text": "4 cups cauliflower florets, chopped", "quantity": 4, "unit": "cup", "food_name": "Cauliflower" },
+      { "raw_text": "2 cups zucchini, shredded", "quantity": 2, "unit": "cup", "food_name": "Zucchini" },
+      { "raw_text": "1 1/2 cups onions, halved and sliced", "quantity": 1.5, "unit": "cup", "food_name": "Onions" },
+      { "raw_text": "4 cups vegetable broth", "quantity": 4, "unit": "cup", "food_name": "Vegetable broth" },
+      { "raw_text": "2 cups water", "quantity": 2, "unit": "cup", "food_name": "Water" },
+      { "raw_text": "1 tbsp. olive oil", "quantity": 1, "unit": "tbsp", "food_name": "Olive oil" },
+      { "raw_text": "1 tsp. curry powder", "quantity": 1, "unit": "tsp", "food_name": "Curry powder" },
+      { "raw_text": "1/2 tsp. salt", "quantity": 0.5, "unit": "tsp", "food_name": "Salt" }
+    ],
+    "source": "NOOM No-Restrictions Meal Plan PDF"
+  }
+]
