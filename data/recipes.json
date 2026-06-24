@@ -17,13 +17,13 @@
       "Cut frittata in 4 and serve each with 1 slice toast."
     ],
     "ingredients": [
-      { "raw_text": "2 tbsp. olive oil", "quantity": 2, "unit": "tbsp", "food_name": "Olive oil" },
-      { "raw_text": "2 scallions, thinly sliced", "quantity": 2, "unit": null, "food_name": "Scallions" },
-      { "raw_text": "3 large eggs, 5 large egg whites", "quantity": 3, "unit": "large", "food_name": "Eggs" },
-      { "raw_text": "4 - 1 oz. slices mozzarella cheese", "quantity": 4, "unit": "oz slice", "food_name": "Mozzarella cheese" },
-      { "raw_text": "1 cup grape or cherry tomatoes", "quantity": 1, "unit": "cup", "food_name": "Cherry tomatoes" },
-      { "raw_text": "2 cup spinach", "quantity": 2, "unit": "cup", "food_name": "Spinach" },
-      { "raw_text": "4 slices whole grain bread, toasted", "quantity": 4, "unit": "slice", "food_name": "Whole grain bread" }
+      { "raw_text": "2 tbsp. olive oil", "quantity": 2, "unit": "tbsp", "food_name": "Olive oil, extra-virgin" },
+      { "raw_text": "2 scallions, thinly sliced", "quantity": 2, "unit": null, "food_name": "Scallion/green onion, white part" },
+      { "raw_text": "3 large eggs, 5 large egg whites", "quantity": 3, "unit": "large", "food_name": "Egg, whole, cooked" },
+      { "raw_text": "4 - 1 oz. slices mozzarella cheese", "quantity": 4, "unit": "oz slice", "food_name": "Mozzarella cheese, part-skim" },
+      { "raw_text": "1 cup grape or cherry tomatoes", "quantity": 1, "unit": "cup", "food_name": "Cherry/grape tomatoes" },
+      { "raw_text": "2 cup spinach", "quantity": 2, "unit": "cup", "food_name": "Spinach, raw" },
+      { "raw_text": "4 slices whole grain bread, toasted", "quantity": 4, "unit": "slice", "food_name": "Whole grain wheat bread" }
     ],
     "source": "NOOM No-Restrictions Meal Plan PDF"
   },
@@ -41,20 +41,20 @@
       "Remove and discard the bay leaf, and ladle soup into 4 bowls."
     ],
     "ingredients": [
-      { "raw_text": "2 cups mushroom, chopped", "quantity": 2, "unit": "cup", "food_name": "Mushrooms" },
-      { "raw_text": "1/2 cup onion, chopped", "quantity": 0.5, "unit": "cup", "food_name": "Onion" },
+      { "raw_text": "2 cups mushroom, chopped", "quantity": 2, "unit": "cup", "food_name": "Mushrooms, button/white" },
+      { "raw_text": "1/2 cup onion, chopped", "quantity": 0.5, "unit": "cup", "food_name": "Onion, raw" },
       { "raw_text": "1/4 cup celery, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Celery" },
-      { "raw_text": "1 tbsp. parsley, chopped", "quantity": 1, "unit": "tbsp", "food_name": "Parsley" },
-      { "raw_text": "1/2 tsp. garlic, minced", "quantity": 0.5, "unit": "tsp", "food_name": "Garlic" },
-      { "raw_text": "3 1/2 cups vegetable broth", "quantity": 3.5, "unit": "cup", "food_name": "Vegetable broth" },
+      { "raw_text": "1 tbsp. parsley, chopped", "quantity": 1, "unit": "tbsp", "food_name": "Parsley, fresh" },
+      { "raw_text": "1/2 tsp. garlic, minced", "quantity": 0.5, "unit": "tsp", "food_name": "Garlic, raw" },
+      { "raw_text": "3 1/2 cups vegetable broth", "quantity": 3.5, "unit": "cup", "food_name": "Vegetable broth, low-sodium" },
       { "raw_text": "1 1/2 cups canned tomatoes, diced with liquid", "quantity": 1.5, "unit": "cup", "food_name": "Canned diced tomatoes" },
-      { "raw_text": "1/2 cup peeled, sliced carrots", "quantity": 0.5, "unit": "cup", "food_name": "Carrots" },
-      { "raw_text": "1/4 cup pearl barley", "quantity": 0.25, "unit": "cup", "food_name": "Pearl barley" },
+      { "raw_text": "1/2 cup peeled, sliced carrots", "quantity": 0.5, "unit": "cup", "food_name": "Carrot" },
+      { "raw_text": "1/4 cup pearl barley", "quantity": 0.25, "unit": "cup", "food_name": "Pearl barley, cooked" },
       { "raw_text": "1 bay leaf", "quantity": 1, "unit": null, "food_name": "Bay leaf" },
       { "raw_text": "1/4 tsp. dried oregano", "quantity": 0.25, "unit": "tsp", "food_name": "Dried oregano" },
       { "raw_text": "1/4 tsp. dried thyme", "quantity": 0.25, "unit": "tsp", "food_name": "Dried thyme" },
       { "raw_text": "1/4 tsp. salt", "quantity": 0.25, "unit": "tsp", "food_name": "Salt" },
-      { "raw_text": "freshly ground black pepper", "quantity": null, "unit": null, "food_name": "Black pepper" }
+      { "raw_text": "freshly ground black pepper", "quantity": null, "unit": null, "food_name": "Black pepper, ground" }
     ],
     "source": "NOOM No-Restrictions Meal Plan PDF"
   },
@@ -73,16 +73,16 @@
     ],
     "ingredients": [
       { "raw_text": "3 cups water", "quantity": 3, "unit": "cup", "food_name": "Water" },
-      { "raw_text": "1 cup bulgur", "quantity": 1, "unit": "cup", "food_name": "Bulgur" },
-      { "raw_text": "1 lb. skinless salmon, cut into 4 fillets", "quantity": 1, "unit": "lb", "food_name": "Salmon" },
+      { "raw_text": "1 cup bulgur", "quantity": 1, "unit": "cup", "food_name": "Bulgur wheat, cooked" },
+      { "raw_text": "1 lb. skinless salmon, cut into 4 fillets", "quantity": 1, "unit": "lb", "food_name": "Salmon, cooked" },
       { "raw_text": "1 tsp. salt", "quantity": 1, "unit": "tsp", "food_name": "Salt" },
-      { "raw_text": "1/2 tsp. pepper", "quantity": 0.5, "unit": "tsp", "food_name": "Black pepper" },
-      { "raw_text": "1 small red onion", "quantity": 1, "unit": "small", "food_name": "Red onion" },
+      { "raw_text": "1/2 tsp. pepper", "quantity": 0.5, "unit": "tsp", "food_name": "Black pepper, ground" },
+      { "raw_text": "1 small red onion", "quantity": 1, "unit": "small", "food_name": "Onion, raw" },
       { "raw_text": "2 tbsp. white wine vinegar", "quantity": 2, "unit": "tbsp", "food_name": "White wine vinegar" },
-      { "raw_text": "1 tbsp. extra-virgin olive oil", "quantity": 1, "unit": "tbsp", "food_name": "Olive oil" },
+      { "raw_text": "1 tbsp. extra-virgin olive oil", "quantity": 1, "unit": "tbsp", "food_name": "Olive oil, extra-virgin" },
       { "raw_text": "1 cup mixed baby salad greens", "quantity": 1, "unit": "cup", "food_name": "Mixed salad greens" },
-      { "raw_text": "4 plum tomatoes", "quantity": 4, "unit": null, "food_name": "Plum tomatoes" },
-      { "raw_text": "1/3 cup fresh basil, chopped", "quantity": 0.33, "unit": "cup", "food_name": "Fresh basil" },
+      { "raw_text": "4 plum tomatoes", "quantity": 4, "unit": null, "food_name": "Tomato, fresh" },
+      { "raw_text": "1/3 cup fresh basil, chopped", "quantity": 0.33, "unit": "cup", "food_name": "Basil, fresh" },
       { "raw_text": "8 pitted black olives", "quantity": 8, "unit": null, "food_name": "Black olives" }
     ],
     "source": "NOOM No-Restrictions Meal Plan PDF"
@@ -100,12 +100,12 @@
       "Serve chilled over a bed of the salad greens."
     ],
     "ingredients": [
-      { "raw_text": "2 lbs. large shrimp, cooked", "quantity": 2, "unit": "lb", "food_name": "Shrimp" },
-      { "raw_text": "1/4 cup cilantro, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Cilantro" },
-      { "raw_text": "2 scallions, sliced (white part only)", "quantity": 2, "unit": null, "food_name": "Scallions" },
+      { "raw_text": "2 lbs. large shrimp, cooked", "quantity": 2, "unit": "lb", "food_name": "Shrimp, cooked" },
+      { "raw_text": "1/4 cup cilantro, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Cilantro, fresh" },
+      { "raw_text": "2 scallions, sliced (white part only)", "quantity": 2, "unit": null, "food_name": "Scallion/green onion, white part" },
       { "raw_text": "1 tbsp. honey", "quantity": 1, "unit": "tbsp", "food_name": "Honey" },
       { "raw_text": "1 tbsp. dijon mustard", "quantity": 1, "unit": "tbsp", "food_name": "Dijon mustard" },
-      { "raw_text": "1 tsp. ginger, finely grated", "quantity": 1, "unit": "tsp", "food_name": "Ginger" },
+      { "raw_text": "1 tsp. ginger, finely grated", "quantity": 1, "unit": "tsp", "food_name": "Ginger, fresh" },
       { "raw_text": "juice of 2 limes", "quantity": 2, "unit": "lime", "food_name": "Lime juice" },
       { "raw_text": "8 cups mixed salad greens (optional)", "quantity": 8, "unit": "cup", "food_name": "Mixed salad greens" }
     ],
@@ -125,10 +125,10 @@
       "Remove from oven, sprinkle with sea salt, and serve."
     ],
     "ingredients": [
-      { "raw_text": "1 large bunch of kale", "quantity": 1, "unit": "bunch", "food_name": "Kale" },
-      { "raw_text": "1/4 cup olive oil", "quantity": 0.25, "unit": "cup", "food_name": "Olive oil" },
+      { "raw_text": "1 large bunch of kale", "quantity": 1, "unit": "bunch", "food_name": "Kale, raw" },
+      { "raw_text": "1/4 cup olive oil", "quantity": 0.25, "unit": "cup", "food_name": "Olive oil, extra-virgin" },
       { "raw_text": "1 tbsp. smoked paprika", "quantity": 1, "unit": "tbsp", "food_name": "Smoked paprika" },
-      { "raw_text": "1/2 tsp. sea salt", "quantity": 0.5, "unit": "tsp", "food_name": "Sea salt" }
+      { "raw_text": "1/2 tsp. sea salt", "quantity": 0.5, "unit": "tsp", "food_name": "Salt" }
     ],
     "source": "NOOM No-Restrictions Meal Plan PDF"
   },
@@ -143,17 +143,17 @@
       "Fill each pita half with approximately about 3/4 cup of chicken salad or 1/8 of the mixture."
     ],
     "ingredients": [
-      { "raw_text": "1 lb. cooked chicken breast, cut into 1/2-inch pieces", "quantity": 1, "unit": "lb", "food_name": "Chicken breast" },
-      { "raw_text": "1/4 cup reduced fat-cheddar cheese, shredded", "quantity": 0.25, "unit": "cup", "food_name": "Reduced-fat cheddar cheese" },
+      { "raw_text": "1 lb. cooked chicken breast, cut into 1/2-inch pieces", "quantity": 1, "unit": "lb", "food_name": "Chicken breast, cooked, skinless" },
+      { "raw_text": "1/4 cup reduced fat-cheddar cheese, shredded", "quantity": 0.25, "unit": "cup", "food_name": "Cheddar cheese, reduced-fat" },
       { "raw_text": "3/4 cup avocado, diced", "quantity": 0.75, "unit": "cup", "food_name": "Avocado" },
-      { "raw_text": "1/2 cup bell pepper, chopped and seeded", "quantity": 0.5, "unit": "cup", "food_name": "Bell pepper" },
+      { "raw_text": "1/2 cup bell pepper, chopped and seeded", "quantity": 0.5, "unit": "cup", "food_name": "Bell pepper, red" },
       { "raw_text": "1/2 cup celery, chopped", "quantity": 0.5, "unit": "cup", "food_name": "Celery" },
       { "raw_text": "1/2 cup cucumber, chopped", "quantity": 0.5, "unit": "cup", "food_name": "Cucumber" },
       { "raw_text": "1/2 cup carrot, peeled and chopped", "quantity": 0.5, "unit": "cup", "food_name": "Carrot" },
       { "raw_text": "1/2 cup cauliflower florets, finely chopped", "quantity": 0.5, "unit": "cup", "food_name": "Cauliflower" },
-      { "raw_text": "1/4 cup red onion, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Red onion" },
-      { "raw_text": "6 tbsp. balsamic dressing", "quantity": 6, "unit": "tbsp", "food_name": "Balsamic dressing" },
-      { "raw_text": "4 6\" whole-wheat pitas, halved", "quantity": 4, "unit": null, "food_name": "Whole-wheat pita" }
+      { "raw_text": "1/4 cup red onion, chopped", "quantity": 0.25, "unit": "cup", "food_name": "Onion, raw" },
+      { "raw_text": "6 tbsp. balsamic dressing", "quantity": 6, "unit": "tbsp", "food_name": "Balsamic vinaigrette dressing" },
+      { "raw_text": "4 6\" whole-wheat pitas, halved", "quantity": 4, "unit": null, "food_name": "Whole grain pita bread" }
     ],
     "source": "NOOM No-Restrictions Meal Plan PDF"
   },
@@ -172,17 +172,17 @@
       "Separate pork mixture and rice onto two plates. Serve with lettuce on the side and assemble the wraps as you eat."
     ],
     "ingredients": [
-      { "raw_text": "1 head of boston bibb lettuce", "quantity": 1, "unit": "head", "food_name": "Boston bibb lettuce" },
-      { "raw_text": "1/2 cup whole grain rice, uncooked", "quantity": 0.5, "unit": "cup", "food_name": "Whole grain rice" },
-      { "raw_text": "8 oz. lean ground pork or chicken", "quantity": 8, "unit": "oz", "food_name": "Lean ground pork" },
-      { "raw_text": "1 tbsp. ginger", "quantity": 1, "unit": "tbsp", "food_name": "Ginger" },
-      { "raw_text": "6 cloves garlic", "quantity": 6, "unit": "clove", "food_name": "Garlic" },
-      { "raw_text": "1 small red bell pepper", "quantity": 1, "unit": "small", "food_name": "Red bell pepper" },
+      { "raw_text": "1 head of boston bibb lettuce", "quantity": 1, "unit": "head", "food_name": "Butter/Boston bibb lettuce" },
+      { "raw_text": "1/2 cup whole grain rice, uncooked", "quantity": 0.5, "unit": "cup", "food_name": "Brown rice, cooked" },
+      { "raw_text": "8 oz. lean ground pork or chicken", "quantity": 8, "unit": "oz", "food_name": "Lean ground pork, cooked" },
+      { "raw_text": "1 tbsp. ginger", "quantity": 1, "unit": "tbsp", "food_name": "Ginger, fresh" },
+      { "raw_text": "6 cloves garlic", "quantity": 6, "unit": "clove", "food_name": "Garlic, raw" },
+      { "raw_text": "1 small red bell pepper", "quantity": 1, "unit": "small", "food_name": "Bell pepper, red" },
       { "raw_text": "1 small cucumber", "quantity": 1, "unit": "small", "food_name": "Cucumber" },
-      { "raw_text": "2 medium carrots, peeled", "quantity": 2, "unit": "medium", "food_name": "Carrots" },
-      { "raw_text": "1/2 cup button mushrooms", "quantity": 0.5, "unit": "cup", "food_name": "Button mushrooms" },
-      { "raw_text": "1/2 jalapeno, seeded", "quantity": 0.5, "unit": null, "food_name": "Jalapeno" },
-      { "raw_text": "1 lime", "quantity": 1, "unit": null, "food_name": "Lime" },
+      { "raw_text": "2 medium carrots, peeled", "quantity": 2, "unit": "medium", "food_name": "Carrot" },
+      { "raw_text": "1/2 cup button mushrooms", "quantity": 0.5, "unit": "cup", "food_name": "Mushrooms, button/white" },
+      { "raw_text": "1/2 jalapeno, seeded", "quantity": 0.5, "unit": null, "food_name": "Jalapeno pepper" },
+      { "raw_text": "1 lime", "quantity": 1, "unit": null, "food_name": "Lime, whole/wedge" },
       { "raw_text": "1 tbsp. soy sauce", "quantity": 1, "unit": "tbsp", "food_name": "Soy sauce" },
       { "raw_text": "1 tsp. brown sugar", "quantity": 1, "unit": "tsp", "food_name": "Brown sugar" }
     ],
@@ -206,10 +206,10 @@
     "ingredients": [
       { "raw_text": "4 cups cauliflower florets, chopped", "quantity": 4, "unit": "cup", "food_name": "Cauliflower" },
       { "raw_text": "2 cups zucchini, shredded", "quantity": 2, "unit": "cup", "food_name": "Zucchini" },
-      { "raw_text": "1 1/2 cups onions, halved and sliced", "quantity": 1.5, "unit": "cup", "food_name": "Onions" },
-      { "raw_text": "4 cups vegetable broth", "quantity": 4, "unit": "cup", "food_name": "Vegetable broth" },
+      { "raw_text": "1 1/2 cups onions, halved and sliced", "quantity": 1.5, "unit": "cup", "food_name": "Onion, raw" },
+      { "raw_text": "4 cups vegetable broth", "quantity": 4, "unit": "cup", "food_name": "Vegetable broth, low-sodium" },
       { "raw_text": "2 cups water", "quantity": 2, "unit": "cup", "food_name": "Water" },
-      { "raw_text": "1 tbsp. olive oil", "quantity": 1, "unit": "tbsp", "food_name": "Olive oil" },
+      { "raw_text": "1 tbsp. olive oil", "quantity": 1, "unit": "tbsp", "food_name": "Olive oil, extra-virgin" },
       { "raw_text": "1 tsp. curry powder", "quantity": 1, "unit": "tsp", "food_name": "Curry powder" },
       { "raw_text": "1/2 tsp. salt", "quantity": 0.5, "unit": "tsp", "food_name": "Salt" }
     ],
