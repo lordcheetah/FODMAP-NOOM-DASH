@@ -1,7 +1,9 @@
 import { Routes, Route, NavLink } from 'react-router-dom'
-import { Apple, Dumbbell, Home } from 'lucide-react'
+import { Apple, Dumbbell, Home, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Dashboard from '@/pages/Dashboard'
+import Login from '@/pages/Login'
+import { useAuth, isSupabaseConfigured } from '@/lib/auth'
 
 const NAV = [
   { to: '/', label: 'Home', icon: Home, end: true },
@@ -19,13 +21,41 @@ function Placeholder({ title }: { title: string }) {
 }
 
 export default function App() {
+  const { user, loading, signOut } = useAuth()
+
+  // When Supabase is configured, require sign-in before showing the app.
+  // (Without it, the app stays usable as an offline/demo shell.)
+  if (isSupabaseConfigured) {
+    if (loading) {
+      return (
+        <div className="flex min-h-dvh items-center justify-center text-sm text-muted-foreground">
+          Loading…
+        </div>
+      )
+    }
+    if (!user) return <Login />
+  }
+
   return (
     <div className="mx-auto flex min-h-dvh max-w-2xl flex-col">
-      <header className="border-b px-4 py-3">
-        <h1 className="text-base font-semibold">FODMAP · NOOM · DASH</h1>
-        <p className="text-xs text-muted-foreground">
-          Fructose/fructans-aware meal &amp; exercise tracking
-        </p>
+      <header className="flex items-center justify-between border-b px-4 py-3">
+        <div>
+          <h1 className="text-base font-semibold">FODMAP · NOOM · DASH</h1>
+          <p className="text-xs text-muted-foreground">
+            Fructose/fructans-aware meal &amp; exercise tracking
+          </p>
+        </div>
+        {user && (
+          <button
+            type="button"
+            onClick={() => void signOut()}
+            title={`Sign out (${user.email})`}
+            className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-accent"
+          >
+            <LogOut className="h-4 w-4" />
+            Sign out
+          </button>
+        )}
       </header>
 
       <main className="flex-1 p-4 pb-24">
