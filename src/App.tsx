@@ -3,6 +3,7 @@ import { Apple, Dumbbell, Home, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Dashboard from '@/pages/Dashboard'
 import Meals from '@/pages/Meals'
+import Exercise from '@/pages/Exercise'
 import Login from '@/pages/Login'
 import { useAuth, isSupabaseConfigured } from '@/lib/auth'
 
@@ -11,15 +12,6 @@ const NAV = [
   { to: '/meals', label: 'Meals', icon: Apple, end: false },
   { to: '/exercise', label: 'Exercise', icon: Dumbbell, end: false },
 ] as const
-
-function Placeholder({ title }: { title: string }) {
-  return (
-    <div className="rounded-lg border bg-card p-6 text-card-foreground">
-      <h2 className="text-lg font-semibold">{title}</h2>
-      <p className="mt-2 text-sm text-muted-foreground">Coming in a later phase.</p>
-    </div>
-  )
-}
 
 export default function App() {
   const { user, loading, signOut } = useAuth()
@@ -63,7 +55,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/meals" element={<Meals />} />
-          <Route path="/exercise" element={<Placeholder title="Exercise" />} />
+          <Route path="/exercise" element={<Exercise />} />
         </Routes>
       </main>
 

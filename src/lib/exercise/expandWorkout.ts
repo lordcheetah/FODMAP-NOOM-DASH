@@ -231,7 +231,10 @@ function pushRoundedSequence(
   input: ExpandInput,
   exercises: ExpandExercise[],
 ): void {
-  const total = Math.max(1, input.rounds ?? 1)
+  // `??` only guards null/undefined; a non-finite value (NaN/Infinity) must also
+  // fall back to a single round, else Math.max(1, NaN) === NaN and the loop never
+  // runs (returning []).
+  const total = Math.max(1, Number.isFinite(input.rounds) ? input.rounds! : 1)
   const single = total === 1
   for (let r = 1; r <= total; r++) {
     const isLastRound = r === total
@@ -255,10 +258,10 @@ function pushEmom(
   input: ExpandInput,
   exercises: ExpandExercise[],
 ): void {
-  const minutes = Math.max(
-    1,
-    input.rounds ?? input.durationMin ?? exercises.length,
-  )
+  const minutesRaw = input.rounds ?? input.durationMin ?? exercises.length
+  // Guard non-finite (NaN/Infinity) the same way as rounds so the minute loop
+  // always runs at least once.
+  const minutes = Math.max(1, Number.isFinite(minutesRaw) ? minutesRaw : exercises.length)
   const slot = firstPositive([input.defaultWorkSec], DEFAULT_EMOM_SLOT_SEC)
   for (let r = 1; r <= minutes; r++) {
     const ex = exercises[(r - 1) % exercises.length]
