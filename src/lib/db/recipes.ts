@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { queryKeys } from './queryKeys'
 import { likeContains } from './search'
+import type { RollupIngredient } from '@/lib/diet'
 import type { FoodRow, RecipeRow, RecipeIngredientRow } from './types'
 
 /** A recipe ingredient with its joined food row (null when unmatched). */
@@ -14,6 +15,16 @@ export interface RecipeWithIngredients {
   ingredients: RecipeIngredientWithFood[]
 }
 
+/** A search result carries just enough ingredient data to compute the roll-up. */
+export interface RecipeSearchResult {
+  recipe: RecipeRow
+  ingredients: RollupIngredient[]
+}
+
+/** Selective ingredient embed: only the fields `recipeRollup` consumes. */
+const SEARCH_INGREDIENT_EMBED =
+  'recipe_ingredients(food_id, food:foods(fructose_level,fructans_level,calories,serving_grams))'
+
 /**
  * Search recipes by name (case-insensitive). RLS returns seed + the user's own.
  * Disabled below 2 chars and when Supabase is not configured.
@@ -25,15 +36,24 @@ export function useRecipeSearch(term: string) {
   return useQuery({
     queryKey: queryKeys.recipeSearch(trimmed),
     enabled,
-    queryFn: async (): Promise<RecipeRow[]> => {
+    queryFn: async (): Promise<RecipeSearchResult[]> => {
       if (!supabase) return []
       const { data, error } = await supabase
         .from('recipes')
-        .select('*')
+        .select(`*, ${SEARCH_INGREDIENT_EMBED}`)
         .ilike('name', likeContains(trimmed))
         .limit(30)
       if (error) throw error
-      return (data ?? []) as RecipeRow[]
+      const rows = (data ?? []) as (RecipeRow & {
+        recipe_ingredients: RollupIngredient[] | null
+      })[]
+      return rows.map((row) => {
+        const { recipe_ingredients, ...recipe } = row
+        return {
+          recipe: recipe as RecipeRow,
+          ingredients: recipe_ingredients ?? [],
+        }
+      })
     },
   })
 }

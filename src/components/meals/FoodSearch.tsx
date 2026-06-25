@@ -3,7 +3,7 @@ import { Plus, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
-import { noomColor, type MealType } from '@/lib/diet'
+import { noomColor, recipeRollup, type MealType } from '@/lib/diet'
 import { useFoodSearch } from '@/lib/db/foods'
 import { useRecipeSearch } from '@/lib/db/recipes'
 import type { FoodRow, RecipeRow } from '@/lib/db/types'
@@ -45,9 +45,11 @@ export interface FoodSearchProps {
 
 /**
  * Debounced food + recipe search. Each result renders as a FoodItemRow with a
- * computed NOOM dot, FODMAP badge (foods only) and nutrient chips, plus an Add
- * affordance opening the AddToLogDialog. Recipes whose grams are unknown render
- * an unknown NOOM dot — we never guess a color.
+ * computed NOOM dot, FODMAP badge and nutrient chips, plus an Add affordance
+ * opening the AddToLogDialog. Recipe verdicts come from `recipeRollup` over the
+ * embedded ingredients (worst-case FODMAP axes + averaged density). When a
+ * recipe is "not verified" due to unlinked ingredients, the subtitle says why
+ * and the badge stays neutral — an unknown component never reads as "safe".
  */
 export function FoodSearch({ date, mealContext }: FoodSearchProps) {
   const [term, setTerm] = useState('')
@@ -128,27 +130,40 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
                   />
                 </li>
               ))}
-              {results.recipes.map((r) => (
-                <li key={`recipe-${r.id}`}>
-                  <FoodItemRow
-                    name={r.name}
-                    subtitle={`Recipe${r.servings ? ` · ${r.servings} servings` : ''}`}
-                    // Recipe grams are unknown → unknown NOOM dot (never guess).
-                    noom={null}
-                    chips={recipeChips(r)}
-                    action={
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        aria-label={`Add ${r.name}`}
-                        onClick={() => setTarget({ name: r.name, recipe_id: r.id })}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    }
-                  />
-                </li>
-              ))}
+              {results.recipes.map(({ recipe: r, ingredients }) => {
+                const rollup = recipeRollup(ingredients)
+                const baseSubtitle = `Recipe${r.servings ? ` · ${r.servings} servings` : ''}`
+                const subtitle =
+                  rollup.safety === 'not-verified' && rollup.unlinkedCount > 0
+                    ? `${baseSubtitle} · not verified: ${rollup.unlinkedCount} unlinked ingredient${
+                        rollup.unlinkedCount === 1 ? '' : 's'
+                      }`
+                    : baseSubtitle
+                return (
+                  <li key={`recipe-${r.id}`}>
+                    <FoodItemRow
+                      name={r.name}
+                      subtitle={subtitle}
+                      // Computed from ingredient roll-up (averaged density); null = unknown dot.
+                      noom={rollup.noomColor}
+                      fructose={rollup.fructoseLevel}
+                      fructans={rollup.fructansLevel}
+                      safety={rollup.safety}
+                      chips={recipeChips(r)}
+                      action={
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          aria-label={`Add ${r.name}`}
+                          onClick={() => setTarget({ name: r.name, recipe_id: r.id })}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      }
+                    />
+                  </li>
+                )
+              })}
             </ul>
           )}
         </div>

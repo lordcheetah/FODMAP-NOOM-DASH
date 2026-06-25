@@ -36,16 +36,25 @@ export const SAFETY_LABEL: Record<FodmapSafety, string> = {
 export interface FodmapBadgeProps {
   fructose: FodmapLevel
   fructans: FodmapLevel
+  /**
+   * Precomputed safety verdict. Pass this for aggregates (e.g. a recipe roll-up)
+   * where the verdict is decided by precedence across many ingredients and can't
+   * be reconstructed from two display axes — notably "avoid" when a known-high
+   * ingredient coexists with an unknown one. When omitted, the verdict is derived
+   * from the two axes via lowFodmapSafe (the single-food case).
+   */
+  safety?: FodmapSafety
   className?: string
 }
 
 /**
- * FODMAP safety badge derived from the two tracked axes (fructose + fructans).
- * Exposes the per-axis levels via `title` for transparency on tap/hover.
+ * FODMAP safety badge. Uses the precomputed `safety` when given, otherwise
+ * derives it from the two tracked axes (fructose + fructans). Exposes the
+ * per-axis levels via `title` for transparency on tap/hover.
  */
-export function FodmapBadge({ fructose, fructans, className }: FodmapBadgeProps) {
-  const safety = lowFodmapSafe(fructose, fructans)
-  const { label, className: tone } = SAFETY[safety]
+export function FodmapBadge({ fructose, fructans, safety, className }: FodmapBadgeProps) {
+  const verdict = safety ?? lowFodmapSafe(fructose, fructans)
+  const { label, className: tone } = SAFETY[verdict]
   const title = `Fructose: ${fructose} · Fructans: ${fructans}`
 
   return (
@@ -57,6 +66,7 @@ export function FodmapBadge({ fructose, fructans, className }: FodmapBadgeProps)
       )}
       title={title}
       aria-label={`${label}. ${title}`}
+      data-safety={verdict}
     >
       {label}
     </span>

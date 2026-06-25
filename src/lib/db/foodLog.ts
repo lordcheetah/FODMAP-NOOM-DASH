@@ -1,17 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
-import type { LoggedNutrients, MealType } from '@/lib/diet'
+import type { LoggedNutrients, MealType, RollupIngredient } from '@/lib/diet'
 import { queryKeys } from './queryKeys'
 import type { FoodLogRow, FoodRow, RecipeRow } from './types'
 
 // Single source of truth for MealType is the diet lib; re-export for callers.
 export type { MealType } from '@/lib/diet'
 
+/** A recipe embedded in a log entry, carrying just enough to compute its roll-up. */
+export type LoggedRecipe = RecipeRow & { recipe_ingredients: RollupIngredient[] }
+
 /** A food_log row with its embedded food / recipe (one round-trip). */
 export type FoodLogEntry = FoodLogRow & {
   food: FoodRow | null
-  recipe: RecipeRow | null
+  recipe: LoggedRecipe | null
 }
 
 /**
@@ -19,10 +22,12 @@ export type FoodLogEntry = FoodLogRow & {
  *
  * - A food entry uses the joined `food` row's nutrients + DASH group.
  * - A recipe entry uses `cal_per_serving` for calories. Recipe DASH/fiber/sodium
- *   ROLL-UP is a documented v1 gap: recipes carry no group/fiber/sodium of their
- *   own, so those fields are left null here (they contribute calories only). See
- *   `data/README.md` and the Phase 1 plan Risks. v1 logs individual foods for
- *   full DASH/fiber math.
+ *   are INTENTIONALLY left null (calories only) — this is a deliberate v1 limit,
+ *   not a TODO. An accurate per-serving fiber/sodium roll-up needs a
+ *   quantity->grams unit-conversion layer the data does not yet have, so summing
+ *   ingredient nutrients would be misleading in a health app. See
+ *   `.planning/recipe-rollup.md` (Decision D4). `recipeRollup` provides the
+ *   qualitative FODMAP + NOOM verdict for display only; it does not feed totals.
  *
  * `servings` is passed through; the diet functions multiply per-serving fields.
  */
@@ -73,7 +78,9 @@ export function useFoodLog(date: string) {
       if (!supabase) return []
       const { data, error } = await supabase
         .from('food_log')
-        .select('*, food:foods(*), recipe:recipes(*)')
+        .select(
+          '*, food:foods(*), recipe:recipes(*, recipe_ingredients(food_id, food:foods(fructose_level,fructans_level,calories,serving_grams)))',
+        )
         .eq('logged_on', date)
         .order('created_at', { ascending: true })
       if (error) throw error

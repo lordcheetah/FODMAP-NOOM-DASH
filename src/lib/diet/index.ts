@@ -1,6 +1,7 @@
 export * from './types'
 export * from './noomColor'
 export * from './lowFodmapSafe'
+export * from './recipeRollup'
 export * from './dashProgress'
 export * from './fiberProgress'
 export * from './fiberSuggestions'

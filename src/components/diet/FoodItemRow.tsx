@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
-import type { FodmapLevel, NoomColor } from '@/lib/diet'
+import type { FodmapLevel, FodmapSafety, NoomColor } from '@/lib/diet'
 import { NoomDot } from './NoomDot'
 import { FodmapBadge } from './FodmapBadge'
 
@@ -18,6 +18,12 @@ export interface FoodItemRowProps {
   /** FODMAP axes; when omitted no badge is shown (e.g. recipes w/o roll-up). */
   fructose?: FodmapLevel
   fructans?: FodmapLevel
+  /**
+   * Precomputed safety verdict (for recipe roll-ups). When given, the badge uses
+   * it directly instead of deriving from the axes — so e.g. a recipe with a
+   * known-high + an unknown ingredient correctly reads "Avoid", not "Not verified".
+   */
+  safety?: FodmapSafety
   chips?: NutrientChip[]
   /** Trailing slot — e.g. an Add button or a Remove control. */
   action?: ReactNode
@@ -35,6 +41,7 @@ export function FoodItemRow({
   noom,
   fructose,
   fructans,
+  safety,
   chips,
   action,
   className,
@@ -46,7 +53,7 @@ export function FoodItemRow({
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <span className="truncate text-sm font-medium">{name}</span>
           {fructose !== undefined && fructans !== undefined && (
-            <FodmapBadge fructose={fructose} fructans={fructans} />
+            <FodmapBadge fructose={fructose} fructans={fructans} safety={safety} />
           )}
         </div>
         {subtitle && (

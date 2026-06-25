@@ -1,7 +1,12 @@
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
-import { MEAL_ORDER, noomColor, type MealType } from '@/lib/diet'
+import {
+  MEAL_ORDER,
+  noomColor,
+  recipeRollup,
+  type MealType,
+} from '@/lib/diet'
 import {
   useDeleteLogEntry,
   type FoodLogEntry,
@@ -78,18 +83,31 @@ export function DailyLog({ date, entries, isLoading }: DailyLogProps) {
                   {items.map((entry) => {
                     const f = entry.food
                     const name = f?.name ?? entry.recipe?.name ?? 'Item'
+                    // Recipe verdict from ingredient roll-up; foods use their own row.
+                    const rollup = entry.recipe
+                      ? recipeRollup(entry.recipe.recipe_ingredients)
+                      : null
+                    const recipeSubtitle =
+                      rollup && rollup.safety === 'not-verified' && rollup.unlinkedCount > 0
+                        ? `Recipe · not verified: ${rollup.unlinkedCount} unlinked ingredient${
+                            rollup.unlinkedCount === 1 ? '' : 's'
+                          }`
+                        : 'Recipe'
                     return (
                       <li key={entry.id}>
                         <FoodItemRow
                           name={name}
-                          subtitle={f?.serving_desc ?? (entry.recipe ? 'Recipe' : undefined)}
+                          subtitle={f?.serving_desc ?? (entry.recipe ? recipeSubtitle : undefined)}
                           noom={
-                            f && f.calories != null && f.serving_grams != null
-                              ? noomColor(f.calories, f.serving_grams)
-                              : null
+                            f
+                              ? f.calories != null && f.serving_grams != null
+                                ? noomColor(f.calories, f.serving_grams)
+                                : null
+                              : (rollup?.noomColor ?? null)
                           }
-                          fructose={f?.fructose_level}
-                          fructans={f?.fructans_level}
+                          fructose={f ? f.fructose_level : rollup?.fructoseLevel}
+                          fructans={f ? f.fructans_level : rollup?.fructansLevel}
+                          safety={f ? undefined : rollup?.safety}
                           chips={entryChips(entry)}
                           action={
                             <Button
