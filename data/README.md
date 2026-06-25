@@ -11,7 +11,8 @@ diet-domain enums from `src/lib/diet/types.ts`.
 > as `low`. `unknown` is shown as "not verified," never "safe."
 
 Current files (validated): `foods.json` (178), `recipes.json` (8),
-`swaps.json` (100), `sample_days.json` (7).
+`swaps.json` (100), `sample_days.json` (7), `exercises.json` (80),
+`workouts.json` (29), `schedule.json` (4 weeks × 7 days, 0 unresolved cross-refs).
 
 ---
 
@@ -107,3 +108,89 @@ slot names a recipe (or free-text item) by string.
 The seed script does **not** persist sample days and does **not** write them to
 `food_log` (that table is strictly per-user, RLS-scoped). Documented here so a
 partial dataset never blocks the build.
+
+---
+
+# Exercise data (Phase 2)
+
+The three files below seed the exercise schema
+(`supabase/migrations/0003_exercise.sql`) as **global seed rows**
+(`user_id IS NULL`). Their TS contracts are `ExerciseSeed`, `WorkoutSeed`,
+`ScheduleSeed` in [`src/lib/data/seedTypes.ts`](../src/lib/data/seedTypes.ts) and
+reuse the exercise enums from
+[`src/lib/exercise/types.ts`](../src/lib/exercise/types.ts) (the single source of
+truth for `ExerciseCategory`, `WorkoutFormat`, `ExerciseDefaultType`,
+`Difficulty`). Cross-references resolve by **exact, case-insensitive slug** (no
+alias map); the seed prints any unresolved slugs.
+
+## `exercises.json` → `ExerciseSeed[]` → `exercises` table
+
+| JSON field             | DB column              | Notes                                                                  |
+| ---------------------- | ---------------------- | ---------------------------------------------------------------------- |
+| `slug` (required)      | `slug`                 | Stable key. `lower(slug)` is unique among seed rows.                   |
+| `name` (required)      | `name`                 | Display name.                                                          |
+| `category` (required)  | `category`             | `ExerciseCategory`. Unknown value → **row skipped** (warn).           |
+| `subcategory`          | `subcategory`          |                                                                        |
+| `muscle_groups`        | `muscle_groups`        | `text[]`; omitted → `[]`.                                              |
+| `equipment`            | `equipment`            | `text[]`; omitted → `[]`.                                              |
+| `difficulty`           | `difficulty`           | `'easy' \| 'medium' \| 'hard'`.                                        |
+| `instructions`         | `instructions`         | `text[]`; omitted → `[]`.                                              |
+| `modifications`        | `modifications`        | `text[]`; **shown verbatim**, never dropped. Omitted → `[]`.          |
+| `cautions`             | `cautions`             | `text[]`; **shown verbatim**, never dropped. Omitted → `[]`.          |
+| `default_type` (req.)  | `default_type`         | `ExerciseDefaultType`. Unknown → **row skipped**. Never invented.     |
+| `default_reps`         | `default_reps`         |                                                                        |
+| `default_duration_sec` | `default_duration_sec` |                                                                        |
+| `default_hold_sec`     | `default_hold_sec`     |                                                                        |
+| `source`               | `source`               | Citation.                                                              |
+
+**Stable key (idempotency):** `lower(slug)`.
+
+## `workouts.json` → `WorkoutSeed[]` → `workouts` (+ `workout_exercises`)
+
+| JSON field          | DB column          | Notes                                                       |
+| ------------------- | ------------------ | ---------------------------------------------------------- |
+| `slug` (required)   | `slug`             | Stable key.                                                |
+| `name` (required)   | `name`             |                                                            |
+| `category` (req.)   | `category`         | `ExerciseCategory`. Unknown → **row skipped**.            |
+| `description`       | `description`      |                                                            |
+| `duration_min`      | `duration_min`     | Also the AMRAP/EMOM time-box source (no separate cap).     |
+| `format` (req.)     | `format`           | `WorkoutFormat`. Unknown → **row skipped**.               |
+| `rounds`            | `rounds`           |                                                            |
+| `default_work_sec`  | `default_work_sec` |                                                            |
+| `default_rest_sec`  | `default_rest_sec` |                                                            |
+| `exercises` (req.)  | _(child rows)_     | → `workout_exercises` (see below).                         |
+| `source`            | `source`           |                                                            |
+
+**Stable key (idempotency):** `lower(slug)`.
+
+### `exercises[]` → `WorkoutExerciseSeed[]` → `workout_exercises`
+
+| JSON field      | DB column     | Notes                                                                  |
+| --------------- | ------------- | --------------------------------------------------------------------- |
+| `exercise_slug` | `exercise_id` | Resolved exact/case-insensitive to `exercises.slug`. Miss → **row skipped** (FK is NOT NULL) + printed. |
+| `order` (req.)  | `position`    | Renamed (`order` is a reserved word). Unique per workout.             |
+| `work_sec`      | `work_sec`    |                                                                       |
+| `rest_sec`      | `rest_sec`    |                                                                       |
+| `reps`          | `reps`        |                                                                       |
+| `hold_sec`      | `hold_sec`    |                                                                       |
+| `note`          | `note`        |                                                                       |
+
+The seed re-creates a workout's `workout_exercises` on every run
+(delete-then-insert) so re-runs are deterministic.
+
+## `schedule.json` → `ScheduleSeed` (or `ScheduleSeed[]`) → `schedules` (+ `schedule_days`)
+
+Shape: `{ name, source?, weeks: [{ week, days: [{ day, label?, workout_slug? }] }] }`.
+A single cycle object **or** an array of cycles is accepted.
+
+| JSON field             | DB column     | Notes                                                                       |
+| ---------------------- | ------------- | --------------------------------------------------------------------------- |
+| `name` (required)      | `name`        | Stable key. `lower(name)` unique among seed rows.                           |
+| `source`               | `source`      |                                                                             |
+| `weeks[].week`         | `week`        |                                                                             |
+| `weeks[].days[].day`   | `day`         | Unique per `(schedule_id, week, day)`.                                      |
+| `weeks[].days[].label` | `label`       | Original category text preserved (the PDF names categories, not variants).  |
+| `weeks[].days[].workout_slug` | `workout_id` | Resolved to a workout. `null` (rest) or unresolved slug → `workout_id = null`. |
+
+**Stable key (idempotency):** `lower(name)`. `schedule_days` are recreated each
+run (delete-then-insert).

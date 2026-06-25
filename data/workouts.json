@@ -1,0 +1,601 @@
+[
+  {
+    "slug": "upper-body-basic",
+    "name": "Upper Body Basic",
+    "category": "strength",
+    "description": "Go through the sequence 3 times: 8 reps the first round, 12 the second, 15 the third.",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "shoulder-taps", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "airplanes", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "plank-twists", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "pushup", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "tricep-dips", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" }
+    ],
+    "source": "NOOM Workout Plan PDF (Strength - Upper Body - Basic)"
+  },
+  {
+    "slug": "upper-body-burn-out",
+    "name": "Upper Body Burn Out",
+    "category": "strength",
+    "description": "Perform 3 sets of as many reps as possible (AMRAP) for each exercise; record your score.",
+    "duration_min": null,
+    "format": "amrap",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "pushup", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "crunches", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "tricep-dips", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "supermans", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "plank", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets, hold for time" }
+    ],
+    "source": "NOOM Workout Plan PDF (Strength - Upper Body - Burn Out)"
+  },
+  {
+    "slug": "lower-body-basic",
+    "name": "Lower Body Basic",
+    "category": "strength",
+    "description": "Go through the sequence 3 times: 8 reps the first round, 12 the second, 15 the third.",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "split-squats", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "straight-leg-deadlift", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "curtsy-lunges", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "squats", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "single-leg-deadlift", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" }
+    ],
+    "source": "NOOM Workout Plan PDF (Strength - Lower Body - Basic)"
+  },
+  {
+    "slug": "lower-body-burn-out",
+    "name": "Lower Body Burn Out",
+    "category": "strength",
+    "description": "Perform 3 sets of as many reps as possible (AMRAP) for each exercise; record your score.",
+    "duration_min": null,
+    "format": "amrap",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "squats", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "reverse-lunges", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "glute-bridges", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "side-lunges", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets AMRAP" },
+      { "exercise_slug": "wall-sit", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "3 sets, hold for time" }
+    ],
+    "source": "NOOM Workout Plan PDF (Strength - Lower Body - Burn Out)"
+  },
+  {
+    "slug": "full-body-power",
+    "name": "Full Body Power",
+    "category": "strength",
+    "description": "Go through the sequence 3 times: 8 reps the first round, 12 the second, 15 the third.",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "split-squats", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "pushup", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "curtsy-lunges", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "airplanes", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "squats", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" },
+      { "exercise_slug": "tricep-dips", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "8/12/15 reps across the 3 rounds" }
+    ],
+    "source": "NOOM Workout Plan PDF (Strength - Full Body - Power)"
+  },
+  {
+    "slug": "full-body-stamina",
+    "name": "Full Body Stamina",
+    "category": "strength",
+    "description": "Complete 100 reps of each exercise, split into as many sets as needed to maintain proper form.",
+    "duration_min": null,
+    "format": "reps",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "squats", "order": 1, "work_sec": null, "rest_sec": null, "reps": 100, "hold_sec": null, "note": "100 total reps, any number of sets" },
+      { "exercise_slug": "pushup", "order": 2, "work_sec": null, "rest_sec": null, "reps": 100, "hold_sec": null, "note": "100 total reps, any number of sets" },
+      { "exercise_slug": "v-sits", "order": 3, "work_sec": null, "rest_sec": null, "reps": 100, "hold_sec": null, "note": "100 total reps, any number of sets" }
+    ],
+    "source": "NOOM Workout Plan PDF (Strength - Full Body - Stamina)"
+  },
+  {
+    "slug": "full-body-burn-out",
+    "name": "Full Body Burn Out",
+    "category": "strength",
+    "description": "Perform 1 set of AMRAP for each of the 10 exercises, resting as long as you need in between.",
+    "duration_min": null,
+    "format": "amrap",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "squats", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "pushup", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "step-ups", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "plank-presses", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "tricep-dips", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "glute-bridges", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "supermans", "order": 7, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "shoulder-taps", "order": 8, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "split-squats", "order": 9, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" },
+      { "exercise_slug": "crunches", "order": 10, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "1 set AMRAP" }
+    ],
+    "source": "NOOM Workout Plan PDF (Strength - Full Body - Burn Out)"
+  },
+  {
+    "slug": "hiit-jump-on-it",
+    "name": "Jump On (HI)IT",
+    "category": "hiit",
+    "description": "Perform each exercise for 20s, then rest 10s. After one pass through all exercises, rest 1 minute. Complete 5 rounds.",
+    "duration_min": 20,
+    "format": "timed",
+    "rounds": 5,
+    "default_work_sec": 20,
+    "default_rest_sec": 10,
+    "exercises": [
+      { "exercise_slug": "jumping-jacks", "order": 1, "work_sec": 20, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "squat-jumps", "order": 2, "work_sec": 20, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "lateral-jumps", "order": 3, "work_sec": 20, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "drop-squats", "order": 4, "work_sec": 20, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "jumping-lunges", "order": 5, "work_sec": 20, "rest_sec": 10, "reps": null, "hold_sec": null, "note": "Then rest 1 minute before the next round" }
+    ],
+    "source": "NOOM Workout Plan PDF (Cardio - High Intensity - Jump On (HI)IT)"
+  },
+  {
+    "slug": "crazy-8s-circuit",
+    "name": "Crazy 8's Circuit",
+    "category": "circuit",
+    "description": "Complete 8 rounds of the circuit, resting 2 minutes between each round.",
+    "duration_min": 30,
+    "format": "rounds",
+    "rounds": 8,
+    "default_work_sec": null,
+    "default_rest_sec": 120,
+    "exercises": [
+      { "exercise_slug": "squats", "order": 1, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": null },
+      { "exercise_slug": "squat-jumps", "order": 2, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": null },
+      { "exercise_slug": "forward-lunges", "order": 3, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "PDF says '8 Lunges'; mapped to forward lunges" },
+      { "exercise_slug": "jumping-lunges", "order": 4, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": null },
+      { "exercise_slug": "side-lunges", "order": 5, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "8 each leg" },
+      { "exercise_slug": "star-jacks", "order": 6, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": null },
+      { "exercise_slug": "straight-leg-deadlift", "order": 7, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Cardio - Circuit Training - Crazy 8's Circuit)"
+  },
+  {
+    "slug": "new-heights-circuit",
+    "name": "New Heights Circuit",
+    "category": "circuit",
+    "description": "Four mini-circuits (A-D). Repeat each 3 times, resting 1 minute between rounds.",
+    "duration_min": 25,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "star-jacks", "order": 1, "work_sec": null, "rest_sec": null, "reps": 20, "hold_sec": null, "note": "Circuit A (x3)" },
+      { "exercise_slug": "butt-kicks", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Circuit A (x3)" },
+      { "exercise_slug": "mountain-climbers", "order": 3, "work_sec": null, "rest_sec": null, "reps": 20, "hold_sec": null, "note": "Circuit B (x3); 20 each leg" },
+      { "exercise_slug": "high-knees", "order": 4, "work_sec": null, "rest_sec": null, "reps": 50, "hold_sec": null, "note": "Circuit B (x3)" },
+      { "exercise_slug": "plank-twists", "order": 5, "work_sec": null, "rest_sec": null, "reps": 20, "hold_sec": null, "note": "Circuit C (x3)" },
+      { "exercise_slug": "lateral-jumps", "order": 6, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Circuit C (x3)" },
+      { "exercise_slug": "plank-jacks", "order": 7, "work_sec": null, "rest_sec": null, "reps": 20, "hold_sec": null, "note": "Circuit D (x3)" },
+      { "exercise_slug": "jumping-jacks", "order": 8, "work_sec": null, "rest_sec": null, "reps": 50, "hold_sec": null, "note": "Circuit D (x3)" }
+    ],
+    "source": "NOOM Workout Plan PDF (Cardio - Circuit Training - New Heights Circuit)"
+  },
+  {
+    "slug": "strength-n-stamina-circuit",
+    "name": "Strength N' Stamina Circuit",
+    "category": "circuit",
+    "description": "Complete 10 rounds of the circuit, resting 1 minute between each round.",
+    "duration_min": 30,
+    "format": "rounds",
+    "rounds": 10,
+    "default_work_sec": null,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "pushup", "order": 1, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "squats", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "crunches", "order": 3, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Cardio - Circuit Training - Strength N' Stamina Circuit)"
+  },
+  {
+    "slug": "joy-run-circuit",
+    "name": "Joy Run Circuit",
+    "category": "circuit",
+    "description": "Set a timer for 20 minutes. Complete as many rounds as possible of a 0.25-mile walk/run plus 10 burpees.",
+    "duration_min": 20,
+    "format": "amrap",
+    "rounds": null,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "sprints", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "0.25 mile walk or run (use sprints/run exercise as the cardio leg)" },
+      { "exercise_slug": "burpees", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Cardio - Circuit Training - Joy Run Circuit)"
+  },
+  {
+    "slug": "upbeat-circuit",
+    "name": "Upbeat Circuit",
+    "category": "circuit",
+    "description": "Two mini-circuits (A and B). Repeat each 5 times, resting 1 minute between rounds. Each move is 30 seconds.",
+    "duration_min": 30,
+    "format": "timed",
+    "rounds": 5,
+    "default_work_sec": 30,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "star-jacks", "order": 1, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Circuit A (x5)" },
+      { "exercise_slug": "toe-taps", "order": 2, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Circuit A (x5)" },
+      { "exercise_slug": "drop-squats", "order": 3, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Circuit A (x5)" },
+      { "exercise_slug": "high-knees", "order": 4, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Circuit B (x5)" },
+      { "exercise_slug": "jumping-jacks", "order": 5, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Circuit B (x5)" },
+      { "exercise_slug": "butt-kicks", "order": 6, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Circuit B (x5)" }
+    ],
+    "source": "NOOM Workout Plan PDF (Cardio - Circuit Training - Upbeat Circuit)"
+  },
+  {
+    "slug": "dynamic-amrap-ante",
+    "name": "AMRAP Ante (Dynamic)",
+    "category": "dynamic",
+    "description": "Set a 15-minute timer. Complete as many rounds as possible of the circuit; track your score.",
+    "duration_min": 15,
+    "format": "amrap",
+    "rounds": null,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "pushup", "order": 1, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "squats", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "crunches", "order": 3, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Dynamic - AMRAP Ante)"
+  },
+  {
+    "slug": "dynamic-amrap-advanced",
+    "name": "AMRAP Advanced (Dynamic)",
+    "category": "dynamic",
+    "description": "Set a 15-minute timer. Complete as many rounds as possible of the circuit; track your score.",
+    "duration_min": 15,
+    "format": "amrap",
+    "rounds": null,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "burpees", "order": 1, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "drop-squats", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Dynamic - AMRAP Advanced)"
+  },
+  {
+    "slug": "dynamic-burp-n-burn",
+    "name": "Burp n' Burn (Dynamic)",
+    "category": "dynamic",
+    "description": "Complete 100 burpees, broken into as many sets as it takes. Challenge yourself to use one less set each time.",
+    "duration_min": null,
+    "format": "reps",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "burpees", "order": 1, "work_sec": null, "rest_sec": null, "reps": 100, "hold_sec": null, "note": "100 total reps, any number of sets" }
+    ],
+    "source": "NOOM Workout Plan PDF (Dynamic - Burp n' burn)"
+  },
+  {
+    "slug": "dynamic-endurance-emom",
+    "name": "Endurance EMOM (Dynamic)",
+    "category": "dynamic",
+    "description": "Set a 15-minute timer. Every minute on the minute (EMOM), complete 12 squat jumps.",
+    "duration_min": 15,
+    "format": "emom",
+    "rounds": 15,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "squat-jumps", "order": 1, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": "12 reps every minute on the minute; swap for another dynamic move if desired" }
+    ],
+    "source": "NOOM Workout Plan PDF (Dynamic - Endurance EMOM)"
+  },
+  {
+    "slug": "dynamic-core-challenge",
+    "name": "Core Challenge (Dynamic)",
+    "category": "dynamic",
+    "description": "Two circuits (A timed, B reps). Repeat each circuit 3 times through, resting 1 minute in between.",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": 30,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "plank", "order": 1, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Circuit A (x3)" },
+      { "exercise_slug": "side-plank", "order": 2, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Circuit A (x3); right side" },
+      { "exercise_slug": "side-plank", "order": 3, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Circuit A (x3); left side" },
+      { "exercise_slug": "plank-twists", "order": 4, "work_sec": 30, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Circuit A (x3)" },
+      { "exercise_slug": "inch-worms", "order": 5, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Circuit B (x3)" },
+      { "exercise_slug": "plank-presses", "order": 6, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Circuit B (x3)" },
+      { "exercise_slug": "bear-crawls", "order": 7, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Circuit B (x3); 10 each side" },
+      { "exercise_slug": "shoulder-taps", "order": 8, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Circuit B (x3); 10 each side" }
+    ],
+    "source": "NOOM Workout Plan PDF (Dynamic - Core challenge)"
+  },
+  {
+    "slug": "dynamic-football-frolick",
+    "name": "Football Frolick (Dynamic)",
+    "category": "dynamic",
+    "description": "Use a ~50-step runway. Complete 5 rounds of the sequence, walking back to the start each time for rest.",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 5,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "long-jumps", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Down the runway" },
+      { "exercise_slug": "side-shuffles", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Right" },
+      { "exercise_slug": "side-shuffles", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Left" },
+      { "exercise_slug": "inch-worms", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Down the runway" },
+      { "exercise_slug": "forward-skips", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Down the runway" },
+      { "exercise_slug": "sprints", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Down the runway" }
+    ],
+    "source": "NOOM Workout Plan PDF (Dynamic - Football frolick)"
+  },
+  {
+    "slug": "dynamic-plyo-pyramid",
+    "name": "Plyo Pyramid (Dynamic)",
+    "category": "dynamic",
+    "description": "Ascending-rep pyramid; once you reach the top, work your way back down. Substitute any dynamic exercise if a move is too challenging.",
+    "duration_min": null,
+    "format": "reps",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "butt-kicks", "order": 1, "work_sec": null, "rest_sec": null, "reps": 2, "hold_sec": null, "note": "then descend back down the pyramid" },
+      { "exercise_slug": "squat-jumps", "order": 2, "work_sec": null, "rest_sec": null, "reps": 4, "hold_sec": null, "note": null },
+      { "exercise_slug": "lateral-jumps", "order": 3, "work_sec": null, "rest_sec": null, "reps": 6, "hold_sec": null, "note": null },
+      { "exercise_slug": "jumping-lunges", "order": 4, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": null },
+      { "exercise_slug": "burpees", "order": 5, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "plank-jacks", "order": 6, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": null },
+      { "exercise_slug": "drop-squats", "order": 7, "work_sec": null, "rest_sec": null, "reps": 14, "hold_sec": null, "note": null },
+      { "exercise_slug": "high-knees", "order": 8, "work_sec": null, "rest_sec": null, "reps": 16, "hold_sec": null, "note": null },
+      { "exercise_slug": "star-jacks", "order": 9, "work_sec": null, "rest_sec": null, "reps": 18, "hold_sec": null, "note": null },
+      { "exercise_slug": "mountain-climbers", "order": 10, "work_sec": null, "rest_sec": null, "reps": 20, "hold_sec": null, "note": "Top of pyramid, then descend" }
+    ],
+    "source": "NOOM Workout Plan PDF (Dynamic - Plyo pyramid)"
+  },
+  {
+    "slug": "stretch-basic-body",
+    "name": "Basic Body Stretch",
+    "category": "stretch",
+    "description": "A full-body stretch routine. Hold each stretch for 15-20 seconds.",
+    "duration_min": null,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "neck-stretch", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 20, "note": "Hold 15-20s" },
+      { "exercise_slug": "shoulder-stretch", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 20, "note": "Hold 15-20s" },
+      { "exercise_slug": "quadriceps-stretch", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 20, "note": "Hold 15-20s" },
+      { "exercise_slug": "hamstring-stretch", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 20, "note": "Hold 15-20s" },
+      { "exercise_slug": "calf-stretch", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 20, "note": "Hold 15-20s" },
+      { "exercise_slug": "hip-flexor-stretch", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 20, "note": "Hold 15-20s" }
+    ],
+    "source": "NOOM Workout Plan PDF (Stretch - Full Body - Basic Body Stretch, hold 15-20s). Specific stretches selected from the NOOM 'Regular' stretch set + Mayo basic stretches as a representative routine (the PDF specifies only the hold time, not a fixed pose list)."
+  },
+  {
+    "slug": "stretch-deep-restoration",
+    "name": "Deep Restoration Stretch",
+    "category": "stretch",
+    "description": "A restorative full-body stretch routine. Hold each stretch for 30-45 seconds.",
+    "duration_min": null,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "neck-stretch", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 45, "note": "Hold 30-45s" },
+      { "exercise_slug": "shoulder-stretch", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 45, "note": "Hold 30-45s" },
+      { "exercise_slug": "iliotibial-band-stretch", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 45, "note": "Hold 30-45s" },
+      { "exercise_slug": "hip-flexor-stretch", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 45, "note": "Hold 30-45s" },
+      { "exercise_slug": "hamstring-stretch", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 45, "note": "Hold 30-45s" },
+      { "exercise_slug": "calf-stretch", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 45, "note": "Hold 30-45s" }
+    ],
+    "source": "NOOM Workout Plan PDF (Stretch - Full Body - Deep Restoration, hold 30-45s). Stretch selection is a representative routine from the NOOM 'Regular' stretch set + Mayo basic stretches (the PDF specifies only the hold time)."
+  },
+  {
+    "slug": "stretch-progressive-flexibility",
+    "name": "Progressive Flexibility Stretch",
+    "category": "stretch",
+    "description": "Hold each stretch for 15 seconds, inhale, then deepen the stretch as you exhale and hold 15 more seconds.",
+    "duration_min": null,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "quadriceps-stretch", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "15s, deepen, 15s more" },
+      { "exercise_slug": "hamstring-stretch", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "15s, deepen, 15s more" },
+      { "exercise_slug": "calf-stretch", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "15s, deepen, 15s more" },
+      { "exercise_slug": "hip-flexor-stretch", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "15s, deepen, 15s more" },
+      { "exercise_slug": "iliotibial-band-stretch", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "15s, deepen, 15s more" },
+      { "exercise_slug": "shoulder-stretch", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "15s, deepen, 15s more" }
+    ],
+    "source": "NOOM Workout Plan PDF (Stretch - Full Body - Progressive Flexibility, 15s + deepen + 15s). Stretch selection is a representative routine from the NOOM 'Regular' stretch set + Mayo basic stretches (the PDF specifies only the hold protocol)."
+  },
+  {
+    "slug": "yoga-free-flow",
+    "name": "Free Flow (Yoga)",
+    "category": "yoga",
+    "description": "Move through the following yoga poses 3-5 times.",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "yoga-childs-pose", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-table-top", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-cat", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-cow", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-downward-dog", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-forward-fold", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-halfway-lift", "order": 7, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-forward-fold", "order": 8, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-chair", "order": 9, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-forward-fold", "order": 10, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-plank", "order": 11, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-downward-dog", "order": 12, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-table-top", "order": 13, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-cat", "order": 14, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-cow", "order": 15, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-childs-pose", "order": 16, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Stretch - Yoga - Free Flow)"
+  },
+  {
+    "slug": "yoga-sun-salutation",
+    "name": "Sun Salutation (Yoga)",
+    "category": "yoga",
+    "description": "Move through the following yoga poses 3-5 times.",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "yoga-downward-dog", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-forward-fold", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-halfway-lift", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-forward-fold", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-mountain-pose", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-back-bend", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-forward-fold", "order": 7, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-halfway-lift", "order": 8, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-forward-fold", "order": 9, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-plank", "order": 10, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-chaturanga", "order": 11, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-upward-dog", "order": 12, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-downward-dog", "order": 13, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Stretch - Yoga - Sun Salutation)"
+  },
+  {
+    "slug": "yoga-warrior-walk",
+    "name": "Warrior Walk (Yoga)",
+    "category": "yoga",
+    "description": "Move through the following yoga poses 3-5 times (right-leg sequence, then left-leg sequence).",
+    "duration_min": null,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "yoga-downward-dog", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-three-legged-dog", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Right leg up" },
+      { "exercise_slug": "yoga-warrior-1", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Right leg leads" },
+      { "exercise_slug": "yoga-warrior-2", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Right leg leads" },
+      { "exercise_slug": "yoga-reverse-warrior", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Right side" },
+      { "exercise_slug": "yoga-plank", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-chaturanga", "order": 7, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-upward-dog", "order": 8, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-downward-dog", "order": 9, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-three-legged-dog", "order": 10, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Left leg up" },
+      { "exercise_slug": "yoga-warrior-1", "order": 11, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Left leg leads" },
+      { "exercise_slug": "yoga-warrior-2", "order": 12, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Left leg leads" },
+      { "exercise_slug": "yoga-reverse-warrior", "order": 13, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Left side" },
+      { "exercise_slug": "yoga-plank", "order": 14, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-chaturanga", "order": 15, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-upward-dog", "order": 16, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "yoga-downward-dog", "order": 17, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": null, "note": null }
+    ],
+    "source": "NOOM Workout Plan PDF (Stretch - Yoga - Warrior Walk)"
+  },
+  {
+    "slug": "mayo-basic-stretch-routine",
+    "name": "Mayo Clinic Basic Stretch Routine",
+    "category": "stretch",
+    "description": "Mayo Clinic's 9 basic stretches. Warm up 5-10 min first. Hold each ~30s; repeat each on both sides 2-4 times. Aim for major muscle groups 2-3 days/week.",
+    "duration_min": null,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "calf-stretch", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" },
+      { "exercise_slug": "hamstring-stretch", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" },
+      { "exercise_slug": "quadriceps-stretch", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" },
+      { "exercise_slug": "hip-flexor-stretch", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" },
+      { "exercise_slug": "iliotibial-band-stretch", "order": 5, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" },
+      { "exercise_slug": "knee-to-chest-stretch", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times. Avoid if you have osteoporosis." },
+      { "exercise_slug": "shoulder-stretch", "order": 7, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" },
+      { "exercise_slug": "shoulder-stretch-with-towel", "order": 8, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" },
+      { "exercise_slug": "neck-stretch", "order": 9, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides, 2-4 times" }
+    ],
+    "source": "Mayo Clinic 'A guide to basic stretches' (ART-20546848)"
+  },
+  {
+    "slug": "mayo-back-15-minute-routine",
+    "name": "Mayo Clinic Back Exercises (15 Minutes a Day)",
+    "category": "back",
+    "description": "Mayo Clinic's 7-exercise back routine. When starting, do a few reps each; increase as it gets easier. Do the full routine once in the morning and once in the evening.",
+    "duration_min": 15,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "knee-to-chest-stretch", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 5, "note": "Hold 5s; press spine to floor; one leg, then other, then both. 2-3 times each. Avoid if you have osteoporosis." },
+      { "exercise_slug": "lower-back-rotational-stretch", "order": 2, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 10, "note": "Hold 5-10s each side, 2-3 times" },
+      { "exercise_slug": "lower-back-flexibility-exercise", "order": 3, "work_sec": null, "rest_sec": null, "reps": 5, "hold_sec": null, "note": "Hold 5s each phase; start at 5 reps, work up to 30" },
+      { "exercise_slug": "bridge-exercise", "order": 4, "work_sec": null, "rest_sec": null, "reps": 5, "hold_sec": null, "note": "Hold for 3 deep breaths; start at 5 reps, work up to 30" },
+      { "exercise_slug": "cat-stretch", "order": 5, "work_sec": null, "rest_sec": null, "reps": 5, "hold_sec": null, "note": "3-5 reps" },
+      { "exercise_slug": "seated-lower-back-rotational-stretch", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 10, "note": "Hold 10s; 3-5 times each side" },
+      { "exercise_slug": "shoulder-blade-squeeze", "order": 7, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 5, "note": "Hold 5s; 3-5 times" }
+    ],
+    "source": "Mayo Clinic 'Back exercises in 15 minutes a day' (ART-20546859)"
+  },
+  {
+    "slug": "7-minute-workout",
+    "name": "WebMD 7-Minute Workout",
+    "category": "circuit",
+    "description": "12 stations performed in order, 30s work / 10s rest each (~7 minutes total). High intensity; repeat the circuit ~3 times for maximum benefit.",
+    "duration_min": 7,
+    "format": "timed",
+    "rounds": 1,
+    "default_work_sec": 30,
+    "default_rest_sec": 10,
+    "exercises": [
+      { "exercise_slug": "jumping-jacks", "order": 1, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "wall-sit", "order": 2, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": 30, "note": "Wall sit" },
+      { "exercise_slug": "pushup", "order": 3, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "abdominal-crunch", "order": 4, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": "Ab crunch" },
+      { "exercise_slug": "step-ups", "order": 5, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": "Step-up onto a chair" },
+      { "exercise_slug": "squats", "order": 6, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "tricep-dips", "order": 7, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": "Triceps dip on a chair" },
+      { "exercise_slug": "plank", "order": 8, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": 30, "note": null },
+      { "exercise_slug": "high-knees", "order": 9, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": "High knees running in place" },
+      { "exercise_slug": "forward-lunges", "order": 10, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": "Lunge" },
+      { "exercise_slug": "pushup-with-rotation", "order": 11, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": null, "note": null },
+      { "exercise_slug": "side-plank", "order": 12, "work_sec": 30, "rest_sec": 10, "reps": null, "hold_sec": 30, "note": "Both sides" }
+    ],
+    "source": "WebMD '7-Minute Workout' slideshow (https://www.webmd.com/fitness-exercise/ss/the-7-minute-workout-slideshow), fetched June 2026: 12 exercises, 30s work / 10s rest, repeat circuit ~3 times for max benefit. Matches the Scientific 7-Minute Workout / HICT protocol (Klika & Jordan, ACSM's Health & Fitness Journal 2013). Mapping: 'Ab Crunch'->abdominal-crunch; 'Step-Up'->step-ups; 'Lunges'->forward-lunges; 'Push-Up and Rotation'->pushup-with-rotation."
+  }
+]

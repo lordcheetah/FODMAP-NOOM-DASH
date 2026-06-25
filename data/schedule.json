@@ -1,0 +1,54 @@
+{
+  "name": "NOOM 4-Week Cycle",
+  "source": "NOOM Workout Plan PDF ('Meet your monthly workout schedule', p.1/3). Repeat this 3-4 day plan every 4 weeks. The PDF schedule names workout CATEGORIES (Full Body, Upper Body, Lower Body, High Intensity, Circuit, LISS, Dynamic Workout, Yoga), not specific named variants. Each category cell is mapped to a representative named workout of that category whose slug exists in workouts.json; the original category text is preserved in `label`. Days that pair two workouts (e.g. a cardio + a stretch) are represented as one row with the primary workout in `workout_slug` and the secondary noted in the label. 'LISS' has no named workout in the PDF (it is 'choose walk/bike/swim/class for 30-45 min'), so its `workout_slug` is null. 'REST' and 'Your Favorite Workout!' are null with the label preserved.",
+  "weeks": [
+    {
+      "week": 1,
+      "days": [
+        { "day": 1, "label": "Full Body (Strength)", "workout_slug": "full-body-power" },
+        { "day": 2, "label": "REST", "workout_slug": null },
+        { "day": 3, "label": "High Intensity (Cardio) + Full Body (Stretch)", "workout_slug": "hiit-jump-on-it" },
+        { "day": 4, "label": "REST", "workout_slug": null },
+        { "day": 5, "label": "Your Favorite Workout!", "workout_slug": null },
+        { "day": 6, "label": "REST", "workout_slug": null },
+        { "day": 7, "label": "Dynamic Workout + Full Body (Stretch)", "workout_slug": "dynamic-amrap-ante" }
+      ]
+    },
+    {
+      "week": 2,
+      "days": [
+        { "day": 1, "label": "Your Favorite Workout!", "workout_slug": null },
+        { "day": 2, "label": "Circuit (Cardio) + Lower Body (Strength)", "workout_slug": "crazy-8s-circuit" },
+        { "day": 3, "label": "REST", "workout_slug": null },
+        { "day": 4, "label": "Dynamic Workout + Yoga (Stretch)", "workout_slug": "dynamic-amrap-ante" },
+        { "day": 5, "label": "REST", "workout_slug": null },
+        { "day": 6, "label": "LISS (Cardio) + Lower Body (Strength)", "workout_slug": "lower-body-basic" },
+        { "day": 7, "label": "REST", "workout_slug": null }
+      ]
+    },
+    {
+      "week": 3,
+      "days": [
+        { "day": 1, "label": "Dynamic Workout + Yoga (Stretch)", "workout_slug": "dynamic-amrap-ante" },
+        { "day": 2, "label": "REST", "workout_slug": null },
+        { "day": 3, "label": "High Intensity (Cardio) + Upper Body (Strength)", "workout_slug": "hiit-jump-on-it" },
+        { "day": 4, "label": "REST", "workout_slug": null },
+        { "day": 5, "label": "Your Favorite Workout!", "workout_slug": null },
+        { "day": 6, "label": "REST", "workout_slug": null },
+        { "day": 7, "label": "Circuit (Cardio) + Full Body (Stretch)", "workout_slug": "crazy-8s-circuit" }
+      ]
+    },
+    {
+      "week": 4,
+      "days": [
+        { "day": 1, "label": "REST", "workout_slug": null },
+        { "day": 2, "label": "LISS (Cardio) + Upper Body (Strength)", "workout_slug": "upper-body-basic" },
+        { "day": 3, "label": "REST", "workout_slug": null },
+        { "day": 4, "label": "Dynamic Workout + Yoga (Stretch)", "workout_slug": "dynamic-amrap-ante" },
+        { "day": 5, "label": "REST", "workout_slug": null },
+        { "day": 6, "label": "Circuit (Cardio) + Lower Body (Strength)", "workout_slug": "crazy-8s-circuit" },
+        { "day": 7, "label": "Your Favorite Workout!", "workout_slug": null }
+      ]
+    }
+  ]
+}

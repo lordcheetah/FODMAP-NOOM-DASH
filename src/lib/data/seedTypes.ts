@@ -18,6 +18,12 @@ import type {
   DashGroup,
   MealType,
 } from '@/lib/diet/types'
+import type {
+  ExerciseCategory,
+  ExerciseDefaultType,
+  WorkoutFormat,
+  Difficulty,
+} from '@/lib/exercise/types'
 
 /**
  * One row of `data/foods.json`. Maps to the `foods` table.
@@ -106,4 +112,102 @@ export interface SampleDay {
   lunch?: string
   dinner?: string
   snack?: string
+}
+
+// ---------------------------------------------------------------------------
+// Exercise seed contracts (Phase 2). These mirror the JSON shapes in
+// data/exercises.json, data/workouts.json, data/schedule.json and reuse the
+// exercise-domain enums from src/lib/exercise/types.ts — do NOT redefine enums.
+// Field/column mapping + default rules are documented in data/README.md.
+// ---------------------------------------------------------------------------
+
+/**
+ * One row of `data/exercises.json`. Maps to the `exercises` table.
+ *
+ * Stable key for idempotent seeding: `lower(slug)`.
+ *
+ * `category` / `default_type` must be valid enum values — the seed REJECTS
+ * (warns + skips) rows with an unknown value rather than coercing one. Array
+ * fields default to `[]` when omitted. `default_type` is required and is never
+ * invented.
+ */
+export interface ExerciseSeed {
+  slug: string
+  name: string
+  category: ExerciseCategory
+  subcategory?: string
+  muscle_groups?: string[]
+  equipment?: string[]
+  difficulty?: Difficulty
+  instructions?: string[]
+  modifications?: string[]
+  cautions?: string[]
+  default_type: ExerciseDefaultType
+  default_reps?: number | null
+  default_duration_sec?: number | null
+  default_hold_sec?: number | null
+  source?: string
+}
+
+/**
+ * One exercise inside a workout (`data/workouts.json` → `exercises[]`). Maps to
+ * a `workout_exercises` child row. `exercise_slug` resolves (exact,
+ * case-insensitive) to a seeded `ExerciseSeed.slug`; on a miss the junction row
+ * is SKIPPED (the FK column is NOT NULL) and the slug is printed. `order` maps
+ * to the DB column `position` (avoids the reserved word `order`).
+ */
+export interface WorkoutExerciseSeed {
+  exercise_slug: string
+  order: number
+  work_sec?: number | null
+  rest_sec?: number | null
+  reps?: number | null
+  hold_sec?: number | null
+  note?: string | null
+}
+
+/**
+ * One row of `data/workouts.json`. Maps to the `workouts` table (+ child
+ * `workout_exercises`). Stable key for idempotent seeding: `lower(slug)`.
+ *
+ * `format` must be a valid enum value (seed rejects unknown). AMRAP/EMOM time
+ * boxing derives from `duration_min` (no separate cap field).
+ */
+export interface WorkoutSeed {
+  slug: string
+  name: string
+  category: ExerciseCategory
+  description?: string
+  duration_min?: number | null
+  format: WorkoutFormat
+  rounds?: number | null
+  default_work_sec?: number | null
+  default_rest_sec?: number | null
+  exercises: WorkoutExerciseSeed[]
+  source?: string
+}
+
+/** One day inside a schedule week. `workout_slug` is null on a rest day. */
+export interface ScheduleDaySeed {
+  day: number
+  label?: string
+  workout_slug?: string | null
+}
+
+/** One week inside a schedule cycle. */
+export interface ScheduleWeekSeed {
+  week: number
+  days: ScheduleDaySeed[]
+}
+
+/**
+ * `data/schedule.json` — a single cycle object (or an array of cycles). Maps to
+ * the `schedules` table (+ child `schedule_days`). Stable key: `lower(name)`.
+ * Each day's `workout_slug` resolves to a `workout_id`; null / unresolved →
+ * `workout_id = null` (rest day) so the cycle still seeds.
+ */
+export interface ScheduleSeed {
+  name: string
+  source?: string
+  weeks: ScheduleWeekSeed[]
 }

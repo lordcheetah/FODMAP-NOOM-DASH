@@ -15,6 +15,11 @@ import type {
   DashGroup,
   MealType,
 } from '@/lib/diet/types'
+import type {
+  ExerciseCategory,
+  ExerciseDefaultType,
+  WorkoutFormat,
+} from '@/lib/exercise/types'
 
 /** `foods` — reference + user-custom rows. `user_id IS NULL` = global seed. */
 export interface FoodRow {
@@ -94,4 +99,109 @@ export interface DailyTargetsRow {
   /** jsonb; e.g. `{ "vegetables": 5, "fruits": 5 }`. */
   dash_serving_goals: Partial<Record<DashGroup, number>>
   updated_at: string
+}
+
+// ---------------------------------------------------------------------------
+// Exercise rows (Phase 2), mirroring 0003_exercise.sql. Enum types reused from
+// src/lib/exercise/types.ts; arrays are non-null (DB default '{}').
+// ---------------------------------------------------------------------------
+
+/** `exercises` — reference + user-custom. `user_id IS NULL` = global seed. */
+export interface ExerciseRow {
+  id: string
+  user_id: string | null
+  slug: string
+  name: string
+  category: ExerciseCategory
+  subcategory: string | null
+  muscle_groups: string[]
+  equipment: string[]
+  difficulty: string | null
+  instructions: string[]
+  modifications: string[]
+  cautions: string[]
+  default_type: ExerciseDefaultType
+  default_reps: number | null
+  default_duration_sec: number | null
+  default_hold_sec: number | null
+  source: string | null
+  created_at: string
+}
+
+/** `workouts` — reference + user-custom. `user_id IS NULL` = global seed. */
+export interface WorkoutRow {
+  id: string
+  user_id: string | null
+  slug: string
+  name: string
+  category: ExerciseCategory
+  description: string | null
+  duration_min: number | null
+  format: WorkoutFormat
+  rounds: number | null
+  default_work_sec: number | null
+  default_rest_sec: number | null
+  source: string | null
+  created_at: string
+}
+
+/** `workout_exercises` — ordered child of a workout (`position` = seed `order`). */
+export interface WorkoutExerciseRow {
+  id: string
+  workout_id: string
+  exercise_id: string
+  position: number
+  work_sec: number | null
+  rest_sec: number | null
+  reps: number | null
+  hold_sec: number | null
+  note: string | null
+}
+
+/** `schedules` — reference + user-custom. `user_id IS NULL` = global seed. */
+export interface ScheduleRow {
+  id: string
+  user_id: string | null
+  name: string
+  source: string | null
+  created_at: string
+}
+
+/** `schedule_days` — ordered child of a schedule; `workout_id` null = rest day. */
+export interface ScheduleDayRow {
+  id: string
+  schedule_id: string
+  week: number
+  day: number
+  label: string | null
+  workout_id: string | null
+}
+
+/** `workout_log` — private per user; one row per session. */
+export interface WorkoutLogRow {
+  id: string
+  user_id: string
+  performed_on: string
+  workout_id: string | null
+  name: string | null
+  duration_sec: number | null
+  rounds_completed: number | null
+  notes: string | null
+  completed: boolean
+  created_at: string
+}
+
+/** `workout_log_exercises` — per-exercise results, child of `workout_log`. */
+export interface WorkoutLogExerciseRow {
+  id: string
+  workout_log_id: string
+  exercise_id: string | null
+  name: string | null
+  position: number | null
+  sets: number | null
+  reps: number | null
+  duration_sec: number | null
+  hold_sec: number | null
+  score: number | null
+  notes: string | null
 }
