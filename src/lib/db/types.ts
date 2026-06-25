@@ -40,6 +40,8 @@ export interface FoodRow {
   noom_category: NoomCategory | null
   dash_group: DashGroup | null
   source: string | null
+  /** Retail barcode (EAN/UPC) for scanned products; null for seed + typed customs. */
+  barcode: string | null
   created_at: string
 }
 

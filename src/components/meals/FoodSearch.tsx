@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Plus, Search } from 'lucide-react'
+import { Plus, ScanBarcode, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
@@ -8,7 +8,9 @@ import { useFoodSearch } from '@/lib/db/foods'
 import { useRecipeSearch } from '@/lib/db/recipes'
 import type { FoodRow, RecipeRow } from '@/lib/db/types'
 import { isSupabaseConfigured } from '@/lib/supabase'
+import { useAuth } from '@/lib/auth'
 import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
+import { ScanFlow } from './ScanFlow'
 
 const MIN_CHARS = 2
 const DEBOUNCE_MS = 300
@@ -52,9 +54,13 @@ export interface FoodSearchProps {
  * and the badge stays neutral — an unknown component never reads as "safe".
  */
 export function FoodSearch({ date, mealContext }: FoodSearchProps) {
+  const { user } = useAuth()
   const [term, setTerm] = useState('')
   const debounced = useDebounced(term, DEBOUNCE_MS)
   const [target, setTarget] = useState<AddTarget | null>(null)
+  const [scanOpen, setScanOpen] = useState(false)
+  // Scanning saves a user-custom food, so it requires a connected, signed-in account.
+  const canScan = isSupabaseConfigured && !!user
 
   const foods = useFoodSearch(debounced)
   const recipes = useRecipeSearch(debounced)
@@ -71,17 +77,30 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
     <section className="rounded-lg border bg-card p-4 text-card-foreground">
       <h3 className="mb-2 text-sm font-semibold">Search foods &amp; recipes</h3>
 
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          type="search"
-          inputMode="search"
-          placeholder="Search (min 2 characters)…"
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
-          className="pl-9"
-          aria-label="Search foods and recipes"
-        />
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            inputMode="search"
+            placeholder="Search (min 2 characters)…"
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+            className="pl-9"
+            aria-label="Search foods and recipes"
+          />
+        </div>
+        {canScan && (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setScanOpen(true)}
+            aria-label="Scan barcode"
+          >
+            <ScanBarcode className="h-4 w-4" />
+            Scan
+          </Button>
+        )}
       </div>
 
       {!isSupabaseConfigured && (
@@ -176,6 +195,15 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
         date={date}
         defaultMeal={mealContext}
       />
+
+      {canScan && (
+        <ScanFlow
+          open={scanOpen}
+          onClose={() => setScanOpen(false)}
+          date={date}
+          mealContext={mealContext}
+        />
+      )}
     </section>
   )
 }

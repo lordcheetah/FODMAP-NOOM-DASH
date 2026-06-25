@@ -4,6 +4,8 @@
  */
 export const queryKeys = {
   foodSearch: (term: string) => ['foodSearch', term] as const,
+  foodByBarcode: (userId: string | undefined, barcode: string | null) =>
+    ['foodByBarcode', userId, barcode] as const,
   recipeSearch: (term: string) => ['recipeSearch', term] as const,
   recipe: (id: string) => ['recipe', id] as const,
   foodLog: (userId: string | undefined, date: string) =>
