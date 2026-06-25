@@ -72,7 +72,7 @@
       "Divide salad between 4 plates and top each with a salmon fillet."
     ],
     "ingredients": [
-      { "raw_text": "3 cups water", "quantity": 3, "unit": "cup", "food_name": "Water" },
+      { "raw_text": "3 cups water", "quantity": 3, "unit": "cup", "food_name": null },
       { "raw_text": "1 cup bulgur", "quantity": 1, "unit": "cup", "food_name": "Bulgur wheat, cooked" },
       { "raw_text": "1 lb. skinless salmon, cut into 4 fillets", "quantity": 1, "unit": "lb", "food_name": "Salmon, cooked" },
       { "raw_text": "1 tsp. salt", "quantity": 1, "unit": "tsp", "food_name": "Salt" },
@@ -208,7 +208,7 @@
       { "raw_text": "2 cups zucchini, shredded", "quantity": 2, "unit": "cup", "food_name": "Zucchini" },
       { "raw_text": "1 1/2 cups onions, halved and sliced", "quantity": 1.5, "unit": "cup", "food_name": "Onion, raw" },
       { "raw_text": "4 cups vegetable broth", "quantity": 4, "unit": "cup", "food_name": "Vegetable broth, low-sodium" },
-      { "raw_text": "2 cups water", "quantity": 2, "unit": "cup", "food_name": "Water" },
+      { "raw_text": "2 cups water", "quantity": 2, "unit": "cup", "food_name": null },
       { "raw_text": "1 tbsp. olive oil", "quantity": 1, "unit": "tbsp", "food_name": "Olive oil, extra-virgin" },
       { "raw_text": "1 tsp. curry powder", "quantity": 1, "unit": "tsp", "food_name": "Curry powder" },
       { "raw_text": "1/2 tsp. salt", "quantity": 0.5, "unit": "tsp", "food_name": "Salt" }
