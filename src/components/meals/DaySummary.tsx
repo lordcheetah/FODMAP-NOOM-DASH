@@ -3,6 +3,7 @@ import {
   dashProgress,
   fiberProgress,
   noomColor,
+  recipeNutrients,
   DASH_GROUPS,
   type DashGroup,
   type LoggedNutrients,
@@ -97,6 +98,23 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
     fiber_per_meal_g: targets?.fiber_per_meal_g ?? null,
   })
 
+  // Recipe nutrient roll-ups are approximate when any logged recipe has an
+  // ingredient we could not convert to grams (dropped from the sum, never 0).
+  // Tally so DASH/Fiber totals are never read as exact (CLAUDE.md health rule).
+  let recipesAffected = 0
+  let measuredAcross = 0
+  let totalAcross = 0
+  for (const e of entries) {
+    if (!e.recipe) continue
+    const n = recipeNutrients(e.recipe.recipe_ingredients ?? [], e.recipe.servings)
+    if (!n.isComplete) {
+      recipesAffected += 1
+      measuredAcross += n.convertedCount
+      totalAcross += n.totalCount
+    }
+  }
+  const nutrientsApproximate = recipesAffected > 0
+
   return (
     <section className="space-y-4 rounded-lg border bg-card p-4 text-card-foreground">
       <h3 className="text-sm font-semibold">Day summary</h3>
@@ -144,6 +162,14 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
           )}
         </div>
       </div>
+
+      {nutrientsApproximate && (
+        <p className="text-xs text-muted-foreground">
+          Includes recipe estimates — some recipe ingredients could not be measured
+          {totalAcross > 0 && ` (${measuredAcross} of ${totalAcross} measured)`}, so
+          fiber, sodium, saturated fat, and potassium totals are approximate.
+        </p>
+      )}
 
       {/* DASH */}
       <div>

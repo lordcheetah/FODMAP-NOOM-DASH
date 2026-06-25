@@ -4,6 +4,7 @@ import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
 import {
   MEAL_ORDER,
   noomColor,
+  recipeNutrients,
   recipeRollup,
   type MealType,
 } from '@/lib/diet'
@@ -87,12 +88,19 @@ export function DailyLog({ date, entries, isLoading }: DailyLogProps) {
                     const rollup = entry.recipe
                       ? recipeRollup(entry.recipe.recipe_ingredients)
                       : null
-                    const recipeSubtitle =
-                      rollup && rollup.safety === 'not-verified' && rollup.unlinkedCount > 0
-                        ? `Recipe · not verified: ${rollup.unlinkedCount} unlinked ingredient${
-                            rollup.unlinkedCount === 1 ? '' : 's'
-                          }`
-                        : 'Recipe'
+                    // Nutrient (DASH/fiber) measurement gap — SEPARATE from the
+                    // FODMAP "not verified" safety gap above; do not conflate.
+                    const nutr = entry.recipe
+                      ? recipeNutrients(entry.recipe.recipe_ingredients, entry.recipe.servings)
+                      : null
+                    let recipeSubtitle = 'Recipe'
+                    if (rollup && rollup.safety === 'not-verified' && rollup.unlinkedCount > 0) {
+                      recipeSubtitle = `Recipe · not verified: ${rollup.unlinkedCount} unlinked ingredient${
+                        rollup.unlinkedCount === 1 ? '' : 's'
+                      }`
+                    } else if (nutr && !nutr.isComplete && nutr.totalCount > 0) {
+                      recipeSubtitle = `Recipe · approx · ${nutr.convertedCount} of ${nutr.totalCount} ingredients measured`
+                    }
                     return (
                       <li key={entry.id}>
                         <FoodItemRow
