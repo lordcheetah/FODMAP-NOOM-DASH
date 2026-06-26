@@ -13,6 +13,7 @@
  *
  * Pure module — no React, no DB, no DOM.
  */
+import { pieceGrams } from './pieceWeights'
 
 /** Canonical (normalized) weight unit keys. */
 export type WeightUnit = 'g' | 'kg' | 'mg' | 'oz' | 'lb'
@@ -46,6 +47,9 @@ export type CountUnit =
   | 'bunch'
   | 'head'
   | 'avocado'
+  | 'scallion'
+  | 'plum'
+  | 'lime'
   | 'medium'
   | 'small'
   | 'large'
@@ -188,6 +192,12 @@ export const UNIT_ALIASES: Readonly<Record<string, NormalizedUnit>> = {
   heads: 'head',
   avocado: 'avocado',
   avocados: 'avocado',
+  scallion: 'scallion',
+  scallions: 'scallion',
+  plum: 'plum',
+  plums: 'plum',
+  lime: 'lime',
+  limes: 'lime',
   medium: 'medium',
   small: 'small',
   large: 'large',
@@ -414,14 +424,23 @@ export function parseServingDesc(serving_desc: string): ParsedServing | null {
  *   parenthetical alt). Bridges through tsp ratios * food.serving_grams.
  * - COUNT unit: needs the food's serving to be the SAME count noun.
  *   grams = (quantity / foodServingQty) * food.serving_grams.
+ *   When the noun does NOT match the food's serving noun, fall back to a cited
+ *   per-piece weight from `pieceGrams(food.name, unit)` (e.g. "1 small onion" ->
+ *   70 g) when `food.name` is provided and the table has an entry. That weight
+ *   is the WHOLE piece and is independent of `serving_grams`, so it is returned
+ *   directly as `quantity * gramsPerPiece` (the caller divides by serving_grams
+ *   for nutrient scaling). No entry -> null.
  * - else -> null.
+ *
+ * `food.name` is OPTIONAL: omit it and the piece-weight fallback is simply not
+ * attempted (matching/volume/weight paths are unchanged).
  *
  * `quantity` non-finite or <= 0 -> null.
  */
 export function toGrams(
   quantity: number,
   unit: NormalizedUnit,
-  food: { serving_desc: string; serving_grams: number | null },
+  food: { name?: string; serving_desc: string; serving_grams: number | null },
 ): number | null {
   if (!Number.isFinite(quantity) || quantity <= 0) return null
 
@@ -456,17 +475,26 @@ export function toGrams(
     return (ingTsp / servTsp) * food.serving_grams
   }
 
-  // Count: requires the food serving to be a count too. A specific noun must
-  // match exactly (clove==clove, lime!=wedge). A bare size word (small/medium/
-  // large) or generic `count` matches any single-piece count serving — e.g.
-  // ingredient "3 large [eggs]" against a food served "1 large egg" -> egg.
-  if (unitFamily(serving.unit) === 'count') {
-    if (serving.qty <= 0) return null
+  // Count: prefer the food's own serving as the bridge when it is also a count.
+  // A specific noun must match exactly (clove==clove, lime!=wedge). A bare size
+  // word (small/medium/large) or generic `count` matches any single-piece count
+  // serving — e.g. ingredient "3 large [eggs]" against a food served "1 large
+  // egg" -> egg.
+  if (unitFamily(serving.unit) === 'count' && serving.qty > 0) {
     const ingIsGeneric = SIZE_WORDS.has(unit) || unit === 'count'
     const servIsGeneric = SIZE_WORDS.has(serving.unit) || serving.unit === 'count'
     if (serving.unit === unit || ingIsGeneric || servIsGeneric) {
       return (quantity / serving.qty) * food.serving_grams
     }
+  }
+
+  // Count fallback: the noun did not match the food's serving (or the serving is
+  // volume/weight). Consult the cited per-piece table keyed by the food's name.
+  // The weight is the WHOLE piece, independent of serving_grams, so apply it
+  // directly. Requires `food.name`; otherwise this branch is skipped -> null.
+  if (food.name != null) {
+    const perPiece = pieceGrams(food.name, unit)
+    if (perPiece != null) return quantity * perPiece
   }
 
   return null

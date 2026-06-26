@@ -35,9 +35,18 @@ describe('canonicalUnit', () => {
 
   it('returns null for unrecognized units', () => {
     expect(canonicalUnit('bay leaf')).toBe('leaf') // leaf is a known count noun
-    expect(canonicalUnit('lime')).toBeNull()
+    expect(canonicalUnit('handful')).toBeNull()
     expect(canonicalUnit('')).toBeNull()
     expect(canonicalUnit(null)).toBeNull()
+  })
+
+  it('normalizes the new produce count nouns (scallion/plum/lime)', () => {
+    expect(canonicalUnit('scallion')).toBe('scallion')
+    expect(canonicalUnit('scallions')).toBe('scallion')
+    expect(canonicalUnit('plum')).toBe('plum')
+    expect(canonicalUnit('plums')).toBe('plum')
+    expect(canonicalUnit('lime')).toBe('lime')
+    expect(canonicalUnit('limes')).toBe('lime')
   })
 })
 
@@ -162,6 +171,45 @@ describe('toGrams — count (same noun)', () => {
 
   it('returns null for mismatched count nouns', () => {
     expect(toGrams(1, 'olive', food('1 clove', 3))).toBeNull()
+  })
+})
+
+describe('toGrams — count via per-piece weights (name-keyed fallback)', () => {
+  // Onion food is served by VOLUME ("1/2 cup chopped"); the ingredient count noun
+  // does not match, so toGrams falls back to PIECE_GRAMS keyed on food.name.
+  const onion = { name: 'Onion, raw', serving_desc: '1/2 cup chopped', serving_grams: 80 }
+  const lettuce = {
+    name: 'Butter/Boston bibb lettuce',
+    serving_desc: '1 cup (leaves)',
+    serving_grams: 50,
+  }
+
+  it('onion "small" -> 70 g (whole piece, independent of serving_grams)', () => {
+    expect(toGrams(1, 'small', onion)).toBeCloseTo(70, 5)
+  })
+
+  it('scales by quantity (2 medium onions -> 220 g)', () => {
+    expect(toGrams(2, 'medium', onion)).toBeCloseTo(220, 5)
+  })
+
+  it('lettuce "head" -> 163 g even though the food is served by leaf-cup', () => {
+    expect(toGrams(1, 'head', lettuce)).toBeCloseTo(163, 5)
+  })
+
+  it('null when the food name has no piece-weight entry for that noun', () => {
+    // Onion table has no "head" entry.
+    expect(toGrams(1, 'head', onion)).toBeNull()
+  })
+
+  it('null when food.name is omitted (fallback not attempted)', () => {
+    // Same volume-served food shape but WITHOUT a name -> no piece lookup.
+    expect(toGrams(1, 'small', { serving_desc: '1/2 cup chopped', serving_grams: 80 })).toBeNull()
+  })
+
+  it('null when the food name is unknown to the table', () => {
+    expect(
+      toGrams(1, 'small', { name: 'Totally Unknown Food', serving_desc: '1/2 cup', serving_grams: 80 }),
+    ).toBeNull()
   })
 })
 

@@ -26,6 +26,7 @@ export type LoggedRecipeIngredient = {
   unit: string | null
   food:
     | (RollupFood & {
+        name?: string
         serving_desc: string
         fiber_g: number | null
         sodium_mg: number | null
@@ -126,7 +127,7 @@ export function useFoodLog(date: string) {
       const { data, error } = await supabase
         .from('food_log')
         .select(
-          '*, food:foods(*), recipe:recipes(*, recipe_ingredients(food_id, quantity, unit, food:foods(serving_desc,serving_grams,calories,fiber_g,sodium_mg,sat_fat_g,potassium_mg,fructose_level,fructans_level)))',
+          '*, food:foods(*), recipe:recipes(*, recipe_ingredients(food_id, quantity, unit, food:foods(name,serving_desc,serving_grams,calories,fiber_g,sodium_mg,sat_fat_g,potassium_mg,fructose_level,fructans_level)))',
         )
         .eq('logged_on', date)
         .order('created_at', { ascending: true })

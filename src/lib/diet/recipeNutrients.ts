@@ -14,6 +14,12 @@ import { canonicalUnit, toGrams } from './convert'
 
 /** Food fields needed to scale nutrients. Superset of `convert`'s food shape. */
 export interface NutrientFood {
+  /**
+   * The food's display name, used by the count-unit per-piece weight fallback in
+   * `toGrams` (e.g. "Onion, raw" + "small" -> 70 g). Optional: when absent, the
+   * piece-weight fallback is simply not attempted.
+   */
+  name?: string
   serving_desc: string
   serving_grams: number | null
   calories: number | null

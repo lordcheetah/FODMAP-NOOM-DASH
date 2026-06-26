@@ -138,7 +138,7 @@ describe('toGrams — MISMATCH and guard cases all return null (never NaN/0/Infi
 
 describe('canonicalUnit — junk and alias hardening', () => {
   it('junk / unrecognized -> null', () => {
-    expect(canonicalUnit('lime')).toBeNull()
+    expect(canonicalUnit('pinch')).toBeNull()
     expect(canonicalUnit('handful')).toBeNull()
     expect(canonicalUnit('   ')).toBeNull()
     expect(canonicalUnit(undefined)).toBeNull()
