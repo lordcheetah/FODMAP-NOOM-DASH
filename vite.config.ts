@@ -33,6 +33,15 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+        // SPA fallback: serve the precached app shell for client-side routes so
+        // reloading offline on a deep route (e.g. /meals, /exercise) boots the
+        // app instead of 404ing. Reads then hydrate from the persisted TanStack
+        // Query cache (IndexedDB).
+        navigateFallback: 'index.html',
+        // Intentionally NO runtimeCaching for authenticated Supabase REST GETs:
+        // those responses are user-private (cache-poisoning/staleness risk) and
+        // reads already come from the persisted query cache. Revisit only if a
+        // cold first-ever offline load must work.
       },
       devOptions: {
         enabled: false,

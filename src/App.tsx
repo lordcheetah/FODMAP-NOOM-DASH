@@ -5,6 +5,7 @@ import Dashboard from '@/pages/Dashboard'
 import Meals from '@/pages/Meals'
 import Exercise from '@/pages/Exercise'
 import Login from '@/pages/Login'
+import OfflineBanner from '@/components/OfflineBanner'
 import { useAuth, isSupabaseConfigured } from '@/lib/auth'
 
 const NAV = [
@@ -50,6 +51,10 @@ export default function App() {
           </button>
         )}
       </header>
+
+      {/* Sync-state indicator (offline notice / "syncing N changes"). Reflects
+          state only — resume happens in queryClient.ts. */}
+      <OfflineBanner />
 
       <main className="flex-1 p-4 pb-24">
         <Routes>
