@@ -36,6 +36,8 @@ export function useRecipeSearch(term: string) {
   return useQuery({
     queryKey: queryKeys.recipeSearch(trimmed),
     enabled,
+    // Ephemeral: exclude from the persisted cache (see main.tsx dehydrateOptions).
+    meta: { persist: false },
     queryFn: async (): Promise<RecipeSearchResult[]> => {
       if (!supabase) return []
       const { data, error } = await supabase

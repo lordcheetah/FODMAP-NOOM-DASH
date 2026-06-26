@@ -1,7 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
-import { queryKeys } from './queryKeys'
+import { mutationKeys, queryKeys } from './queryKeys'
+import { useInjectUserId } from './useInjectUserId'
+import type { UpsertDailyTargetsVars } from './mutationDefaults'
 import type { DailyTargetsRow } from './types'
 
 /**
@@ -40,24 +42,15 @@ export type DailyTargetsInput = Omit<
  * Refreshes the targets query on success. No-op throw when unconfigured.
  */
 export function useUpsertDailyTargets() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: DailyTargetsInput): Promise<DailyTargetsRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const { data, error } = await supabase
-        .from('daily_targets')
-        .upsert({ ...input, user_id: userId }, { onConflict: 'user_id' })
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as DailyTargetsRow
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: queryKeys.dailyTargets(userId) })
-    },
-  })
+  return useInjectUserId<
+    DailyTargetsRow,
+    Error,
+    DailyTargetsInput,
+    UpsertDailyTargetsVars,
+    unknown
+  >(
+    useMutation<DailyTargetsRow, Error, UpsertDailyTargetsVars>({
+      mutationKey: mutationKeys.upsertDailyTargets,
+    }),
+  )
 }

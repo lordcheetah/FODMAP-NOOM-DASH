@@ -1,7 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
-import { queryKeys } from './queryKeys'
+import { mutationKeys, queryKeys } from './queryKeys'
+import { useInjectUserId } from './useInjectUserId'
+import type {
+  AddWorkoutLogVars,
+  DeleteWorkoutLogVars,
+  UpdateWorkoutLogVars,
+} from './mutationDefaults'
 import type { WorkoutLogExerciseRow, WorkoutLogRow } from './types'
 
 /** A workout_log session with its per-exercise results embedded. */
@@ -83,59 +89,17 @@ export function useWorkoutLogHistory(limit = 30) {
  * second insert keyed by the new session id. Refreshes the date + history keys.
  */
 export function useAddWorkoutLog() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: AddWorkoutLogInput): Promise<WorkoutLogRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-
-      const { data: session, error: sessErr } = await supabase
-        .from('workout_log')
-        .insert({
-          user_id: userId,
-          performed_on: input.date,
-          workout_id: input.workout_id ?? null,
-          name: input.name ?? null,
-          duration_sec: input.duration_sec ?? null,
-          rounds_completed: input.rounds_completed ?? null,
-          notes: input.notes ?? null,
-          completed: input.completed ?? true,
-        })
-        .select('*')
-        .single()
-      if (sessErr) throw sessErr
-
-      const session_row = session as WorkoutLogRow
-      const children = input.exercises ?? []
-      if (children.length > 0) {
-        const rows = children.map((c) => ({
-          workout_log_id: session_row.id,
-          exercise_id: c.exercise_id ?? null,
-          name: c.name ?? null,
-          position: c.position ?? null,
-          sets: c.sets ?? null,
-          reps: c.reps ?? null,
-          duration_sec: c.duration_sec ?? null,
-          hold_sec: c.hold_sec ?? null,
-          score: c.score ?? null,
-          notes: c.notes ?? null,
-        }))
-        const { error: childErr } = await supabase
-          .from('workout_log_exercises')
-          .insert(rows)
-        if (childErr) throw childErr
-      }
-
-      return session_row
-    },
-    onSuccess: (_row, input) => {
-      qc.invalidateQueries({ queryKey: queryKeys.workoutLog(userId, input.date) })
-      qc.invalidateQueries({ queryKey: queryKeys.workoutLogHistory(userId) })
-    },
-  })
+  return useInjectUserId<
+    WorkoutLogRow,
+    Error,
+    AddWorkoutLogInput,
+    AddWorkoutLogVars,
+    unknown
+  >(
+    useMutation<WorkoutLogRow, Error, AddWorkoutLogVars>({
+      mutationKey: mutationKeys.addWorkoutLog,
+    }),
+  )
 }
 
 export interface UpdateWorkoutLogInput {
@@ -150,56 +114,30 @@ export interface UpdateWorkoutLogInput {
 
 /** Update a session (not its children); refreshes the date + history keys. */
 export function useUpdateWorkoutLog() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: UpdateWorkoutLogInput): Promise<WorkoutLogRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const patch: Partial<WorkoutLogRow> = {}
-      if (input.name !== undefined) patch.name = input.name
-      if (input.duration_sec !== undefined) patch.duration_sec = input.duration_sec
-      if (input.rounds_completed !== undefined)
-        patch.rounds_completed = input.rounds_completed
-      if (input.notes !== undefined) patch.notes = input.notes
-      if (input.completed !== undefined) patch.completed = input.completed
-      const { data, error } = await supabase
-        .from('workout_log')
-        .update(patch)
-        .eq('id', input.id)
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as WorkoutLogRow
-    },
-    onSuccess: (_row, input) => {
-      qc.invalidateQueries({ queryKey: queryKeys.workoutLog(userId, input.date) })
-      qc.invalidateQueries({ queryKey: queryKeys.workoutLogHistory(userId) })
-    },
-  })
+  return useInjectUserId<
+    WorkoutLogRow | null,
+    Error,
+    UpdateWorkoutLogInput,
+    UpdateWorkoutLogVars,
+    unknown
+  >(
+    useMutation<WorkoutLogRow | null, Error, UpdateWorkoutLogVars>({
+      mutationKey: mutationKeys.updateWorkoutLog,
+    }),
+  )
 }
 
 /** Delete a session (children cascade in the DB); refreshes date + history. */
 export function useDeleteWorkoutLog() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: { id: string; date: string }): Promise<void> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const { error } = await supabase
-        .from('workout_log')
-        .delete()
-        .eq('id', input.id)
-      if (error) throw error
-    },
-    onSuccess: (_void, input) => {
-      qc.invalidateQueries({ queryKey: queryKeys.workoutLog(userId, input.date) })
-      qc.invalidateQueries({ queryKey: queryKeys.workoutLogHistory(userId) })
-    },
-  })
+  return useInjectUserId<
+    void,
+    Error,
+    { id: string; date: string },
+    DeleteWorkoutLogVars,
+    unknown
+  >(
+    useMutation<void, Error, DeleteWorkoutLogVars>({
+      mutationKey: mutationKeys.deleteWorkoutLog,
+    }),
+  )
 }

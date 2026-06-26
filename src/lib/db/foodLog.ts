@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import {
@@ -7,7 +7,13 @@ import {
   type MealType,
   type RollupFood,
 } from '@/lib/diet'
-import { queryKeys } from './queryKeys'
+import { mutationKeys, queryKeys } from './queryKeys'
+import { useInjectUserId } from './useInjectUserId'
+import type {
+  AddFoodLogVars,
+  DeleteFoodLogVars,
+  UpdateFoodLogVars,
+} from './mutationDefaults'
 import type { FoodLogRow, FoodRow, RecipeRow } from './types'
 
 // Single source of truth for MealType is the diet lib; re-export for callers.
@@ -146,36 +152,20 @@ export interface AddLogEntryInput {
   note?: string | null
 }
 
-/** Add a log entry for the current user + date; refreshes the day's log. */
+/**
+ * Add a log entry for the current user + date.
+ *
+ * Thin wrapper over the registered default (mutationFn + optimistic onMutate +
+ * rollback + invalidate live in `mutationDefaults.ts`, keyed by mutationKey so
+ * the write survives a reload and resumes). `useInjectUserId` adds `userId` to
+ * the variables at call time. Call site signature is unchanged.
+ */
 export function useAddLogEntry() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: AddLogEntryInput): Promise<FoodLogRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const { data, error } = await supabase
-        .from('food_log')
-        .insert({
-          user_id: userId,
-          logged_on: input.date,
-          meal: input.meal,
-          servings: input.servings,
-          food_id: input.food_id ?? null,
-          recipe_id: input.recipe_id ?? null,
-          note: input.note ?? null,
-        })
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as FoodLogRow
-    },
-    onSuccess: (_row, input) => {
-      qc.invalidateQueries({ queryKey: queryKeys.foodLog(userId, input.date) })
-    },
-  })
+  return useInjectUserId<FoodLogRow, Error, AddLogEntryInput, AddFoodLogVars, unknown>(
+    useMutation<FoodLogRow, Error, AddFoodLogVars>({
+      mutationKey: mutationKeys.addFoodLog,
+    }),
+  )
 }
 
 export interface UpdateLogEntryInput {
@@ -188,48 +178,30 @@ export interface UpdateLogEntryInput {
 
 /** Update a log entry (meal/servings/note); refreshes the day's log. */
 export function useUpdateLogEntry() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: UpdateLogEntryInput): Promise<FoodLogRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const patch: Partial<FoodLogRow> = {}
-      if (input.meal !== undefined) patch.meal = input.meal
-      if (input.servings !== undefined) patch.servings = input.servings
-      if (input.note !== undefined) patch.note = input.note
-      const { data, error } = await supabase
-        .from('food_log')
-        .update(patch)
-        .eq('id', input.id)
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as FoodLogRow
-    },
-    onSuccess: (_row, input) => {
-      qc.invalidateQueries({ queryKey: queryKeys.foodLog(userId, input.date) })
-    },
-  })
+  return useInjectUserId<
+    FoodLogRow | null,
+    Error,
+    UpdateLogEntryInput,
+    UpdateFoodLogVars,
+    unknown
+  >(
+    useMutation<FoodLogRow | null, Error, UpdateFoodLogVars>({
+      mutationKey: mutationKeys.updateFoodLog,
+    }),
+  )
 }
 
 /** Delete a log entry; refreshes the day's log. */
 export function useDeleteLogEntry() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: { id: string; date: string }): Promise<void> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const { error } = await supabase.from('food_log').delete().eq('id', input.id)
-      if (error) throw error
-    },
-    onSuccess: (_void, input) => {
-      qc.invalidateQueries({ queryKey: queryKeys.foodLog(userId, input.date) })
-    },
-  })
+  return useInjectUserId<
+    void,
+    Error,
+    { id: string; date: string },
+    DeleteFoodLogVars,
+    unknown
+  >(
+    useMutation<void, Error, DeleteFoodLogVars>({
+      mutationKey: mutationKeys.deleteFoodLog,
+    }),
+  )
 }

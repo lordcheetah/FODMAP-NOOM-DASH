@@ -1,8 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
-import { queryKeys } from './queryKeys'
+import { mutationKeys, queryKeys } from './queryKeys'
+import { useInjectUserId } from './useInjectUserId'
 import { likeContains } from './search'
+import type { CreateFoodVars } from './mutationDefaults'
 import type { FodmapLevel } from '@/lib/diet'
 import type { FoodRow } from './types'
 
@@ -24,6 +26,8 @@ export function useFoodSearch(term: string) {
   return useQuery({
     queryKey: queryKeys.foodSearch(trimmed),
     enabled,
+    // Ephemeral: exclude from the persisted cache (see main.tsx dehydrateOptions).
+    meta: { persist: false },
     queryFn: async (): Promise<FoodRow[]> => {
       if (!supabase) return []
       const { data, error } = await supabase
@@ -99,43 +103,9 @@ export interface CreateFoodInput {
  * mutation error so the caller can treat it as "already exists" and re-look-up.
  */
 export function useCreateFood() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: CreateFoodInput): Promise<FoodRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const { data, error } = await supabase
-        .from('foods')
-        .insert({
-          user_id: userId,
-          name: input.name,
-          brand: input.brand ?? null,
-          serving_desc: input.serving_desc,
-          serving_grams: input.serving_grams ?? null,
-          calories: input.calories ?? null,
-          sodium_mg: input.sodium_mg ?? null,
-          sat_fat_g: input.sat_fat_g ?? null,
-          potassium_mg: input.potassium_mg ?? null,
-          fiber_g: input.fiber_g ?? null,
-          added_sugar_g: input.added_sugar_g ?? null,
-          fructose_level: input.fructose_level ?? 'unknown',
-          fructans_level: input.fructans_level ?? 'unknown',
-          source: input.source ?? null,
-          barcode: input.barcode ?? null,
-        })
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as FoodRow
-    },
-    onSuccess: (row) => {
-      qc.invalidateQueries({
-        queryKey: queryKeys.foodByBarcode(userId, row.barcode),
-      })
-      qc.invalidateQueries({ queryKey: ['foodSearch'] })
-    },
-  })
+  return useInjectUserId<FoodRow, Error, CreateFoodInput, CreateFoodVars, unknown>(
+    useMutation<FoodRow, Error, CreateFoodVars>({
+      mutationKey: mutationKeys.createFood,
+    }),
+  )
 }

@@ -25,3 +25,24 @@ export const queryKeys = {
   workoutLogHistory: (userId: string | undefined) =>
     ['workoutLogHistory', userId] as const,
 }
+
+/**
+ * Stable, serializable mutation keys for every offline-capable write.
+ *
+ * These are intentionally variable-FREE (no userId/date/id in the key): the
+ * variables travel WITH the dehydrated paused mutation, while the key is only
+ * used to look up the registered `mutationFn`/handlers on resume. A paused
+ * mutation deserialized from IndexedDB has its `mutationFn` stripped, so it can
+ * only resume after reload if a default is registered by this SAME key BEFORE
+ * `resumePausedMutations()` runs (see `registerMutationDefaults`).
+ */
+export const mutationKeys = {
+  addFoodLog: ['food_log', 'add'] as const,
+  updateFoodLog: ['food_log', 'update'] as const,
+  deleteFoodLog: ['food_log', 'delete'] as const,
+  upsertDailyTargets: ['daily_targets', 'upsert'] as const,
+  createFood: ['foods', 'create'] as const,
+  addWorkoutLog: ['workout_log', 'add'] as const,
+  updateWorkoutLog: ['workout_log', 'update'] as const,
+  deleteWorkoutLog: ['workout_log', 'delete'] as const,
+}
