@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Plus, ScanBarcode, Search } from 'lucide-react'
+import { Camera, Plus, ScanBarcode, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
@@ -11,6 +11,7 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
 import { ScanFlow } from './ScanFlow'
+import { PhotoMealFlow } from './PhotoMealFlow'
 
 const MIN_CHARS = 2
 const DEBOUNCE_MS = 300
@@ -59,8 +60,10 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
   const debounced = useDebounced(term, DEBOUNCE_MS)
   const [target, setTarget] = useState<AddTarget | null>(null)
   const [scanOpen, setScanOpen] = useState(false)
-  // Scanning saves a user-custom food, so it requires a connected, signed-in account.
-  const canScan = isSupabaseConfigured && !!user
+  const [photoOpen, setPhotoOpen] = useState(false)
+  // Scanning + photo recognition save user data / call an authed Edge Function,
+  // so both require a connected, signed-in account.
+  const canCapture = isSupabaseConfigured && !!user
 
   const foods = useFoodSearch(debounced)
   const recipes = useRecipeSearch(debounced)
@@ -90,16 +93,27 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
             aria-label="Search foods and recipes"
           />
         </div>
-        {canScan && (
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setScanOpen(true)}
-            aria-label="Scan barcode"
-          >
-            <ScanBarcode className="h-4 w-4" />
-            Scan
-          </Button>
+        {canCapture && (
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setScanOpen(true)}
+              aria-label="Scan barcode"
+            >
+              <ScanBarcode className="h-4 w-4" />
+              Scan
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setPhotoOpen(true)}
+              aria-label="Photo of meal"
+            >
+              <Camera className="h-4 w-4" />
+              Photo
+            </Button>
+          </>
         )}
       </div>
 
@@ -196,13 +210,21 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
         defaultMeal={mealContext}
       />
 
-      {canScan && (
-        <ScanFlow
-          open={scanOpen}
-          onClose={() => setScanOpen(false)}
-          date={date}
-          mealContext={mealContext}
-        />
+      {canCapture && (
+        <>
+          <ScanFlow
+            open={scanOpen}
+            onClose={() => setScanOpen(false)}
+            date={date}
+            mealContext={mealContext}
+          />
+          <PhotoMealFlow
+            open={photoOpen}
+            onClose={() => setPhotoOpen(false)}
+            date={date}
+            mealContext={mealContext}
+          />
+        </>
       )}
     </section>
   )
