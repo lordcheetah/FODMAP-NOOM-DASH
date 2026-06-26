@@ -4,17 +4,41 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useWorkouts } from '@/lib/db/workouts'
 import { useExercises } from '@/lib/db/exercises'
-import type { ExerciseCategory } from '@/lib/exercise/types'
+import {
+  EXERCISE_CATEGORIES,
+  EXERCISE_CATEGORY_LABEL,
+  disciplineLabel,
+  type ExerciseCategory,
+} from '@/lib/exercise/types'
 import type { ExerciseRow, WorkoutRow } from '@/lib/db/types'
+import { MartialArtsSafetyNote } from './MartialArtsSafetyNote'
 
-const CATEGORIES: { value: ExerciseCategory; label: string }[] = [
-  { value: 'cardio', label: 'Cardio' },
-  { value: 'strength', label: 'Strength' },
-  { value: 'dynamic', label: 'Dynamic' },
-  { value: 'stretch', label: 'Stretch' },
-  { value: 'yoga', label: 'Yoga' },
-  { value: 'back', label: 'Back' },
-]
+// Derive the chip list from the single source of truth so a new category can't
+// be silently missing here; label via the exhaustive EXERCISE_CATEGORY_LABEL.
+const CATEGORIES: { value: ExerciseCategory; label: string }[] =
+  EXERCISE_CATEGORIES.map((value) => ({
+    value,
+    label: EXERCISE_CATEGORY_LABEL[value],
+  }))
+
+/** Group exercises by `subcategory` (discipline), preserving first-seen order. */
+function groupByDiscipline(
+  exercises: ExerciseRow[],
+): { discipline: string; label: string; items: ExerciseRow[] }[] {
+  const groups: { discipline: string; label: string; items: ExerciseRow[] }[] = []
+  const byKey = new Map<string, ExerciseRow[]>()
+  for (const e of exercises) {
+    const key = e.subcategory ?? ''
+    let bucket = byKey.get(key)
+    if (!bucket) {
+      bucket = []
+      byKey.set(key, bucket)
+      groups.push({ discipline: key, label: disciplineLabel(e.subcategory), items: bucket })
+    }
+    bucket.push(e)
+  }
+  return groups
+}
 
 export interface WorkoutBrowserProps {
   /** Open a workout's detail view. */
@@ -35,6 +59,30 @@ export function WorkoutBrowser({ onOpenWorkout, onOpenExercise }: WorkoutBrowser
 
   const workoutList: WorkoutRow[] = workouts.data ?? []
   const exerciseList: ExerciseRow[] = exercises.data ?? []
+  const isMartialArts = category === 'martial-arts'
+
+  const renderExerciseRow = (e: ExerciseRow) => (
+    <li key={e.id}>
+      <button
+        type="button"
+        onClick={() => onOpenExercise?.(e.slug)}
+        disabled={!onOpenExercise}
+        className={cn(
+          'flex min-h-[44px] w-full items-center justify-between gap-2 py-2 text-left',
+          onOpenExercise ? 'hover:bg-accent/50' : 'cursor-default',
+        )}
+      >
+        <span>
+          <span className="block text-sm font-medium">{e.name}</span>
+          <span className="block text-[11px] text-muted-foreground">
+            {e.muscle_groups.length > 0
+              ? e.muscle_groups.join(', ')
+              : e.subcategory ?? EXERCISE_CATEGORY_LABEL[e.category]}
+          </span>
+        </span>
+      </button>
+    </li>
+  )
 
   return (
     <div className="space-y-4">
@@ -60,6 +108,8 @@ export function WorkoutBrowser({ onOpenWorkout, onOpenExercise }: WorkoutBrowser
         ))}
       </div>
 
+      {isMartialArts && <MartialArtsSafetyNote />}
+
       <section className="rounded-lg border bg-card p-3 text-card-foreground">
         <h3 className="mb-2 flex items-center gap-1 text-sm font-semibold">
           <Dumbbell className="h-4 w-4" /> Workouts
@@ -82,7 +132,7 @@ export function WorkoutBrowser({ onOpenWorkout, onOpenExercise }: WorkoutBrowser
                   <span>
                     <span className="block text-sm font-medium">{w.name}</span>
                     <span className="block text-[11px] text-muted-foreground">
-                      <span className="capitalize">{w.category}</span>
+                      <span>{EXERCISE_CATEGORY_LABEL[w.category]}</span>
                       {w.format ? ` · ${w.format}` : ''}
                       {w.duration_min ? ` · ${w.duration_min} min` : ''}
                     </span>
@@ -102,31 +152,20 @@ export function WorkoutBrowser({ onOpenWorkout, onOpenExercise }: WorkoutBrowser
           <p className="text-xs text-muted-foreground">Loading…</p>
         ) : exerciseList.length === 0 ? (
           <p className="text-xs text-muted-foreground">No exercises here yet.</p>
-        ) : (
-          <ul className="divide-y">
-            {exerciseList.map((e) => (
-              <li key={e.id}>
-                <button
-                  type="button"
-                  onClick={() => onOpenExercise?.(e.slug)}
-                  disabled={!onOpenExercise}
-                  className={cn(
-                    'flex min-h-[44px] w-full items-center justify-between gap-2 py-2 text-left',
-                    onOpenExercise ? 'hover:bg-accent/50' : 'cursor-default',
-                  )}
-                >
-                  <span>
-                    <span className="block text-sm font-medium">{e.name}</span>
-                    <span className="block text-[11px] text-muted-foreground">
-                      {e.muscle_groups.length > 0
-                        ? e.muscle_groups.join(', ')
-                        : e.subcategory ?? e.category}
-                    </span>
-                  </span>
-                </button>
-              </li>
+        ) : isMartialArts ? (
+          // Group by discipline (subcategory) with a heading per discipline.
+          <div className="space-y-3">
+            {groupByDiscipline(exerciseList).map((group) => (
+              <div key={group.discipline || 'general'}>
+                <h4 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  {group.label}
+                </h4>
+                <ul className="divide-y">{group.items.map(renderExerciseRow)}</ul>
+              </div>
             ))}
-          </ul>
+          </div>
+        ) : (
+          <ul className="divide-y">{exerciseList.map(renderExerciseRow)}</ul>
         )}
       </section>
     </div>

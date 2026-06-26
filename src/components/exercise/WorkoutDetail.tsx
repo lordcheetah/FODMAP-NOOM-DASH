@@ -1,7 +1,9 @@
 import { ArrowLeft, Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useWorkout, type WorkoutWithExercises } from '@/lib/db/workouts'
+import { EXERCISE_CATEGORY_LABEL } from '@/lib/exercise/types'
 import { ExerciseCard } from './ExerciseCard'
+import { MartialArtsSafetyNote } from './MartialArtsSafetyNote'
 import { prescriptionLabel } from './prescription'
 
 export interface WorkoutDetailProps {
@@ -52,7 +54,7 @@ export function WorkoutDetail({ slug, onBack, onStart }: WorkoutDetailProps) {
           <section className="rounded-lg border bg-card p-4 text-card-foreground">
             <h2 className="text-lg font-semibold">{workout.name}</h2>
             <div className="mt-1 flex flex-wrap gap-2 text-[11px] text-muted-foreground">
-              <span className="capitalize">{workout.category}</span>
+              <span>{EXERCISE_CATEGORY_LABEL[workout.category]}</span>
               <span>· {workout.format}</span>
               {workout.duration_min != null && <span>· {workout.duration_min} min</span>}
               {workout.rounds != null && <span>· {workout.rounds} rounds</span>}
@@ -61,6 +63,8 @@ export function WorkoutDetail({ slug, onBack, onStart }: WorkoutDetailProps) {
               <p className="mt-2 text-sm text-foreground/90">{workout.description}</p>
             )}
           </section>
+
+          {workout.category === 'martial-arts' && <MartialArtsSafetyNote />}
 
           <section className="space-y-2">
             <h3 className="text-sm font-semibold">

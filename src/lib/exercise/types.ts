@@ -18,6 +18,7 @@ export type ExerciseCategory =
   | 'stretch'
   | 'yoga'
   | 'back'
+  | 'martial-arts'
 
 /**
  * How a workout is structured / timed:
@@ -62,7 +63,40 @@ export const EXERCISE_CATEGORIES: readonly ExerciseCategory[] = [
   'stretch',
   'yoga',
   'back',
+  'martial-arts',
 ]
+
+/**
+ * Human-readable label for each category, for headings / chips / labels in the
+ * UI. Typed as a full `Record<ExerciseCategory, string>` so adding a category to
+ * the union without a label here is a COMPILE error (exhaustiveness guard). Use
+ * this everywhere a category is displayed so no screen ever shows the raw
+ * "martial-arts" slug.
+ */
+export const EXERCISE_CATEGORY_LABEL: Record<ExerciseCategory, string> = {
+  cardio: 'Cardio',
+  strength: 'Strength',
+  dynamic: 'Dynamic',
+  stretch: 'Stretch',
+  yoga: 'Yoga',
+  back: 'Back',
+  'martial-arts': 'Martial Arts',
+}
+
+/**
+ * Human label for a discipline (the `subcategory` of a martial-arts exercise):
+ * title-cases hyphenated values and uppercases known acronyms. `null` → "General".
+ * Shared by the browser grouping and the exercise card so disciplines read
+ * uniformly everywhere (e.g. "muay-thai" → "Muay Thai", "bjj" → "BJJ").
+ */
+export function disciplineLabel(subcategory: string | null | undefined): string {
+  if (!subcategory) return 'General'
+  if (subcategory.toLowerCase() === 'bjj') return 'BJJ'
+  return subcategory
+    .split('-')
+    .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
+    .join(' ')
+}
 
 export const WORKOUT_FORMATS: readonly WorkoutFormat[] = [
   'timed',

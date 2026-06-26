@@ -1,0 +1,191 @@
+[
+  {
+    "slug": "ma-boxing-shadowboxing-rounds",
+    "name": "Boxing Shadowboxing Rounds",
+    "category": "martial-arts",
+    "description": "Classic boxing-style rounds: 3 minutes of continuous shadowboxing followed by 1 minute of rest. Mix in all the punches and defense you know. Repeat for the number of rounds you choose (3 rounds shown).",
+    "duration_min": 12,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": 180,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "ma-shadowboxing", "order": 1, "work_sec": 180, "rest_sec": 60, "reps": null, "hold_sec": null, "note": "One 3-min round; flow punches, footwork, slips and rolls. Rest 1 min, then next round." }
+    ],
+    "source": "General boxing fundamentals; public coaching references (standard 3-min round / 1-min rest format). Described in own words."
+  },
+  {
+    "slug": "ma-boxing-fundamentals-drill",
+    "name": "Boxing Fundamentals Drill",
+    "category": "martial-arts",
+    "description": "Solo, no-equipment skill session walking through the core boxing tools one at a time. Go through the sequence 3 times, focusing on clean form over speed.",
+    "duration_min": 15,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "ma-boxing-stance-guard", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Settle into stance each round" },
+      { "exercise_slug": "ma-boxing-footwork", "order": 2, "work_sec": 60, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Forward/back/lateral" },
+      { "exercise_slug": "ma-jab", "order": 3, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Each side / lead" },
+      { "exercise_slug": "ma-cross", "order": 4, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "ma-hook", "order": 5, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Both sides" },
+      { "exercise_slug": "ma-uppercut", "order": 6, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Both sides" },
+      { "exercise_slug": "ma-slip", "order": 7, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Alternate sides" },
+      { "exercise_slug": "ma-roll", "order": 8, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Alternate sides" }
+    ],
+    "source": "General boxing fundamentals; public coaching references. Described in own words."
+  },
+  {
+    "slug": "ma-beginner-striking-combos",
+    "name": "Beginner Striking Combos",
+    "category": "martial-arts",
+    "description": "Solo shadow practice of the most common beginner punch combinations, returning to guard after each. Repeat the set 4 times. Numbers refer to combos thrown per side where it makes sense.",
+    "duration_min": 12,
+    "format": "rounds",
+    "rounds": 4,
+    "default_work_sec": null,
+    "default_rest_sec": 30,
+    "exercises": [
+      { "exercise_slug": "ma-jab", "order": 1, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Single jabs to warm up the line" },
+      { "exercise_slug": "ma-cross", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Jab-cross (1-2): pair with the jab above" },
+      { "exercise_slug": "ma-hook", "order": 3, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Jab-cross-hook (1-2-3): finish the combo with a lead hook" },
+      { "exercise_slug": "ma-slip", "order": 4, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Slip after the combo, then reset to guard" }
+    ],
+    "source": "General boxing fundamentals (1-2 and 1-2-3 combinations); public coaching references. Described in own words."
+  },
+  {
+    "slug": "ma-muay-thai-bag-workout",
+    "name": "Muay Thai Bag Workout",
+    "category": "martial-arts",
+    "description": "Heavy-bag striking session for Muay Thai / kickboxing fundamentals. Requires a heavy bag and wrapped, gloved hands (and shin awareness for kicks). 3-min rounds with 1-min rest; 4 rounds shown. Cycle the strikes across the round.",
+    "duration_min": 16,
+    "format": "rounds",
+    "rounds": 4,
+    "default_work_sec": 180,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "ma-heavy-bag-combos", "order": 1, "work_sec": 180, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Punch combinations on the bag" },
+      { "exercise_slug": "ma-teep", "order": 2, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg; work into the round" },
+      { "exercise_slug": "ma-roundhouse-kick", "order": 3, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg; shin contact, condition gradually" },
+      { "exercise_slug": "ma-knee-strike", "order": 4, "work_sec": null, "rest_sec": 60, "reps": 8, "hold_sec": null, "note": "Each side; then rest 1 min before next round" }
+    ],
+    "source": "General Muay Thai / kickboxing fundamentals; public coaching references (standard bag-round format). Described in own words."
+  },
+  {
+    "slug": "ma-muay-thai-fundamentals-drill",
+    "name": "Muay Thai Fundamentals Drill (No Equipment)",
+    "category": "martial-arts",
+    "description": "Solo, no-equipment Muay Thai / kickboxing skill session. Walk through the eight-limb basics slowly for clean form. Repeat the sequence 3 times.",
+    "duration_min": 15,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "ma-boxing-stance-guard", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Muay Thai guard is similar; hands high" },
+      { "exercise_slug": "ma-teep", "order": 2, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg" },
+      { "exercise_slug": "ma-roundhouse-kick", "order": 3, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg; pivot fully" },
+      { "exercise_slug": "ma-knee-strike", "order": 4, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each side" },
+      { "exercise_slug": "ma-kickboxing-front-kick", "order": 5, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg" },
+      { "exercise_slug": "ma-muay-thai-block-check", "order": 6, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg; balance drill" }
+    ],
+    "source": "General Muay Thai / kickboxing fundamentals; public coaching references. Described in own words."
+  },
+  {
+    "slug": "ma-bjj-solo-movement-drills",
+    "name": "BJJ Solo Movement Drills",
+    "category": "martial-arts",
+    "description": "No-partner Brazilian Jiu-Jitsu movement session done on a mat. Builds the core grappling movements through repetition. Move slowly and correctly; repeat the circuit 3 times.",
+    "duration_min": 15,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": 30,
+    "exercises": [
+      { "exercise_slug": "ma-bjj-shrimp", "order": 1, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Each side, down the mat" },
+      { "exercise_slug": "ma-bjj-bridge", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Include over-the-shoulder version each side" },
+      { "exercise_slug": "ma-bjj-technical-standup", "order": 3, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each side" },
+      { "exercise_slug": "ma-bjj-guard-position", "order": 4, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Hold and feel the closed guard" },
+      { "exercise_slug": "ma-bjj-mount-escape-concept", "order": 5, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each side; concept rehearsal only" },
+      { "exercise_slug": "ma-bjj-side-control-concept", "order": 6, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Framing + shrimp; concept rehearsal only" }
+    ],
+    "source": "General BJJ solo-drill fundamentals; public coaching references (Grapplearts and similar solo-drill guides). Described in own words."
+  },
+  {
+    "slug": "ma-karate-basics-drill",
+    "name": "Karate Basics Drill (Kihon)",
+    "category": "martial-arts",
+    "description": "Solo, no-equipment karate basics session covering stance, kick, blocks, and a strike. Move with control and focus on form. Repeat the sequence 3 times.",
+    "duration_min": 15,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "ma-karate-front-stance", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Both sides" },
+      { "exercise_slug": "ma-karate-rising-block", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Both arms" },
+      { "exercise_slug": "ma-karate-outside-block", "order": 3, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Both arms" },
+      { "exercise_slug": "ma-karate-reverse-punch", "order": 4, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Both sides" },
+      { "exercise_slug": "ma-karate-front-kick", "order": 5, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg" }
+    ],
+    "source": "General karate fundamentals (kihon basics); public coaching references. Described in own words."
+  },
+  {
+    "slug": "ma-forms-practice",
+    "name": "Kata / Forms Practice",
+    "category": "martial-arts",
+    "description": "Dedicated form practice for traditional striking arts. Run a beginner karate kata and a basic taekwondo stance-and-kick pattern slowly and repeatedly, focusing on balance and clean technique. Specific forms should come from a qualified instructor.",
+    "duration_min": 12,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "ma-karate-front-stance", "order": 1, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Warm into the stance" },
+      { "exercise_slug": "ma-karate-kata-practice", "order": 2, "work_sec": 120, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Run your beginner kata several times" },
+      { "exercise_slug": "ma-tkd-front-stance", "order": 3, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Switch to taekwondo stance" },
+      { "exercise_slug": "ma-tkd-low-block", "order": 4, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Both arms, in stance" },
+      { "exercise_slug": "ma-tkd-front-kick", "order": 5, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Each leg, stepping through the pattern" }
+    ],
+    "source": "General karate and taekwondo fundamentals (kata / poomsae form practice); public coaching references. Described in own words."
+  },
+  {
+    "slug": "ma-home-conditioning-circuit",
+    "name": "Home MA Conditioning Circuit",
+    "category": "martial-arts",
+    "description": "No-partner conditioning circuit blending striking cardio with grappler-focused core and stability work. Reuses general bodyweight moves alongside martial-arts drills. Complete 4 rounds, resting 1 minute between rounds.",
+    "duration_min": 20,
+    "format": "rounds",
+    "rounds": 4,
+    "default_work_sec": null,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "ma-shadowboxing", "order": 1, "work_sec": 120, "rest_sec": null, "reps": null, "hold_sec": null, "note": "2-min shadowboxing to raise the heart rate" },
+      { "exercise_slug": "jump-rope", "order": 2, "work_sec": 60, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Reused from exercises.json; substitute imaginary rope if needed" },
+      { "exercise_slug": "ma-stance-switches", "order": 3, "work_sec": 60, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Footwork conditioning" },
+      { "exercise_slug": "ma-bjj-shrimp", "order": 4, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Each side" },
+      { "exercise_slug": "ma-bjj-bridge", "order": 5, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Grappler hip power" },
+      { "exercise_slug": "plank", "order": 6, "work_sec": null, "rest_sec": null, "reps": null, "hold_sec": 30, "note": "Reused from exercises.json; core for grapplers" },
+      { "exercise_slug": "mountain-climbers", "order": 7, "work_sec": null, "rest_sec": 60, "reps": 20, "hold_sec": null, "note": "Reused from exercises.json; then rest 1 min before next round" }
+    ],
+    "source": "General martial-arts conditioning; public coaching references. Bodyweight moves (jump-rope, plank, mountain-climbers) reused from the existing NOOM/WebMD exercise set. Described in own words."
+  },
+  {
+    "slug": "ma-judo-breakfall-practice",
+    "name": "Judo Breakfall Practice (Ukemi)",
+    "category": "martial-arts",
+    "description": "Mat-based breakfall (ukemi) practice plus a solo hip-throw entry drill. SAFETY-FIRST: requires a proper mat, build height gradually, and ideally learn under a qualified instructor. Repeat the sequence 3 times.",
+    "duration_min": 12,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": 30,
+    "exercises": [
+      { "exercise_slug": "ma-judo-breakfall-back", "order": 1, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Start low, chin tucked" },
+      { "exercise_slug": "ma-judo-breakfall-side", "order": 2, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Both sides, start low" },
+      { "exercise_slug": "ma-judo-hip-throw-concept", "order": 3, "work_sec": null, "rest_sec": null, "reps": 8, "hold_sec": null, "note": "Solo entry mechanics only; no partner" }
+    ],
+    "source": "General judo fundamentals (ukemi and hip-throw entry); public coaching references. Described in own words."
+  }
+]

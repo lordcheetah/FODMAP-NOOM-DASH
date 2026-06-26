@@ -1,5 +1,6 @@
 import { AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { EXERCISE_CATEGORY_LABEL, disciplineLabel } from '@/lib/exercise/types'
 import type { ExerciseRow } from '@/lib/db/types'
 
 /** A pill list of short string values (muscle groups / equipment). */
@@ -52,8 +53,8 @@ export function ExerciseCard({
       </div>
 
       <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
-        <span className="capitalize">{e.category}</span>
-        {e.subcategory && <span>· {e.subcategory}</span>}
+        <span>{EXERCISE_CATEGORY_LABEL[e.category]}</span>
+        {e.subcategory && <span>· {disciplineLabel(e.subcategory)}</span>}
         {e.difficulty && <span>· {e.difficulty}</span>}
       </div>
 
