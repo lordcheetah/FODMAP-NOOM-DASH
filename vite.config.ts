@@ -53,6 +53,17 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // Accept the Host header that `tailscale serve` forwards (your machine's
+  // MagicDNS name, e.g. laptop.tailnet-name.ts.net) so the dev/preview server
+  // doesn't reject phone requests with "host not allowed". Scoped to .ts.net —
+  // not a blanket allow. `tailscale serve` connects to localhost, so you do NOT
+  // need --host; for plain LAN/Tailscale-IP access, add --host on the CLI.
+  server: {
+    allowedHosts: ['.ts.net'],
+  },
+  preview: {
+    allowedHosts: ['.ts.net'],
+  },
   test: {
     globals: true,
     environment: 'jsdom',
