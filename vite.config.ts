@@ -61,12 +61,14 @@ export default defineConfig({
   server: {
     allowedHosts: ['.ts.net'],
   },
-  // `host: true` binds 0.0.0.0 (IPv4 + IPv6) so `tailscale serve`, which proxies
-  // to 127.0.0.1, can always reach preview — avoids the Windows "localhost = ::1
-  // only" mismatch that surfaces as a 502 bad gateway. (Binds to all local
-  // interfaces; that's the intent for serving to your phone.)
+  // Bind preview to the IPv4 loopback only. `tailscale serve` proxies to
+  // 127.0.0.1, so this is all it needs — and unlike `host: true` it does NOT
+  // expose the server on your LAN / VPN / public interfaces. Using 127.0.0.1
+  // (not `localhost`) also dodges the Windows "localhost = IPv6 ::1 only"
+  // mismatch that showed up as a 502 bad gateway.
+  // (If you ever want raw LAN access without Tailscale, switch to `host: true`.)
   preview: {
-    host: true,
+    host: '127.0.0.1',
     allowedHosts: ['.ts.net'],
   },
   test: {
