@@ -10,7 +10,12 @@
  * silently dropped.
  */
 
-/** Top-level grouping for both exercises and workouts. */
+/**
+ * Top-level grouping for both exercises and workouts (they share the DB
+ * `exercise_category` enum). `circuit` and `hiit` are workout-only groupings
+ * (no exercise uses them) but live in the shared enum so the workout data
+ * validates and those workouts surface in the browser.
+ */
 export type ExerciseCategory =
   | 'cardio'
   | 'strength'
@@ -19,6 +24,8 @@ export type ExerciseCategory =
   | 'yoga'
   | 'back'
   | 'martial-arts'
+  | 'circuit'
+  | 'hiit'
 
 /**
  * How a workout is structured / timed:
@@ -64,6 +71,8 @@ export const EXERCISE_CATEGORIES: readonly ExerciseCategory[] = [
   'yoga',
   'back',
   'martial-arts',
+  'circuit',
+  'hiit',
 ]
 
 /**
@@ -81,6 +90,8 @@ export const EXERCISE_CATEGORY_LABEL: Record<ExerciseCategory, string> = {
   yoga: 'Yoga',
   back: 'Back',
   'martial-arts': 'Martial Arts',
+  circuit: 'Circuit',
+  hiit: 'HIIT',
 }
 
 /**
