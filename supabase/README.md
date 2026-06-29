@@ -46,15 +46,26 @@ Supabase project with the seed script (idempotent — safe to re-run):
 3. Run `npm run seed`. It upserts foods/recipes/recipe_ingredients/swaps and prints any
    ingredient names that didn't match a food row.
 
-## Photo→meal (Edge Function)
+## Photo→meal and nutrition-label scan (Edge Functions)
 
-`supabase/functions/analyze-meal` is a Deno Edge Function that powers photo→meal
-recognition. The browser sends a downscaled JPEG; the function verifies the
-caller's Supabase JWT, calls **Claude vision** server-side, and returns a list of
-identified foods with portion/calorie estimates. It **never** returns FODMAP,
-allergen, or "safe"/"healthy" claims — the response schema has no such field, so
-an AI-identified item stays "Not verified" until the user matches it to a cited
-DB food or sets the levels manually.
+Two Deno Edge Functions power the Claude-vision capture features:
+
+- `supabase/functions/analyze-meal` — **photo→meal**. The browser sends a
+  downscaled JPEG of a plate; the function returns a list of identified foods
+  with portion/calorie estimates (visual estimate).
+- `supabase/functions/analyze-label` — **nutrition-label scan**. The browser
+  sends a downscaled JPEG of a packaged food's **Nutrition Facts panel**; the
+  function returns the EXACT per-serving nutrition (calories, sodium, sat fat,
+  potassium, fiber, added sugar) plus the serving size and product name.
+
+Both verify the caller's Supabase JWT, call **Claude vision** server-side, and
+**never** return FODMAP, allergen, or "safe"/"healthy" claims — their response
+schemas have no such field. A Nutrition Facts label has no fructose/fructans
+data, so an AI-read food stays "Not verified" (FODMAP unknown) — exactly like a
+barcode lookup — until the user matches it to a cited DB food or sets the levels
+manually.
+
+Both functions share the **same** `ANTHROPIC_API_KEY` secret.
 
 ### Set the secret (server-only — never the client)
 
@@ -71,12 +82,14 @@ before any Claude call) so it cannot be abused as a free Claude proxy.
 
 ```bash
 supabase functions deploy analyze-meal
+supabase functions deploy analyze-label
 ```
 
 ### Local testing
 
 ```bash
-supabase functions serve analyze-meal   # loads supabase/functions/.env (git-ignored)
+supabase functions serve analyze-meal    # loads supabase/functions/.env (git-ignored)
+supabase functions serve analyze-label
 ```
 
 `SUPABASE_URL` / `SUPABASE_ANON_KEY` are auto-injected in the hosted runtime but
@@ -86,8 +99,9 @@ may need to be provided (via `--env-file` or `supabase/functions/.env`) for loca
 ### How the client calls it
 
 The client derives the URL from the already-configured Supabase URL:
-`${VITE_SUPABASE_URL}/functions/v1/analyze-meal`, sending the signed-in user's
-access token as `Authorization: Bearer <jwt>`. No new client env var is needed.
+`${VITE_SUPABASE_URL}/functions/v1/analyze-meal` (or `/analyze-label`), sending
+the signed-in user's access token as `Authorization: Bearer <jwt>`. No new client
+env var is needed.
 
 The captured photo is sent to the function (which forwards it to Anthropic) for
 analysis and is **not stored** by the app — surfaced in the UI notice.

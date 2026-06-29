@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Camera, Plus, ScanBarcode, Search } from 'lucide-react'
+import { Camera, Plus, ScanBarcode, ScanText, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
@@ -12,6 +12,7 @@ import { useAuth } from '@/lib/auth'
 import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
 import { ScanFlow } from './ScanFlow'
 import { PhotoMealFlow } from './PhotoMealFlow'
+import { LabelScanFlow } from './LabelScanFlow'
 
 const MIN_CHARS = 2
 const DEBOUNCE_MS = 300
@@ -61,6 +62,7 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
   const [target, setTarget] = useState<AddTarget | null>(null)
   const [scanOpen, setScanOpen] = useState(false)
   const [photoOpen, setPhotoOpen] = useState(false)
+  const [labelOpen, setLabelOpen] = useState(false)
   // Scanning + photo recognition save user data / call an authed Edge Function,
   // so both require a connected, signed-in account.
   const canCapture = isSupabaseConfigured && !!user
@@ -112,6 +114,15 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
             >
               <Camera className="h-4 w-4" />
               Photo
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setLabelOpen(true)}
+              aria-label="Scan nutrition label"
+            >
+              <ScanText className="h-4 w-4" />
+              Label
             </Button>
           </>
         )}
@@ -221,6 +232,12 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
           <PhotoMealFlow
             open={photoOpen}
             onClose={() => setPhotoOpen(false)}
+            date={date}
+            mealContext={mealContext}
+          />
+          <LabelScanFlow
+            open={labelOpen}
+            onClose={() => setLabelOpen(false)}
             date={date}
             mealContext={mealContext}
           />

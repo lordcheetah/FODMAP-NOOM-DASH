@@ -1,0 +1,94 @@
+[
+  {
+    "slug": "steady-state-walk",
+    "name": "Steady-State Walk",
+    "category": "cardio",
+    "description": "A single continuous walk at a comfortable-to-brisk pace. Start easy, settle into a steady moderate effort, and finish with an easy cool-down. Outdoors or on the treadmill.",
+    "duration_min": 30,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "outdoor-walk", "order": 1, "work_sec": 300, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Easy warm-up pace, ~5 min" },
+      { "exercise_slug": "brisk-walk", "order": 2, "work_sec": 1200, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Steady brisk pace, ~20 min" },
+      { "exercise_slug": "outdoor-walk", "order": 3, "work_sec": 300, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Easy cool-down pace, ~5 min" }
+    ],
+    "source": "Researcher-composed steady-state cardio routine using the equipment_exercises walking entries. Warm-up/cool-down structure per general physical-activity guidance."
+  },
+  {
+    "slug": "low-impact-machine-cardio",
+    "name": "Low-Impact Machine Cardio",
+    "category": "cardio",
+    "description": "A joint-friendly steady cardio session on the machine of your choice. Pick ONE: treadmill walk, stationary bike, e-bike, or light rowing. Keep effort to a conversational pace and build duration over time.",
+    "duration_min": 30,
+    "format": "freestyle",
+    "rounds": 1,
+    "default_work_sec": null,
+    "default_rest_sec": null,
+    "exercises": [
+      { "exercise_slug": "treadmill-walk", "order": 1, "work_sec": 1800, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Option A: treadmill walking, ~30 min" },
+      { "exercise_slug": "stationary-bike-steady", "order": 2, "work_sec": 1800, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Option B: stationary bike, ~30 min (pick one machine)" },
+      { "exercise_slug": "ebike-ride", "order": 3, "work_sec": 1800, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Option C: e-bike ride, ~30 min (pick one machine)" },
+      { "exercise_slug": "rowing-machine-steady", "order": 4, "work_sec": 1200, "rest_sec": null, "reps": null, "hold_sec": null, "note": "Option D: light rowing, ~20 min (pick one machine)" }
+    ],
+    "source": "Researcher-composed freestyle low-impact cardio routine using the equipment_exercises machine entries. Pick a single machine; durations per general steady-state guidance."
+  },
+  {
+    "slug": "rowing-intervals-light",
+    "name": "Rowing Intervals (Light)",
+    "category": "cardio",
+    "description": "Gentle interval session on the rowing machine at LIGHT resistance: alternate slightly faster strokes with easy recovery rowing. Warm up and cool down with easy rowing. Keep the spine neutral and drive with the legs.",
+    "duration_min": 20,
+    "format": "rounds",
+    "rounds": 6,
+    "default_work_sec": 60,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "rowing-machine-steady", "order": 1, "work_sec": 60, "rest_sec": 60, "reps": null, "hold_sec": null, "note": "60s slightly faster stroke, then 60s easy recovery row. Repeat 6 rounds. Light resistance, legs-first drive, neutral back. Add ~3 min easy rowing before and after as warm-up/cool-down." }
+    ],
+    "source": "Researcher-composed light interval routine using rowing-machine-steady. Light resistance and leg-drive/neutral-spine cues per general indoor-rowing guidance and owner's light-resistance preference."
+  },
+  {
+    "slug": "resistance-band-full-body",
+    "name": "Resistance Band Full-Body",
+    "category": "strength",
+    "description": "A beginner-friendly full-body resistance-band circuit. Complete 2-3 rounds of the sequence, resting about 45-60 seconds between rounds. Use a band tension that lets you keep good form for all reps.",
+    "duration_min": 25,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "band-squat", "order": 1, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-chest-press", "order": 2, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-row", "order": 3, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-romanian-deadlift", "order": 4, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Hip hinge - hips back, flat back" },
+      { "exercise_slug": "band-overhead-press", "order": 5, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-glute-bridge", "order": 6, "work_sec": null, "rest_sec": null, "reps": 15, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-pull-apart", "order": 7, "work_sec": null, "rest_sec": null, "reps": 15, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-biceps-curl", "order": 8, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-triceps-extension", "order": 9, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": null }
+    ],
+    "source": "Researcher-composed full-body band circuit using the equipment_exercises band entries. Rep/round structure (2-3 rounds, 10-15 reps) per general beginner resistance-band programming guidance."
+  },
+  {
+    "slug": "resistance-band-lower-body",
+    "name": "Resistance Band Lower-Body",
+    "category": "strength",
+    "description": "A focused lower-body and glute band routine. Complete 3 rounds, resting about 45-60 seconds between rounds.",
+    "duration_min": 20,
+    "format": "rounds",
+    "rounds": 3,
+    "default_work_sec": null,
+    "default_rest_sec": 60,
+    "exercises": [
+      { "exercise_slug": "band-squat", "order": 1, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": null },
+      { "exercise_slug": "band-romanian-deadlift", "order": 2, "work_sec": null, "rest_sec": null, "reps": 10, "hold_sec": null, "note": "Hip hinge - hips back, flat back" },
+      { "exercise_slug": "band-monster-walk", "order": 3, "work_sec": null, "rest_sec": null, "reps": 12, "hold_sec": null, "note": "12 steps each direction" },
+      { "exercise_slug": "band-glute-bridge", "order": 4, "work_sec": null, "rest_sec": null, "reps": 15, "hold_sec": null, "note": null },
+      { "exercise_slug": "calf-raises", "order": 5, "work_sec": null, "rest_sec": null, "reps": 15, "hold_sec": null, "note": "Reused bodyweight calf raises from exercises.json to round out the lower-body session" }
+    ],
+    "source": "Researcher-composed lower-body band routine using the equipment_exercises band entries plus the existing bodyweight 'calf-raises'. Rep/round structure per general beginner resistance-band programming guidance."
+  }
+]

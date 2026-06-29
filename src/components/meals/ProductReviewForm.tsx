@@ -31,6 +31,8 @@ export interface ProductReviewFormProps {
   triggerHints?: string[]
   /** Optional banner when OFF had no product. */
   notFound?: boolean
+  /** Show the "AI read these numbers from a photo" notice (label-scan flow). */
+  labelNotice?: boolean
   /** Called with the created food row so the caller can open the add-to-log dialog. */
   onSaved: (food: FoodRow) => void
 }
@@ -52,6 +54,7 @@ export function ProductReviewForm({
   barcode,
   triggerHints,
   notFound,
+  labelNotice,
   onSaved,
 }: ProductReviewFormProps) {
   const createFood = useCreateFood()
@@ -145,6 +148,14 @@ export function ProductReviewForm({
           <p className="rounded-lg border bg-muted p-3 text-sm text-muted-foreground">
             Product not in Open Food Facts — enter it manually. The barcode is
             saved so re-scanning finds it next time.
+          </p>
+        )}
+
+        {labelNotice && (
+          <p className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+            AI read these numbers from a photo of the Nutrition Facts panel —
+            double-check them before saving. The photo is sent to Anthropic for
+            analysis and not stored.
           </p>
         )}
 
