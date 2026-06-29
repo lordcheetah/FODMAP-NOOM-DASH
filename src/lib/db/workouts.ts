@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { queryKeys } from './queryKeys'
+import { likeContains } from './search'
 import type { ExerciseCategory } from '@/lib/exercise/types'
 import type { ExerciseRow, WorkoutExerciseRow, WorkoutRow } from './types'
 
@@ -29,6 +30,32 @@ export function useWorkouts(category?: ExerciseCategory) {
       let query = supabase.from('workouts').select('*').order('name')
       if (category) query = query.eq('category', category)
       const { data, error } = await query
+      if (error) throw error
+      return (data ?? []) as WorkoutRow[]
+    },
+  })
+}
+
+/**
+ * Search workouts by name (case-insensitive). Disabled below 2 chars and when
+ * Supabase is not configured. Ephemeral — excluded from the persisted cache.
+ * Mirrors `useExerciseSearch`/`useFoodSearch`.
+ */
+export function useWorkoutSearch(term: string) {
+  const trimmed = term.trim()
+  const enabled = trimmed.length >= 2 && supabase !== null
+
+  return useQuery({
+    queryKey: queryKeys.workoutSearch(trimmed),
+    enabled,
+    meta: { persist: false },
+    queryFn: async (): Promise<WorkoutRow[]> => {
+      if (!supabase) return []
+      const { data, error } = await supabase
+        .from('workouts')
+        .select('*')
+        .ilike('name', likeContains(trimmed))
+        .limit(30)
       if (error) throw error
       return (data ?? []) as WorkoutRow[]
     },

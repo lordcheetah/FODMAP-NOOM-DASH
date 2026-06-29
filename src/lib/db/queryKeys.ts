@@ -19,6 +19,7 @@ export const queryKeys = {
   exerciseSearch: (term: string) => ['exerciseSearch', term] as const,
   workouts: (category?: string) => ['workouts', category ?? 'all'] as const,
   workout: (slug: string) => ['workout', slug] as const,
+  workoutSearch: (term: string) => ['workoutSearch', term] as const,
   schedule: (name?: string) => ['schedule', name ?? 'default'] as const,
   workoutLog: (userId: string | undefined, date: string) =>
     ['workoutLog', userId, date] as const,

@@ -63,6 +63,7 @@ export function useExerciseSearch(term: string) {
   return useQuery({
     queryKey: queryKeys.exerciseSearch(trimmed),
     enabled,
+    meta: { persist: false },
     queryFn: async (): Promise<ExerciseRow[]> => {
       if (!supabase) return []
       const { data, error } = await supabase
