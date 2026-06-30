@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth'
 import type { WorkoutWithExercises } from '@/lib/db/workouts'
 import { WorkoutBrowser } from '@/components/exercise/WorkoutBrowser'
 import { WorkoutDetail } from '@/components/exercise/WorkoutDetail'
+import { ExerciseDetail } from '@/components/exercise/ExerciseDetail'
 import { RoutinePlayer } from '@/components/exercise/RoutinePlayer'
 import { CompleteDialog } from '@/components/exercise/CompleteDialog'
 import { CycleView } from '@/components/exercise/CycleView'
@@ -18,7 +19,7 @@ function todayISO(): string {
   return new Date(d.getTime() - tz).toISOString().slice(0, 10)
 }
 
-type View = 'browse' | 'cycle' | 'detail' | 'player'
+type View = 'browse' | 'cycle' | 'detail' | 'player' | 'exercise'
 
 /**
  * Exercise page: browse by category, open a workout (cautions + modifications
@@ -32,6 +33,7 @@ export default function Exercise() {
 
   const [view, setView] = useState<View>('browse')
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
+  const [activeExerciseSlug, setActiveExerciseSlug] = useState<string | null>(null)
   const [playing, setPlaying] = useState<WorkoutWithExercises | null>(null)
   const [completeOpen, setCompleteOpen] = useState(false)
   const [result, setResult] = useState<{ durationSec: number; roundsCompleted: number | null }>(
@@ -43,6 +45,11 @@ export default function Exercise() {
   const openWorkout = (slug: string) => {
     setActiveSlug(slug)
     setView('detail')
+  }
+
+  const openExercise = (slug: string) => {
+    setActiveExerciseSlug(slug)
+    setView('exercise')
   }
 
   const startPlayer = (workout: WorkoutWithExercises) => {
@@ -106,12 +113,21 @@ export default function Exercise() {
 
       {view === 'browse' && (
         <>
-          <WorkoutBrowser onOpenWorkout={openWorkout} />
+          <WorkoutBrowser onOpenWorkout={openWorkout} onOpenExercise={openExercise} />
           <WorkoutLogList date={date} />
         </>
       )}
 
       {view === 'cycle' && <CycleView onOpenWorkout={openWorkout} />}
+
+      {view === 'exercise' && activeExerciseSlug && (
+        <ExerciseDetail
+          slug={activeExerciseSlug}
+          date={date}
+          onBack={() => setView('browse')}
+          onLogged={() => setView('browse')}
+        />
+      )}
 
       {view === 'detail' && activeSlug && (
         <WorkoutDetail
