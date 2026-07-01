@@ -27,6 +27,7 @@ export interface AddWorkoutLogInput {
   name?: string | null
   duration_sec?: number | null
   rounds_completed?: number | null
+  calories_burned?: number | null
   notes?: string | null
   completed?: boolean
   exercises?: WorkoutLogExerciseInput[]

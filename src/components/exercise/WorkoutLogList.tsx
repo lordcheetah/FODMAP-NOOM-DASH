@@ -55,6 +55,9 @@ export function WorkoutLogList({ date }: WorkoutLogListProps) {
                     {e.workout_log_exercises.length > 0 && (
                       <> · {e.workout_log_exercises.length} exercises</>
                     )}
+                    {e.calories_burned != null && (
+                      <> · ~{Math.round(e.calories_burned)} cal</>
+                    )}
                   </p>
                   {e.notes && (
                     <p className="text-[11px] italic text-muted-foreground">{e.notes}</p>

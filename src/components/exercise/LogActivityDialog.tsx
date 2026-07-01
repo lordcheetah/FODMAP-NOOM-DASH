@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog } from '@/components/ui/dialog'
 import { useAddWorkoutLog } from '@/lib/db/workoutLog'
+import { useWeightLog } from '@/lib/db/bodyMetrics'
+import { metForExercise, caloriesBurned } from '@/lib/health/calories'
 import type { ExerciseRow } from '@/lib/db/types'
 
 export interface LogActivityDialogProps {
@@ -30,8 +32,13 @@ export function LogActivityDialog({
   onLogged,
 }: LogActivityDialogProps) {
   const add = useAddWorkoutLog()
+  const weights = useWeightLog()
+  const latestKg = weights.data?.[0]?.weight_kg ?? null
+  const met = metForExercise(exercise)
+
   const [minutes, setMinutes] = useState('')
   const [reps, setReps] = useState('')
+  const [calories, setCalories] = useState('')
   const [notes, setNotes] = useState('')
 
   useEffect(() => {
@@ -42,11 +49,16 @@ export function LogActivityDialog({
           : '',
       )
       setReps(exercise.default_reps != null ? String(exercise.default_reps) : '')
+      setCalories('')
       setNotes('')
       add.reset()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, exercise])
+
+  // Live MET estimate from the current minutes + latest logged weight.
+  const minsNum = minutes.trim() === '' ? null : Number(minutes)
+  const liveEstimate = caloriesBurned(met, latestKg, minsNum)
 
   const handleSave = () => {
     const mins = minutes.trim() === '' ? null : Number(minutes)
@@ -54,6 +66,12 @@ export function LogActivityDialog({
       mins != null && Number.isFinite(mins) && mins > 0 ? Math.round(mins * 60) : null
     const repVal = reps.trim() === '' ? null : Number(reps)
     const repsNum = repVal != null && Number.isFinite(repVal) && repVal > 0 ? repVal : null
+    // Use a typed value if entered, else the estimate from MET × weight × minutes.
+    const calTyped = calories.trim() === '' ? null : Number(calories)
+    const calVal =
+      calTyped != null && Number.isFinite(calTyped) && calTyped > 0
+        ? Math.round(calTyped)
+        : liveEstimate
 
     add.mutate(
       {
@@ -61,6 +79,7 @@ export function LogActivityDialog({
         workout_id: null,
         name: exercise.name,
         duration_sec: durationSec,
+        calories_burned: calVal,
         completed: true,
         notes: notes.trim() || null,
         exercises: [
@@ -125,6 +144,25 @@ export function LogActivityDialog({
             placeholder="optional"
             className="mt-2"
           />
+        </div>
+
+        <div>
+          <Label htmlFor="log-calories">Calories burned</Label>
+          <Input
+            id="log-calories"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            value={calories}
+            onChange={(e) => setCalories(e.target.value)}
+            placeholder={liveEstimate != null ? `est. ${liveEstimate}` : 'optional'}
+            className="mt-2"
+          />
+          <p className="mt-1 text-[11px] text-muted-foreground">
+            {latestKg != null
+              ? 'Estimated from your weight, this activity, and the minutes (editable).'
+              : 'Log your weight on Home to auto-estimate calories.'}
+          </p>
         </div>
 
         <div>
