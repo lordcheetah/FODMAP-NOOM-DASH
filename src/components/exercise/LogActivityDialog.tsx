@@ -4,8 +4,15 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Dialog } from '@/components/ui/dialog'
 import { useAddWorkoutLog } from '@/lib/db/workoutLog'
-import { useWeightLog } from '@/lib/db/bodyMetrics'
-import { metForExercise, caloriesBurned } from '@/lib/health/calories'
+import { useWeightLog, useBodyProfile } from '@/lib/db/bodyMetrics'
+import {
+  metForExercise,
+  caloriesBurned,
+  paceMinPerUnit,
+  formatPace,
+  inclineFactor,
+  miToKm,
+} from '@/lib/health/calories'
 import type { ExerciseRow } from '@/lib/db/types'
 
 export interface LogActivityDialogProps {
@@ -33,11 +40,17 @@ export function LogActivityDialog({
 }: LogActivityDialogProps) {
   const add = useAddWorkoutLog()
   const weights = useWeightLog()
+  const profile = useBodyProfile()
   const latestKg = weights.data?.[0]?.weight_kg ?? null
   const met = metForExercise(exercise)
+  const isCardio = exercise.category === 'cardio'
+  // Distance shown in the user's preferred unit; km stored canonically.
+  const distanceUnit = profile.data?.weight_unit === 'kg' ? 'km' : 'mi'
 
   const [minutes, setMinutes] = useState('')
   const [reps, setReps] = useState('')
+  const [distance, setDistance] = useState('')
+  const [incline, setIncline] = useState('')
   const [calories, setCalories] = useState('')
   const [notes, setNotes] = useState('')
 
@@ -49,6 +62,8 @@ export function LogActivityDialog({
           : '',
       )
       setReps(exercise.default_reps != null ? String(exercise.default_reps) : '')
+      setDistance('')
+      setIncline('')
       setCalories('')
       setNotes('')
       add.reset()
@@ -56,9 +71,17 @@ export function LogActivityDialog({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, exercise])
 
-  // Live MET estimate from the current minutes + latest logged weight.
+  // Live MET estimate from the current minutes + latest logged weight, nudged up
+  // by the treadmill/road incline for cardio.
   const minsNum = minutes.trim() === '' ? null : Number(minutes)
-  const liveEstimate = caloriesBurned(met, latestKg, minsNum)
+  const distNum = distance.trim() === '' ? null : Number(distance)
+  const inclineNum = incline.trim() === '' ? null : Number(incline)
+  const pace = isCardio ? formatPace(paceMinPerUnit(distNum, minsNum)) : null
+  const baseEstimate = caloriesBurned(met, latestKg, minsNum)
+  const liveEstimate =
+    baseEstimate != null && isCardio
+      ? Math.round(baseEstimate * inclineFactor(inclineNum))
+      : baseEstimate
 
   const handleSave = () => {
     const mins = minutes.trim() === '' ? null : Number(minutes)
@@ -72,6 +95,15 @@ export function LogActivityDialog({
       calTyped != null && Number.isFinite(calTyped) && calTyped > 0
         ? Math.round(calTyped)
         : liveEstimate
+    // Distance/incline are cardio-only; store distance in km canonically.
+    const distClean =
+      isCardio && distNum != null && Number.isFinite(distNum) && distNum > 0 ? distNum : null
+    const distanceKm =
+      distClean == null ? null : distanceUnit === 'mi' ? miToKm(distClean) : distClean
+    const inclinePct =
+      isCardio && inclineNum != null && Number.isFinite(inclineNum) && inclineNum >= 0
+        ? inclineNum
+        : null
 
     add.mutate(
       {
@@ -80,6 +112,8 @@ export function LogActivityDialog({
         name: exercise.name,
         duration_sec: durationSec,
         calories_burned: calVal,
+        distance_km: distanceKm,
+        incline_pct: inclinePct,
         completed: true,
         notes: notes.trim() || null,
         exercises: [
@@ -145,6 +179,44 @@ export function LogActivityDialog({
             className="mt-2"
           />
         </div>
+
+        {isCardio && (
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="log-distance">Distance ({distanceUnit})</Label>
+              <Input
+                id="log-distance"
+                type="number"
+                inputMode="decimal"
+                min={0}
+                step="0.01"
+                value={distance}
+                onChange={(e) => setDistance(e.target.value)}
+                placeholder="optional"
+                className="mt-2"
+              />
+              {pace && (
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Pace ~{pace} /{distanceUnit}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="log-incline">Incline (%)</Label>
+              <Input
+                id="log-incline"
+                type="number"
+                inputMode="decimal"
+                min={0}
+                step="0.5"
+                value={incline}
+                onChange={(e) => setIncline(e.target.value)}
+                placeholder="optional"
+                className="mt-2"
+              />
+            </div>
+          </div>
+        )}
 
         <div>
           <Label htmlFor="log-calories">Calories burned</Label>

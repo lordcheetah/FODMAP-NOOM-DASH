@@ -41,6 +41,48 @@ export function metForExercise(e: MetExercise): number {
   }
 }
 
+export const KM_PER_MI = 1.609344
+export function miToKm(mi: number): number {
+  return mi * KM_PER_MI
+}
+export function kmToMi(km: number): number {
+  return km / KM_PER_MI
+}
+
+/**
+ * Pace = minutes per distance unit (min/mi or min/km depending on the distance
+ * passed). Display-only. null for missing/non-positive inputs.
+ */
+export function paceMinPerUnit(
+  distance: number | null | undefined,
+  minutes: number | null | undefined,
+): number | null {
+  if (distance == null || minutes == null) return null
+  if (!Number.isFinite(distance) || !Number.isFinite(minutes)) return null
+  if (distance <= 0 || minutes <= 0) return null
+  return minutes / distance
+}
+
+/** Format a pace (min per unit) as "m:ss". */
+export function formatPace(pace: number | null): string | null {
+  if (pace == null || !Number.isFinite(pace) || pace <= 0) return null
+  const m = Math.floor(pace)
+  const s = Math.round((pace - m) * 60)
+  const mm = s === 60 ? m + 1 : m
+  const ss = s === 60 ? 0 : s
+  return `${mm}:${String(ss).padStart(2, '0')}`
+}
+
+/**
+ * Rough multiplier on the flat MET estimate for treadmill/road incline: about
+ * +5% energy per 1% grade, capped at 15% grade. Returns 1 when no incline.
+ * This is a coarse adjustment, not the ACSM metabolic equation.
+ */
+export function inclineFactor(inclinePct: number | null | undefined): number {
+  if (inclinePct == null || !Number.isFinite(inclinePct) || inclinePct <= 0) return 1
+  return 1 + Math.min(inclinePct, 15) * 0.05
+}
+
 /** kcal = MET × kg × hours. Returns null for missing/non-positive inputs. */
 export function caloriesBurned(
   met: number,

@@ -189,6 +189,8 @@ export interface WorkoutLogRow {
   duration_sec: number | null
   rounds_completed: number | null
   calories_burned: number | null
+  distance_km: number | null
+  incline_pct: number | null
   notes: string | null
   completed: boolean
   created_at: string

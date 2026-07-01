@@ -376,6 +376,8 @@ async function addWorkoutLogFn(vars: AddWorkoutLogVars): Promise<WorkoutLogRow> 
       duration_sec: vars.duration_sec ?? null,
       rounds_completed: vars.rounds_completed ?? null,
       calories_burned: vars.calories_burned ?? null,
+      distance_km: vars.distance_km ?? null,
+      incline_pct: vars.incline_pct ?? null,
       notes: vars.notes ?? null,
       completed: vars.completed ?? true,
     })
@@ -441,6 +443,8 @@ function buildAddWorkoutLogDefaults(qc: QueryClient) {
         duration_sec: vars.duration_sec ?? null,
         rounds_completed: vars.rounds_completed ?? null,
         calories_burned: vars.calories_burned ?? null,
+        distance_km: vars.distance_km ?? null,
+        incline_pct: vars.incline_pct ?? null,
         notes: vars.notes ?? null,
         completed: vars.completed ?? true,
         created_at: new Date().toISOString(),

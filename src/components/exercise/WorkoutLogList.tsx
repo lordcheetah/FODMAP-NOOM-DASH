@@ -5,6 +5,8 @@ import {
   useDeleteWorkoutLog,
   type WorkoutLogEntry,
 } from '@/lib/db/workoutLog'
+import { useBodyProfile } from '@/lib/db/bodyMetrics'
+import { kmToMi, paceMinPerUnit, formatPace } from '@/lib/health/calories'
 
 export interface WorkoutLogListProps {
   /** YYYY-MM-DD (local) — the day to show. */
@@ -25,6 +27,8 @@ function fmtDuration(sec: number | null): string | null {
 export function WorkoutLogList({ date }: WorkoutLogListProps) {
   const log = useWorkoutLog(date)
   const del = useDeleteWorkoutLog()
+  const profile = useBodyProfile()
+  const distanceUnit = profile.data?.weight_unit === 'kg' ? 'km' : 'mi'
   const entries: WorkoutLogEntry[] = log.data ?? []
 
   return (
@@ -43,6 +47,16 @@ export function WorkoutLogList({ date }: WorkoutLogListProps) {
         <ul className="divide-y">
           {entries.map((e) => {
             const dur = fmtDuration(e.duration_sec)
+            const dist =
+              e.distance_km != null
+                ? distanceUnit === 'mi'
+                  ? kmToMi(e.distance_km)
+                  : e.distance_km
+                : null
+            const pace =
+              dist != null && e.duration_sec != null
+                ? formatPace(paceMinPerUnit(dist, e.duration_sec / 60))
+                : null
             return (
               <li key={e.id} className="flex items-center justify-between gap-2 py-2">
                 <div>
@@ -51,6 +65,15 @@ export function WorkoutLogList({ date }: WorkoutLogListProps) {
                     {dur && <>{dur}</>}
                     {e.rounds_completed != null && (
                       <> {dur ? '· ' : ''}{e.rounds_completed} rounds</>
+                    )}
+                    {dist != null && (
+                      <> · {dist.toFixed(2)} {distanceUnit}</>
+                    )}
+                    {pace && (
+                      <> · {pace}/{distanceUnit}</>
+                    )}
+                    {e.incline_pct != null && e.incline_pct > 0 && (
+                      <> · {e.incline_pct}% incline</>
                     )}
                     {e.workout_log_exercises.length > 0 && (
                       <> · {e.workout_log_exercises.length} exercises</>

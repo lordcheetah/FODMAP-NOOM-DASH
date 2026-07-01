@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest'
-import { metForExercise, caloriesBurned } from './calories'
+import {
+  metForExercise,
+  caloriesBurned,
+  paceMinPerUnit,
+  formatPace,
+  inclineFactor,
+  miToKm,
+  kmToMi,
+} from './calories'
 import type { ExerciseRow } from '@/lib/db/types'
 
 const ex = (p: Partial<ExerciseRow>): ExerciseRow =>
@@ -36,5 +44,34 @@ describe('caloriesBurned', () => {
     expect(caloriesBurned(3.5, 77, 0)).toBeNull()
     expect(caloriesBurned(0, 77, 30)).toBeNull()
     expect(caloriesBurned(3.5, NaN, 30)).toBeNull()
+  })
+})
+
+describe('distance / pace / incline helpers', () => {
+  it('mi <-> km round-trip', () => {
+    expect(miToKm(1)).toBeCloseTo(1.609344, 6)
+    expect(kmToMi(1.609344)).toBeCloseTo(1, 6)
+    expect(kmToMi(miToKm(3))).toBeCloseTo(3, 6)
+  })
+
+  it('pace = minutes / distance', () => {
+    expect(paceMinPerUnit(3, 45)).toBe(15) // 15 min/mi
+    expect(paceMinPerUnit(0, 45)).toBeNull()
+    expect(paceMinPerUnit(3, 0)).toBeNull()
+    expect(paceMinPerUnit(null, 45)).toBeNull()
+  })
+
+  it('formats pace as m:ss', () => {
+    expect(formatPace(15)).toBe('15:00')
+    expect(formatPace(12.5)).toBe('12:30')
+    expect(formatPace(null)).toBeNull()
+    expect(formatPace(0)).toBeNull()
+  })
+
+  it('incline factor: +5% per grade, capped, 1 when none', () => {
+    expect(inclineFactor(null)).toBe(1)
+    expect(inclineFactor(0)).toBe(1)
+    expect(inclineFactor(2)).toBeCloseTo(1.1, 6)
+    expect(inclineFactor(100)).toBeCloseTo(1.75, 6) // capped at 15% grade
   })
 })
