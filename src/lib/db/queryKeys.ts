@@ -7,6 +7,9 @@ export const queryKeys = {
   foodByBarcode: (userId: string | undefined, barcode: string | null) =>
     ['foodByBarcode', userId, barcode] as const,
   recipeSearch: (term: string) => ['recipeSearch', term] as const,
+  recentFoods: (userId: string | undefined) => ['recentFoods', userId] as const,
+  recentExercises: (userId: string | undefined) =>
+    ['recentExercises', userId] as const,
   recipe: (id: string) => ['recipe', id] as const,
   foodLog: (userId: string | undefined, date: string) =>
     ['foodLog', userId, date] as const,

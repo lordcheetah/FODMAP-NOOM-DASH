@@ -7,6 +7,7 @@ import { useDailyTargets } from '@/lib/db/dailyTargets'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import { FoodSearch } from '@/components/meals/FoodSearch'
+import { RecentFoods } from '@/components/meals/RecentFoods'
 import { DailyLog } from '@/components/meals/DailyLog'
 import { DaySummary } from '@/components/meals/DaySummary'
 import { TargetsForm } from '@/components/meals/TargetsForm'
@@ -131,6 +132,8 @@ export default function Meals() {
       )}
 
       <FoodSearch date={date} mealContext={meal} />
+
+      <RecentFoods date={date} mealContext={meal} />
 
       <DailyLog date={date} entries={entries} isLoading={log.isLoading} />
 

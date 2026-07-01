@@ -11,6 +11,7 @@ import { RoutinePlayer } from '@/components/exercise/RoutinePlayer'
 import { CompleteDialog } from '@/components/exercise/CompleteDialog'
 import { CycleView } from '@/components/exercise/CycleView'
 import { WorkoutLogList } from '@/components/exercise/WorkoutLogList'
+import { RecentExercises } from '@/components/exercise/RecentExercises'
 
 /** Local-time YYYY-MM-DD (avoids UTC off-by-one). Mirrors Meals.todayISO. */
 function todayISO(): string {
@@ -114,6 +115,7 @@ export default function Exercise() {
       {view === 'browse' && (
         <>
           <WorkoutBrowser onOpenWorkout={openWorkout} onOpenExercise={openExercise} />
+          <RecentExercises date={date} />
           <WorkoutLogList date={date} />
         </>
       )}
