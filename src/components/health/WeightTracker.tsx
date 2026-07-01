@@ -22,6 +22,7 @@ import {
   cmToFtIn,
   type BmiCategory,
 } from '@/lib/health/bmi'
+import { sparklinePolyline } from '@/lib/health/sparkline'
 
 const CATEGORY_CLASS: Record<BmiCategory, string> = {
   underweight: 'bg-amber-100 text-amber-900',
@@ -179,6 +180,39 @@ export function WeightTracker() {
         <p className="text-[11px] text-amber-700">
           Set your height (Height / units) to see your BMI.
         </p>
+      )}
+
+      {/* Trend: chronological (oldest→newest) weight sparkline. */}
+      {entries.length >= 2 && (
+        <div>
+          <svg
+            viewBox="0 0 240 40"
+            className="h-10 w-full text-primary"
+            preserveAspectRatio="none"
+            role="img"
+            aria-label="Weight trend"
+          >
+            <polyline
+              points={sparklinePolyline(
+                [...entries].reverse().map((e) => e.weight_kg),
+                240,
+                40,
+              )}
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+          <p className="text-[11px] text-muted-foreground">
+            {(() => {
+              const first = entries[entries.length - 1].weight_kg
+              const dkg = latestKg != null ? latestKg - first : 0
+              const d = weightUnit === 'lb' ? kgToLb(dkg) : dkg
+              return `${d > 0 ? '+' : ''}${fmt(d)} ${weightUnit} over ${entries.length} entries`
+            })()}
+          </p>
+        </div>
       )}
 
       {/* Log a weight */}
