@@ -1,7 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
-import { queryKeys } from './queryKeys'
+import { mutationKeys, queryKeys } from './queryKeys'
+import { useInjectUserId } from './useInjectUserId'
+import type {
+  AddWeightVars,
+  DeleteWeightVars,
+  UpsertBodyProfileVars,
+} from './mutationDefaults'
 
 export interface BodyProfileRow {
   user_id: string
@@ -50,35 +56,22 @@ export interface BodyProfileInput {
   height_unit?: string
 }
 
-/** Create/update the singleton body profile for the current user. */
+/**
+ * Create/update the singleton body profile. Offline-capable: queued + optimistic
+ * via the registered mutation default; resumes after reload.
+ */
 export function useUpsertBodyProfile() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: BodyProfileInput): Promise<BodyProfileRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const { data, error } = await supabase
-        .from('body_profile')
-        .upsert(
-          {
-            user_id: userId,
-            ...input,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: 'user_id' },
-        )
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as BodyProfileRow
-    },
-    onSuccess: () => {
-      void qc.invalidateQueries({ queryKey: queryKeys.bodyProfile(userId) })
-    },
-  })
+  return useInjectUserId<
+    BodyProfileRow,
+    Error,
+    BodyProfileInput,
+    UpsertBodyProfileVars,
+    unknown
+  >(
+    useMutation<BodyProfileRow, Error, UpsertBodyProfileVars>({
+      mutationKey: mutationKeys.upsertBodyProfile,
+    }),
+  )
 }
 
 /** The user's weight entries, newest first. */
@@ -110,49 +103,26 @@ export interface AddWeightInput {
   note?: string | null
 }
 
-/** Record a weight entry for the current user; refreshes the history. */
+/** Record a weight entry (offline-capable, optimistic). */
 export function useAddWeight() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (input: AddWeightInput): Promise<WeightLogRow> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      if (!userId) throw new Error('Not signed in.')
-      const { data, error } = await supabase
-        .from('weight_log')
-        .insert({
-          user_id: userId,
-          weight_kg: input.weight_kg,
-          recorded_on: input.recorded_on ?? undefined,
-          note: input.note ?? null,
-        })
-        .select('*')
-        .single()
-      if (error) throw error
-      return data as WeightLogRow
-    },
-    onSuccess: () => {
-      void qc.invalidateQueries({ queryKey: queryKeys.weightLog(userId) })
-    },
-  })
+  return useInjectUserId<
+    WeightLogRow,
+    Error,
+    AddWeightInput,
+    AddWeightVars,
+    unknown
+  >(
+    useMutation<WeightLogRow, Error, AddWeightVars>({
+      mutationKey: mutationKeys.addWeight,
+    }),
+  )
 }
 
-/** Delete a weight entry; refreshes the history. */
+/** Delete a weight entry by id (offline-capable, optimistic). */
 export function useDeleteWeight() {
-  const { user } = useAuth()
-  const userId = user?.id
-  const qc = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (id: string): Promise<void> => {
-      if (!supabase) throw new Error('Supabase is not configured.')
-      const { error } = await supabase.from('weight_log').delete().eq('id', id)
-      if (error) throw error
-    },
-    onSuccess: () => {
-      void qc.invalidateQueries({ queryKey: queryKeys.weightLog(userId) })
-    },
-  })
+  return useInjectUserId<void, Error, { id: string }, DeleteWeightVars, unknown>(
+    useMutation<void, Error, DeleteWeightVars>({
+      mutationKey: mutationKeys.deleteWeight,
+    }),
+  )
 }

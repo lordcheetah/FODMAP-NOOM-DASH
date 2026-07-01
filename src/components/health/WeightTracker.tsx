@@ -374,7 +374,7 @@ export function WeightTracker() {
                     variant="ghost"
                     aria-label={`Delete ${w.recorded_on} entry`}
                     disabled={delWeight.isPending}
-                    onClick={() => delWeight.mutate(w.id)}
+                    onClick={() => delWeight.mutate({ id: w.id })}
                   >
                     <Trash2 className="h-4 w-4 text-muted-foreground" />
                   </Button>

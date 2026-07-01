@@ -31,6 +31,12 @@ import type { DailyTargetsInput } from './dailyTargets'
 import type { CreateFoodInput } from './foods'
 import type { AddWorkoutLogInput, WorkoutLogEntry } from './workoutLog'
 import type {
+  AddWeightInput,
+  BodyProfileInput,
+  BodyProfileRow,
+  WeightLogRow,
+} from './bodyMetrics'
+import type {
   DailyTargetsRow,
   FoodLogRow,
   FoodRow,
@@ -60,6 +66,9 @@ export type UpdateWorkoutLogVars = {
   completed?: boolean
 }
 export type DeleteWorkoutLogVars = { id: string; date: string; userId: string }
+export type AddWeightVars = AddWeightInput & { userId: string }
+export type DeleteWeightVars = { id: string; userId: string }
+export type UpsertBodyProfileVars = BodyProfileInput & { userId: string }
 
 /** Marker prefix for optimistic (not-yet-synced) rows. */
 export const OPTIMISTIC_PREFIX = 'optimistic-'
@@ -558,6 +567,137 @@ function buildDeleteWorkoutLogDefaults(qc: QueryClient) {
 }
 
 // ---------------------------------------------------------------------------
+// weight_log + body_profile (offline-capable)
+// ---------------------------------------------------------------------------
+
+type WeightLogCtx = { previous: WeightLogRow[] | undefined; userId: string }
+type BodyProfileCtx = {
+  previous: BodyProfileRow | null | undefined
+  userId: string
+}
+
+async function addWeightFn(vars: AddWeightVars): Promise<WeightLogRow> {
+  const sb = requireSupabase()
+  const { data, error } = await sb
+    .from('weight_log')
+    .insert({
+      user_id: vars.userId,
+      weight_kg: vars.weight_kg,
+      recorded_on: vars.recorded_on ?? undefined,
+      note: vars.note ?? null,
+    })
+    .select('*')
+    .single()
+  if (error) throw error
+  return data as WeightLogRow
+}
+
+function buildAddWeightDefaults(qc: QueryClient) {
+  return {
+    mutationFn: addWeightFn,
+    onMutate: async (vars: AddWeightVars): Promise<WeightLogCtx> => {
+      const key = queryKeys.weightLog(vars.userId)
+      await qc.cancelQueries({ queryKey: key })
+      const previous = qc.getQueryData<WeightLogRow[]>(key)
+      const optimistic: WeightLogRow = {
+        id: tempId(),
+        user_id: vars.userId,
+        recorded_on: vars.recorded_on ?? new Date().toISOString().slice(0, 10),
+        weight_kg: vars.weight_kg,
+        note: vars.note ?? null,
+        created_at: new Date().toISOString(),
+      }
+      qc.setQueryData<WeightLogRow[]>(key, (old = []) => [optimistic, ...old])
+      return { previous, userId: vars.userId }
+    },
+    onError: (_e: unknown, _v: AddWeightVars, ctx?: WeightLogCtx) => {
+      if (ctx) qc.setQueryData(queryKeys.weightLog(ctx.userId), ctx.previous)
+    },
+    onSettled: (_d: unknown, _e: unknown, vars: AddWeightVars) => {
+      void qc.invalidateQueries({ queryKey: queryKeys.weightLog(vars.userId) })
+    },
+  }
+}
+
+async function deleteWeightFn(vars: DeleteWeightVars): Promise<void> {
+  if (isOptimisticId(vars.id)) return
+  const sb = requireSupabase()
+  const { error } = await sb.from('weight_log').delete().eq('id', vars.id)
+  if (error) throw error
+}
+
+function buildDeleteWeightDefaults(qc: QueryClient) {
+  return {
+    mutationFn: deleteWeightFn,
+    onMutate: async (vars: DeleteWeightVars): Promise<WeightLogCtx> => {
+      const key = queryKeys.weightLog(vars.userId)
+      await qc.cancelQueries({ queryKey: key })
+      const previous = qc.getQueryData<WeightLogRow[]>(key)
+      qc.setQueryData<WeightLogRow[]>(key, (old = []) =>
+        old.filter((r) => r.id !== vars.id),
+      )
+      return { previous, userId: vars.userId }
+    },
+    onError: (_e: unknown, _v: DeleteWeightVars, ctx?: WeightLogCtx) => {
+      if (ctx) qc.setQueryData(queryKeys.weightLog(ctx.userId), ctx.previous)
+    },
+    onSettled: (_d: unknown, _e: unknown, vars: DeleteWeightVars) => {
+      void qc.invalidateQueries({ queryKey: queryKeys.weightLog(vars.userId) })
+    },
+  }
+}
+
+async function upsertBodyProfileFn(
+  vars: UpsertBodyProfileVars,
+): Promise<BodyProfileRow> {
+  const sb = requireSupabase()
+  const { userId, ...input } = vars
+  const { data, error } = await sb
+    .from('body_profile')
+    .upsert(
+      { ...input, user_id: userId, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id' },
+    )
+    .select('*')
+    .single()
+  if (error) throw error
+  return data as BodyProfileRow
+}
+
+function buildUpsertBodyProfileDefaults(qc: QueryClient) {
+  return {
+    mutationFn: upsertBodyProfileFn,
+    onMutate: async (vars: UpsertBodyProfileVars): Promise<BodyProfileCtx> => {
+      const key = queryKeys.bodyProfile(vars.userId)
+      await qc.cancelQueries({ queryKey: key })
+      const previous = qc.getQueryData<BodyProfileRow | null>(key)
+      const { userId, ...patch } = vars
+      qc.setQueryData<BodyProfileRow | null>(
+        key,
+        (old) =>
+          ({
+            weight_unit: 'lb',
+            height_unit: 'ftin',
+            height_cm: null,
+            sex: null,
+            ...(old ?? {}),
+            ...patch,
+            user_id: userId,
+            updated_at: new Date().toISOString(),
+          }) as BodyProfileRow,
+      )
+      return { previous, userId: vars.userId }
+    },
+    onError: (_e: unknown, _v: UpsertBodyProfileVars, ctx?: BodyProfileCtx) => {
+      if (ctx) qc.setQueryData(queryKeys.bodyProfile(ctx.userId), ctx.previous)
+    },
+    onSettled: (_d: unknown, _e: unknown, vars: UpsertBodyProfileVars) => {
+      void qc.invalidateQueries({ queryKey: queryKeys.bodyProfile(vars.userId) })
+    },
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Registration
 // ---------------------------------------------------------------------------
 
@@ -588,6 +728,12 @@ export function registerMutationDefaults(qc: QueryClient): void {
     mutationKeys.deleteWorkoutLog,
     buildDeleteWorkoutLogDefaults(qc),
   )
+  qc.setMutationDefaults(mutationKeys.addWeight, buildAddWeightDefaults(qc))
+  qc.setMutationDefaults(mutationKeys.deleteWeight, buildDeleteWeightDefaults(qc))
+  qc.setMutationDefaults(
+    mutationKeys.upsertBodyProfile,
+    buildUpsertBodyProfileDefaults(qc),
+  )
 }
 
 export {
@@ -599,4 +745,7 @@ export {
   buildAddWorkoutLogDefaults,
   buildUpdateWorkoutLogDefaults,
   buildDeleteWorkoutLogDefaults,
+  buildAddWeightDefaults,
+  buildDeleteWeightDefaults,
+  buildUpsertBodyProfileDefaults,
 }

@@ -51,4 +51,7 @@ export const mutationKeys = {
   addWorkoutLog: ['workout_log', 'add'] as const,
   updateWorkoutLog: ['workout_log', 'update'] as const,
   deleteWorkoutLog: ['workout_log', 'delete'] as const,
+  addWeight: ['weight_log', 'add'] as const,
+  deleteWeight: ['weight_log', 'delete'] as const,
+  upsertBodyProfile: ['body_profile', 'upsert'] as const,
 }
