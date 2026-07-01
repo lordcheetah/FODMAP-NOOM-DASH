@@ -15,6 +15,8 @@ export const queryKeys = {
     ['foodLog', userId, date] as const,
   dailyTargets: (userId: string | undefined) =>
     ['dailyTargets', userId] as const,
+  bodyProfile: (userId: string | undefined) => ['bodyProfile', userId] as const,
+  weightLog: (userId: string | undefined) => ['weightLog', userId] as const,
 
   // Exercise (Phase 2)
   exercises: (category?: string) => ['exercises', category ?? 'all'] as const,
