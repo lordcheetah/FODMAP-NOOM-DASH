@@ -191,6 +191,7 @@ describe('daily_targets upsert — optimistic onMutate', () => {
       user_id: USER,
       calorie_budget: 1800,
       sodium_budget_mg: 2300,
+      potassium_goal_mg: 4700,
       fiber_goal_g: 25,
       fiber_per_meal_g: 8,
       dash_serving_goals: {},

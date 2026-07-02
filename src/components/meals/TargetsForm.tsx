@@ -12,11 +12,16 @@ import {
 
 /** DB defaults (mirror 0001_init.sql) used to prefill when no row exists yet. */
 const DEFAULTS: Record<
-  'calorie_budget' | 'sodium_budget_mg' | 'fiber_goal_g' | 'fiber_per_meal_g',
+  | 'calorie_budget'
+  | 'sodium_budget_mg'
+  | 'potassium_goal_mg'
+  | 'fiber_goal_g'
+  | 'fiber_per_meal_g',
   string
 > = {
   calorie_budget: '',
   sodium_budget_mg: '2300',
+  potassium_goal_mg: '4700', // DASH aim; a floor, not a ceiling
   fiber_goal_g: '28',
   fiber_per_meal_g: '8',
 }
@@ -60,6 +65,7 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
 
   const [calorie, setCalorie] = useState(DEFAULTS.calorie_budget)
   const [sodium, setSodium] = useState(DEFAULTS.sodium_budget_mg)
+  const [potassium, setPotassium] = useState(DEFAULTS.potassium_goal_mg)
   const [fiberDaily, setFiberDaily] = useState(DEFAULTS.fiber_goal_g)
   const [fiberMeal, setFiberMeal] = useState(DEFAULTS.fiber_per_meal_g)
   const [dash, setDash] = useState<Record<DashGroup, string>>(() =>
@@ -71,6 +77,9 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
     if (!open) return
     setCalorie(targets ? toStr(targets.calorie_budget) : DEFAULTS.calorie_budget)
     setSodium(targets ? toStr(targets.sodium_budget_mg) : DEFAULTS.sodium_budget_mg)
+    setPotassium(
+      targets ? toStr(targets.potassium_goal_mg) : DEFAULTS.potassium_goal_mg,
+    )
     setFiberDaily(targets ? toStr(targets.fiber_goal_g) : DEFAULTS.fiber_goal_g)
     setFiberMeal(targets ? toStr(targets.fiber_per_meal_g) : DEFAULTS.fiber_per_meal_g)
     setDash(
@@ -91,6 +100,7 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
     const input: DailyTargetsInput = {
       calorie_budget: toNum(calorie),
       sodium_budget_mg: toNum(sodium),
+      potassium_goal_mg: toNum(potassium),
       fiber_goal_g: toNum(fiberDaily),
       fiber_per_meal_g: toNum(fiberMeal),
       dash_serving_goals,
@@ -104,12 +114,13 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
       onClose={onClose}
       variant="sheet"
       title="Daily targets"
-      description="Set calorie, sodium, and fiber goals plus DASH serving goals."
+      description="Set calorie, sodium, potassium, and fiber goals plus DASH serving goals."
     >
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
           <Field id="calorie" label="Calorie budget" value={calorie} onChange={setCalorie} />
           <Field id="sodium" label="Sodium budget (mg)" value={sodium} onChange={setSodium} />
+          <Field id="potassium" label="Potassium goal (mg/day)" value={potassium} onChange={setPotassium} />
           <Field id="fiberDaily" label="Fiber goal (g/day)" value={fiberDaily} onChange={setFiberDaily} />
           <Field id="fiberMeal" label="Fiber per meal (g)" value={fiberMeal} onChange={setFiberMeal} />
         </div>

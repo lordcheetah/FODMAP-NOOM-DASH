@@ -124,6 +124,7 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
 
   const dash = dashProgress(nutrients, {
     sodium_budget_mg: targets?.sodium_budget_mg ?? null,
+    potassium_goal_mg: targets?.potassium_goal_mg ?? null,
     dash_serving_goals: targets?.dash_serving_goals ?? {},
   })
 
@@ -359,6 +360,32 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
             )}
           </div>
         )}
+
+        {/* Potassium — a FLOOR to reach (counteracts sodium for blood pressure),
+            green once met. */}
+        <div className="mt-3 flex items-baseline justify-between text-sm">
+          <span className="font-medium">Potassium</span>
+          <span
+            className={cn(
+              'tabular-nums',
+              dash.meetsPotassiumGoal && dash.potassiumGoalMg != null && 'text-noom-green',
+            )}
+          >
+            {round(dash.potassiumMg)}
+            {dash.potassiumGoalMg != null && (
+              <span className="text-muted-foreground"> / {dash.potassiumGoalMg} mg</span>
+            )}
+            {dash.potassiumGoalMg == null && (
+              <span className="text-muted-foreground"> mg</span>
+            )}
+          </span>
+        </div>
+        {dash.potassiumGoalMg != null && (
+          <div className="mt-1">
+            <Bar value={dash.potassiumMg} max={dash.potassiumGoalMg} />
+          </div>
+        )}
+
         <p className="mt-3 text-sm font-medium">DASH servings</p>
         <ul className="mt-1 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
           {DASH_GROUPS.map((g) => {

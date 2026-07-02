@@ -82,4 +82,22 @@ describe('dashProgress', () => {
     const r = dashProgress([], { dash_serving_goals: { vegetables: 5, fruits: 4 } })
     expect(r.goalsByGroup).toEqual({ vegetables: 5, fruits: 4 })
   })
+
+  it('potassium goal: met when the total reaches it (boundary: equal IS met)', () => {
+    const under = dashProgress([entry({ potassium_mg: 3000 })], { potassium_goal_mg: 4700 })
+    expect(under.potassiumGoalMg).toBe(4700)
+    expect(under.meetsPotassiumGoal).toBe(false)
+
+    const atGoal = dashProgress([entry({ potassium_mg: 4700 })], { potassium_goal_mg: 4700 })
+    expect(atGoal.meetsPotassiumGoal).toBe(true)
+  })
+
+  it('potassium goal: null/undefined goal is never "met"', () => {
+    expect(dashProgress([entry({ potassium_mg: 9999 })], {}).meetsPotassiumGoal).toBe(false)
+    expect(dashProgress([entry({ potassium_mg: 9999 })], {}).potassiumGoalMg).toBe(null)
+    expect(
+      dashProgress([entry({ potassium_mg: 9999 })], { potassium_goal_mg: null })
+        .meetsPotassiumGoal,
+    ).toBe(false)
+  })
 })

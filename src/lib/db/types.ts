@@ -96,6 +96,8 @@ export interface DailyTargetsRow {
   user_id: string
   calorie_budget: number | null
   sodium_budget_mg: number | null
+  /** DASH potassium FLOOR (mg/day) — reach it, unlike the sodium ceiling. */
+  potassium_goal_mg: number | null
   fiber_goal_g: number | null
   fiber_per_meal_g: number | null
   /** jsonb; e.g. `{ "vegetables": 5, "fruits": 5 }`. */

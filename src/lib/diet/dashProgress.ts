@@ -21,6 +21,8 @@ export interface LoggedNutrients {
 
 export interface DashTargets {
   sodium_budget_mg?: number | null
+  /** Daily potassium FLOOR (mg) — met when the total reaches it. */
+  potassium_goal_mg?: number | null
   dash_serving_goals?: Partial<Record<DashGroup, number>>
 }
 
@@ -33,6 +35,10 @@ export interface DashProgress {
   sodiumOverBudget: boolean
   satFatG: number
   potassiumMg: number
+  /** Daily potassium goal (mg), or null when unset. */
+  potassiumGoalMg: number | null
+  /** True only when a goal is set AND the total reaches it. */
+  meetsPotassiumGoal: boolean
 }
 
 /** The 8 DASH groups, in a stable order, used to seed the zeroed buckets. */
@@ -91,6 +97,12 @@ export function dashProgress(
       ? targets.sodium_budget_mg
       : null
 
+  const potassiumGoalMg =
+    typeof targets.potassium_goal_mg === 'number' &&
+    Number.isFinite(targets.potassium_goal_mg)
+      ? targets.potassium_goal_mg
+      : null
+
   return {
     servingsByGroup,
     goalsByGroup: targets.dash_serving_goals ?? {},
@@ -99,5 +111,7 @@ export function dashProgress(
     sodiumOverBudget: sodiumBudgetMg != null && sodiumMg > sodiumBudgetMg,
     satFatG,
     potassiumMg,
+    potassiumGoalMg,
+    meetsPotassiumGoal: potassiumGoalMg != null && potassiumMg >= potassiumGoalMg,
   }
 }
