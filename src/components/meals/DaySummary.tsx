@@ -1,10 +1,12 @@
 import { cn } from '@/lib/utils'
 import {
   dashProgress,
+  dietConflicts,
   fiberProgress,
   noomColor,
   recipeNutrients,
   DASH_GROUPS,
+  type ConflictInput,
   type DashGroup,
   type LoggedNutrients,
   type NoomColor,
@@ -101,6 +103,28 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
     (e) => e.food != null && e.food.dash_group == null,
   ).length
 
+  // Cross-diet conflicts over the day's FOODS (recipes carry no single DASH
+  // group). NOOM color is computed from cal/g, matching the rest of the app.
+  const conflicts = dietConflicts(
+    entries.flatMap((e): ConflictInput[] => {
+      const f = e.food
+      if (!f) return []
+      return [
+        {
+          name: f.name,
+          meal: e.meal,
+          fructoseLevel: f.fructose_level,
+          fructansLevel: f.fructans_level,
+          dashGroup: f.dash_group,
+          noom:
+            f.calories != null && f.serving_grams != null
+              ? noomColor(f.calories, f.serving_grams)
+              : null,
+        },
+      ]
+    }),
+  )
+
   const fiber = fiberProgress(nutrients, {
     fiber_goal_g: targets?.fiber_goal_g ?? null,
     fiber_per_meal_g: targets?.fiber_per_meal_g ?? null,
@@ -126,6 +150,31 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
   return (
     <section className="space-y-4 rounded-lg border bg-card p-4 text-card-foreground">
       <h3 className="text-sm font-semibold">Day summary</h3>
+
+      {/* Cross-diet conflicts — surface disagreement between DASH / NOOM / FODMAP
+          rather than averaging it away. */}
+      {conflicts.length > 0 && (
+        <div>
+          <p className="text-sm font-medium">Heads up — diet conflicts</p>
+          <ul className="mt-2 space-y-1.5">
+            {conflicts.map((c, i) => (
+              <li
+                key={`${c.kind}-${c.foodName}-${i}`}
+                className={cn(
+                  'rounded-md border p-2 text-xs',
+                  c.tone === 'warn'
+                    ? 'border-amber-300 bg-amber-50 text-amber-900'
+                    : 'border-noom-green/30 bg-noom-green/10',
+                )}
+              >
+                <span className="font-medium">{c.foodName}</span>
+                <span className="text-muted-foreground"> · {MEAL_LABEL[c.meal]}</span> —{' '}
+                {c.message}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Calories */}
       <div>
