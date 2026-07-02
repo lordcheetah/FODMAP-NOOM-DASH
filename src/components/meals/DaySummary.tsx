@@ -3,11 +3,16 @@ import {
   dashProgress,
   dietConflicts,
   fiberProgress,
+  fodmapMealLoad,
   noomColor,
+  recipeAxisLevel,
   recipeNutrients,
+  recipeRollup,
   DASH_GROUPS,
   type ConflictInput,
   type DashGroup,
+  type FodmapLevel,
+  type FodmapStackInput,
   type LoggedNutrients,
   type NoomColor,
 } from '@/lib/diet'
@@ -35,6 +40,31 @@ const DASH_GROUP_LABEL: Record<DashGroup, string> = {
 }
 
 const NOOM_COLORS: readonly NoomColor[] = ['green', 'yellow', 'orange']
+
+/** Per-level chip styling for the stacked FODMAP load, matching FodmapBadge tones. */
+const LEVEL_STYLE: Record<FodmapLevel, { label: string; className: string }> = {
+  low: { label: 'low', className: 'bg-noom-green/15 text-noom-green border-noom-green/30' },
+  moderate: {
+    label: 'moderate',
+    className: 'bg-noom-yellow/20 text-yellow-700 border-noom-yellow/40',
+  },
+  high: { label: 'high', className: 'bg-destructive/10 text-destructive border-destructive/30' },
+  unknown: { label: 'not verified', className: 'bg-muted text-muted-foreground border-border' },
+}
+
+function LevelChip({ axis, level }: { axis: string; level: FodmapLevel }) {
+  const s = LEVEL_STYLE[level]
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium',
+        s.className,
+      )}
+    >
+      {axis}: {s.label}
+    </span>
+  )
+}
 
 function round(n: number, digits = 0): number {
   const f = 10 ** digits
@@ -125,6 +155,37 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
     }),
   )
 
+  // FODMAP load stacked per meal. Foods use their own levels; recipes use a
+  // worst-case roll-up bridged so a partially-unverified recipe never understates
+  // to 'low' (known-high dominates, incompleteness → unknown).
+  const mealLoads = fodmapMealLoad(
+    entries.flatMap((e): FodmapStackInput[] => {
+      if (e.food) {
+        return [
+          {
+            meal: e.meal,
+            servings: e.servings,
+            fructoseLevel: e.food.fructose_level,
+            fructansLevel: e.food.fructans_level,
+          },
+        ]
+      }
+      if (e.recipe) {
+        const r = recipeRollup(e.recipe.recipe_ingredients ?? [])
+        return [
+          {
+            meal: e.meal,
+            servings: e.servings,
+            fructoseLevel: recipeAxisLevel(r.fructoseLevel, r.isComplete),
+            fructansLevel: recipeAxisLevel(r.fructansLevel, r.isComplete),
+          },
+        ]
+      }
+      return []
+    }),
+  )
+  const flaggedLoads = mealLoads.filter((m) => m.flagged)
+
   const fiber = fiberProgress(nutrients, {
     fiber_goal_g: targets?.fiber_goal_g ?? null,
     fiber_per_meal_g: targets?.fiber_per_meal_g ?? null,
@@ -173,6 +234,30 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* FODMAP load stacked per meal — flag meals where individually-tolerable
+          servings add up, or an unverified food leaves the total uncertain. */}
+      {flaggedLoads.length > 0 && (
+        <div>
+          <p className="text-sm font-medium">FODMAP load by meal</p>
+          <ul className="mt-2 space-y-1.5">
+            {flaggedLoads.map((m) => (
+              <li key={m.meal} className="flex items-center justify-between gap-2 text-xs">
+                <span className="text-muted-foreground">{MEAL_LABEL[m.meal]}</span>
+                <span className="flex flex-wrap justify-end gap-1.5">
+                  <LevelChip axis="Fructose" level={m.fructose.level} />
+                  <LevelChip axis="Fructans" level={m.fructans.level} />
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-1 text-[10px] text-muted-foreground">
+            Stacked across each meal — several tolerable servings can add up past a
+            threshold. An estimate to calibrate to your own tolerance; “not verified”
+            means an unknown food could push the total higher.
+          </p>
         </div>
       )}
 
