@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { dietConflicts, type ConflictInput } from './dietConflicts'
+import {
+  dietConflicts,
+  dashTargetConflicts,
+  type ConflictInput,
+  type DashTargetInput,
+} from './dietConflicts'
 
 const food = (p: Partial<ConflictInput>): ConflictInput => ({
   name: 'Food',
@@ -122,5 +127,79 @@ describe('dietConflicts — precedence, dedup, guards', () => {
 
   it('returns [] for an empty day', () => {
     expect(dietConflicts([])).toEqual([])
+  })
+})
+
+describe('dashTargetConflicts — day-level "met via triggers"', () => {
+  const dfood = (p: Partial<DashTargetInput>): DashTargetInput => ({
+    dashGroup: 'fruits',
+    servings: 1,
+    fructoseLevel: 'low',
+    fructansLevel: 'low',
+    ...p,
+  })
+
+  it('flags a met goal where most servings were FODMAP-high', () => {
+    // 3 of 4 fruit servings are high-fructose (75%), goal of 4 met.
+    const [c] = dashTargetConflicts(
+      [
+        dfood({ servings: 3, fructoseLevel: 'high' }),
+        dfood({ servings: 1 }),
+      ],
+      { fruits: 4 },
+    )
+    expect(c.group).toBe('fruits')
+    expect(c.servings).toBe(4)
+    expect(c.triggerServings).toBe(3)
+    expect(c.triggerFraction).toBeCloseTo(0.75, 5)
+    expect(c.message).toContain('75%')
+    expect(c.message).toContain('DASH Fruits')
+  })
+
+  it('does not flag when the goal is not met', () => {
+    expect(
+      dashTargetConflicts(
+        [dfood({ servings: 2, fructansLevel: 'high' })],
+        { fruits: 4 },
+      ),
+    ).toEqual([])
+  })
+
+  it('does not flag when triggers are below the threshold', () => {
+    // 1 of 4 high = 25% < 50%.
+    expect(
+      dashTargetConflicts(
+        [dfood({ servings: 1, fructoseLevel: 'high' }), dfood({ servings: 3 })],
+        { fruits: 4 },
+      ),
+    ).toEqual([])
+  })
+
+  it('counts only KNOWN-high foods as triggers (moderate/unknown do not inflate)', () => {
+    expect(
+      dashTargetConflicts(
+        [
+          dfood({ servings: 2, fructoseLevel: 'moderate' }),
+          dfood({ servings: 2, fructansLevel: 'unknown' }),
+        ],
+        { fruits: 4 },
+      ),
+    ).toEqual([])
+  })
+
+  it('ignores groups with no goal or no servings', () => {
+    expect(
+      dashTargetConflicts([dfood({ servings: 5, fructoseLevel: 'high' })], {}),
+    ).toEqual([])
+  })
+
+  it('respects a custom threshold', () => {
+    const out = dashTargetConflicts(
+      [dfood({ servings: 2, fructoseLevel: 'high' }), dfood({ servings: 3 })],
+      { fruits: 4 },
+      0.4,
+    )
+    // 2/5 = 40% ≥ 0.4 → flagged.
+    expect(out).toHaveLength(1)
   })
 })

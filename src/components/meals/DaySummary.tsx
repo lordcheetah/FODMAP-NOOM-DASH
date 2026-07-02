@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils'
 import {
   dashProgress,
+  dashTargetConflicts,
   dietConflicts,
   fiberProgress,
   fodmapMealLoad,
@@ -11,6 +12,7 @@ import {
   DASH_GROUPS,
   type ConflictInput,
   type DashGroup,
+  type DashTargetInput,
   type FodmapLevel,
   type FodmapStackInput,
   type LoggedNutrients,
@@ -155,6 +157,23 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
     }),
   )
 
+  // Day-level: DASH group goals met mostly via FODMAP-high foods.
+  const dashConflicts = dashTargetConflicts(
+    entries.flatMap((e): DashTargetInput[] => {
+      const f = e.food
+      if (!f) return []
+      return [
+        {
+          dashGroup: f.dash_group,
+          servings: e.servings,
+          fructoseLevel: f.fructose_level,
+          fructansLevel: f.fructans_level,
+        },
+      ]
+    }),
+    targets?.dash_serving_goals ?? {},
+  )
+
   // FODMAP load stacked per meal. Foods use their own levels; recipes use a
   // worst-case roll-up bridged so a partially-unverified recipe never understates
   // to 'low' (known-high dominates, incompleteness → unknown).
@@ -214,7 +233,7 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
 
       {/* Cross-diet conflicts — surface disagreement between DASH / NOOM / FODMAP
           rather than averaging it away. */}
-      {conflicts.length > 0 && (
+      {(conflicts.length > 0 || dashConflicts.length > 0) && (
         <div>
           <p className="text-sm font-medium">Heads up — diet conflicts</p>
           <ul className="mt-2 space-y-1.5">
@@ -230,6 +249,14 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
               >
                 <span className="font-medium">{c.foodName}</span>
                 <span className="text-muted-foreground"> · {MEAL_LABEL[c.meal]}</span> —{' '}
+                {c.message}
+              </li>
+            ))}
+            {dashConflicts.map((c) => (
+              <li
+                key={`dash-${c.group}`}
+                className="rounded-md border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900"
+              >
                 {c.message}
               </li>
             ))}

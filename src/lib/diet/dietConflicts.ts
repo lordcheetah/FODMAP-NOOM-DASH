@@ -132,3 +132,95 @@ export function dietConflicts(inputs: ConflictInput[]): DietConflict[] {
   }
   return out
 }
+
+// ---------------------------------------------------------------------------
+// Day-level: a DASH group goal MET, but mostly via FODMAP-high foods. You can
+// technically hit a produce/grain target while eating your own triggers — this
+// surfaces that so you swap toward low-FODMAP options instead.
+// ---------------------------------------------------------------------------
+
+/** Flag when at least this share of a met group's servings came from triggers. */
+export const DASH_TRIGGER_FRACTION = 0.5
+
+/** One logged food reduced to what the day-level DASH check reads. */
+export interface DashTargetInput {
+  dashGroup: DashGroup | null
+  servings: number
+  fructoseLevel: FodmapLevel
+  fructansLevel: FodmapLevel
+}
+
+export interface DashTargetConflict {
+  group: DashGroup
+  goal: number
+  /** Total servings logged toward the group. */
+  servings: number
+  /** Servings from FODMAP-high (fructose or fructans) foods. */
+  triggerServings: number
+  /** triggerServings / servings, 0..1. */
+  triggerFraction: number
+  message: string
+}
+
+function num(v: number): number {
+  return Number.isFinite(v) && v > 0 ? v : 0
+}
+
+function round1(v: number): number {
+  return Math.round(v * 10) / 10
+}
+
+/**
+ * Detect DASH groups whose daily goal is MET but where a large share of the
+ * servings came from FODMAP-high foods. Only counts KNOWN-high foods as triggers
+ * (unknown/moderate don't inflate the fraction). Returns one conflict per
+ * affected group, in canonical DASH order.
+ */
+export function dashTargetConflicts(
+  inputs: DashTargetInput[],
+  goals: Partial<Record<DashGroup, number>>,
+  minTriggerFraction: number = DASH_TRIGGER_FRACTION,
+): DashTargetConflict[] {
+  const totals = new Map<DashGroup, { servings: number; trigger: number }>()
+  for (const f of inputs) {
+    if (!f.dashGroup) continue
+    const s = num(f.servings)
+    if (s === 0) continue
+    const acc = totals.get(f.dashGroup) ?? { servings: 0, trigger: 0 }
+    acc.servings += s
+    if (f.fructoseLevel === 'high' || f.fructansLevel === 'high') acc.trigger += s
+    totals.set(f.dashGroup, acc)
+  }
+
+  const out: DashTargetConflict[] = []
+  for (const group of DASH_ORDER) {
+    const goal = goals[group]
+    const acc = totals.get(group)
+    if (goal == null || goal <= 0 || !acc || acc.servings <= 0) continue
+    if (acc.servings < goal) continue // goal not met — no conflict
+    const fraction = acc.trigger / acc.servings
+    if (fraction < minTriggerFraction) continue
+    const pct = Math.round(fraction * 100)
+    out.push({
+      group,
+      goal,
+      servings: acc.servings,
+      triggerServings: acc.trigger,
+      triggerFraction: fraction,
+      message: `Met DASH ${DASH_LABEL[group]} (${round1(acc.servings)}/${goal}), but ${pct}% of it came from high-FODMAP foods — try low-FODMAP swaps.`,
+    })
+  }
+  return out
+}
+
+/** Canonical DASH group order for stable conflict output. */
+const DASH_ORDER: readonly DashGroup[] = [
+  'grains',
+  'vegetables',
+  'fruits',
+  'dairy',
+  'meat-poultry-fish',
+  'nuts-seeds-legumes',
+  'fats-oils',
+  'sweets',
+]
