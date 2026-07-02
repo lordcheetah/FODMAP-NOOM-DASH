@@ -93,6 +93,14 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
     dash_serving_goals: targets?.dash_serving_goals ?? {},
   })
 
+  // Logged FOODS with no DASH group contribute sodium/potassium but land in no
+  // serving bucket — an incomplete rollup that should announce itself rather than
+  // read as a low-DASH day (mirrors the FODMAP "unknown" philosophy). Recipes are
+  // excluded: they legitimately have no single group (covered by the approx note).
+  const dashUnclassified = entries.filter(
+    (e) => e.food != null && e.food.dash_group == null,
+  ).length
+
   const fiber = fiberProgress(nutrients, {
     fiber_goal_g: targets?.fiber_goal_g ?? null,
     fiber_per_meal_g: targets?.fiber_per_meal_g ?? null,
@@ -206,6 +214,13 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
             )
           })}
         </ul>
+        {dashUnclassified > 0 && (
+          <p className="mt-2 text-xs text-muted-foreground">
+            {dashUnclassified} logged food{dashUnclassified === 1 ? '' : 's'} not
+            classified for DASH — counted for sodium/potassium but no serving group.
+            Edit the food to set its DASH group.
+          </p>
+        )}
       </div>
 
       {/* Fiber */}

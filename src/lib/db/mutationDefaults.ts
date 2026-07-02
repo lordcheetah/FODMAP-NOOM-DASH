@@ -28,7 +28,7 @@ import type {
   UpdateLogEntryInput,
 } from './foodLog'
 import type { DailyTargetsInput } from './dailyTargets'
-import type { CreateFoodInput } from './foods'
+import type { CreateFoodInput, UpdateFoodInput } from './foods'
 import type { AddWorkoutLogInput, WorkoutLogEntry } from './workoutLog'
 import type {
   AddWeightInput,
@@ -54,6 +54,7 @@ export type UpdateFoodLogVars = UpdateLogEntryInput & { userId: string }
 export type DeleteFoodLogVars = { id: string; date: string; userId: string }
 export type UpsertDailyTargetsVars = DailyTargetsInput & { userId: string }
 export type CreateFoodVars = CreateFoodInput & { userId: string }
+export type UpdateFoodVars = UpdateFoodInput & { userId: string }
 export type AddWorkoutLogVars = AddWorkoutLogInput & { userId: string }
 export type UpdateWorkoutLogVars = {
   id: string
@@ -336,6 +337,8 @@ async function createFoodFn(vars: CreateFoodVars): Promise<FoodRow> {
       // 'unknown' so an offline-created food is never shown as "safe".
       fructose_level: vars.fructose_level ?? 'unknown',
       fructans_level: vars.fructans_level ?? 'unknown',
+      dash_group: vars.dash_group ?? null,
+      noom_category: vars.noom_category ?? null,
       source: vars.source ?? null,
       barcode: vars.barcode ?? null,
     })
@@ -356,6 +359,57 @@ function buildCreateFoodDefaults(qc: QueryClient) {
         queryKey: queryKeys.foodByBarcode(vars.userId, vars.barcode ?? null),
       })
       void qc.invalidateQueries({ queryKey: ['foodSearch'] })
+      void qc.invalidateQueries({ queryKey: queryKeys.recentFoods(vars.userId) })
+    },
+  }
+}
+
+// ---------------------------------------------------------------------------
+// foods: update (edit a user-owned custom food). RLS restricts to own rows;
+// seed rows (user_id IS NULL) are read-only. FODMAP written as given.
+// ---------------------------------------------------------------------------
+
+async function updateFoodFn(vars: UpdateFoodVars): Promise<FoodRow> {
+  const sb = requireSupabase()
+  const { data, error } = await sb
+    .from('foods')
+    .update({
+      name: vars.name,
+      brand: vars.brand ?? null,
+      serving_desc: vars.serving_desc,
+      serving_grams: vars.serving_grams ?? null,
+      calories: vars.calories ?? null,
+      sodium_mg: vars.sodium_mg ?? null,
+      sat_fat_g: vars.sat_fat_g ?? null,
+      potassium_mg: vars.potassium_mg ?? null,
+      fiber_g: vars.fiber_g ?? null,
+      added_sugar_g: vars.added_sugar_g ?? null,
+      fructose_level: vars.fructose_level ?? 'unknown',
+      fructans_level: vars.fructans_level ?? 'unknown',
+      dash_group: vars.dash_group ?? null,
+      noom_category: vars.noom_category ?? null,
+      source: vars.source ?? null,
+      barcode: vars.barcode ?? null,
+    })
+    .eq('id', vars.id)
+    .eq('user_id', vars.userId)
+    .select('*')
+    .single()
+  if (error) throw error
+  return data as FoodRow
+}
+
+function buildUpdateFoodDefaults(qc: QueryClient) {
+  return {
+    mutationFn: updateFoodFn,
+    // Same health-safety reasoning as create: no optimistic write into the
+    // server-driven search caches. Invalidate so the edit surfaces once it lands.
+    onSettled: (_d: unknown, _e: unknown, vars: UpdateFoodVars) => {
+      void qc.invalidateQueries({
+        queryKey: queryKeys.foodByBarcode(vars.userId, vars.barcode ?? null),
+      })
+      void qc.invalidateQueries({ queryKey: ['foodSearch'] })
+      void qc.invalidateQueries({ queryKey: queryKeys.recentFoods(vars.userId) })
     },
   }
 }
@@ -723,6 +777,7 @@ export function registerMutationDefaults(qc: QueryClient): void {
     buildUpsertDailyTargetsDefaults(qc),
   )
   qc.setMutationDefaults(mutationKeys.createFood, buildCreateFoodDefaults(qc))
+  qc.setMutationDefaults(mutationKeys.updateFood, buildUpdateFoodDefaults(qc))
   qc.setMutationDefaults(mutationKeys.addWorkoutLog, buildAddWorkoutLogDefaults(qc))
   qc.setMutationDefaults(
     mutationKeys.updateWorkoutLog,
@@ -746,6 +801,7 @@ export {
   buildDeleteFoodLogDefaults,
   buildUpsertDailyTargetsDefaults,
   buildCreateFoodDefaults,
+  buildUpdateFoodDefaults,
   buildAddWorkoutLogDefaults,
   buildUpdateWorkoutLogDefaults,
   buildDeleteWorkoutLogDefaults,

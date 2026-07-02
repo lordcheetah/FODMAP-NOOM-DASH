@@ -4,8 +4,8 @@ import { useAuth } from '@/lib/auth'
 import { mutationKeys, queryKeys } from './queryKeys'
 import { useInjectUserId } from './useInjectUserId'
 import { likeContains } from './search'
-import type { CreateFoodVars } from './mutationDefaults'
-import type { FodmapLevel } from '@/lib/diet'
+import type { CreateFoodVars, UpdateFoodVars } from './mutationDefaults'
+import type { DashGroup, FodmapLevel, NoomCategory } from '@/lib/diet'
 import type { FoodRow } from './types'
 
 /**
@@ -88,6 +88,10 @@ export interface CreateFoodInput {
   /** Default 'unknown' — NEVER inferred. Only the user may set a known level. */
   fructose_level?: FodmapLevel
   fructans_level?: FodmapLevel
+  /** DASH food group — manual classification; null = unclassified (counts to no serving bucket). */
+  dash_group?: DashGroup | null
+  /** NOOM semantic category (protein/fruit/…). NOOM *color* stays computed from cal/g. */
+  noom_category?: NoomCategory | null
   source?: string | null
   barcode?: string | null
 }
@@ -106,6 +110,28 @@ export function useCreateFood() {
   return useInjectUserId<FoodRow, Error, CreateFoodInput, CreateFoodVars, unknown>(
     useMutation<FoodRow, Error, CreateFoodVars>({
       mutationKey: mutationKeys.createFood,
+    }),
+  )
+}
+
+/** Fields accepted when editing an existing user-custom food (by id). */
+export interface UpdateFoodInput extends CreateFoodInput {
+  id: string
+}
+
+/**
+ * Update a user-custom food by id. RLS (`user_id = auth.uid()`) restricts this to
+ * the user's OWN rows server-side; the global seed rows (`user_id IS NULL`) are
+ * read-only and cannot be edited. FODMAP levels are written as given — in the
+ * edit form the user is the authority for their own food, so a known level set
+ * earlier is preserved rather than reset to 'unknown'.
+ *
+ * On success, invalidates food search + barcode lookups so the change surfaces.
+ */
+export function useUpdateFood() {
+  return useInjectUserId<FoodRow, Error, UpdateFoodInput, UpdateFoodVars, unknown>(
+    useMutation<FoodRow, Error, UpdateFoodVars>({
+      mutationKey: mutationKeys.updateFood,
     }),
   )
 }

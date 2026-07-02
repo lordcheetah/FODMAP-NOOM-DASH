@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Camera, Plus, ScanBarcode, ScanText, Search } from 'lucide-react'
+import { Camera, Pencil, Plus, ScanBarcode, ScanText, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
@@ -10,6 +10,7 @@ import type { FoodRow, RecipeRow } from '@/lib/db/types'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
+import { ProductReviewForm } from './ProductReviewForm'
 import { ScanFlow } from './ScanFlow'
 import { PhotoMealFlow } from './PhotoMealFlow'
 import { LabelScanFlow } from './LabelScanFlow'
@@ -60,6 +61,7 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
   const [term, setTerm] = useState('')
   const debounced = useDebounced(term, DEBOUNCE_MS)
   const [target, setTarget] = useState<AddTarget | null>(null)
+  const [editFood, setEditFood] = useState<FoodRow | null>(null)
   const [scanOpen, setScanOpen] = useState(false)
   const [photoOpen, setPhotoOpen] = useState(false)
   const [labelOpen, setLabelOpen] = useState(false)
@@ -162,14 +164,28 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
                     fructans={f.fructans_level}
                     chips={foodChips(f)}
                     action={
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        aria-label={`Add ${f.name}`}
-                        onClick={() => setTarget({ name: f.name, food_id: f.id })}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
+                      <div className="flex gap-1.5">
+                        {/* Edit is only offered on the user's OWN foods; seed rows
+                            (user_id null) are read-only under RLS. */}
+                        {user && f.user_id === user.id && (
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            aria-label={`Edit ${f.name}`}
+                            onClick={() => setEditFood(f)}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                        )}
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          aria-label={`Add ${f.name}`}
+                          onClick={() => setTarget({ name: f.name, food_id: f.id })}
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
                     }
                   />
                 </li>
@@ -219,6 +235,16 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
         target={target}
         date={date}
         defaultMeal={mealContext}
+      />
+
+      {/* Edit an existing user-owned food in place (prefilled). */}
+      <ProductReviewForm
+        open={editFood !== null}
+        onClose={() => setEditFood(null)}
+        prefill={null}
+        barcode={editFood?.barcode ?? null}
+        editFood={editFood}
+        onSaved={() => setEditFood(null)}
       />
 
       {canCapture && (

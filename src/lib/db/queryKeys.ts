@@ -48,6 +48,7 @@ export const mutationKeys = {
   deleteFoodLog: ['food_log', 'delete'] as const,
   upsertDailyTargets: ['daily_targets', 'upsert'] as const,
   createFood: ['foods', 'create'] as const,
+  updateFood: ['foods', 'update'] as const,
   addWorkoutLog: ['workout_log', 'add'] as const,
   updateWorkoutLog: ['workout_log', 'update'] as const,
   deleteWorkoutLog: ['workout_log', 'delete'] as const,

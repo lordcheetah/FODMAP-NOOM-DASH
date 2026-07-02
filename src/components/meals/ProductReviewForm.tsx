@@ -5,8 +5,17 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { NoomDot } from '@/components/diet/NoomDot'
 import { FodmapBadge } from '@/components/diet/FodmapBadge'
-import { noomColor, type FodmapLevel } from '@/lib/diet'
-import { useCreateFood, type CreateFoodInput } from '@/lib/db/foods'
+import {
+  noomColor,
+  type DashGroup,
+  type FodmapLevel,
+  type NoomCategory,
+} from '@/lib/diet'
+import {
+  useCreateFood,
+  useUpdateFood,
+  type CreateFoodInput,
+} from '@/lib/db/foods'
 import type { MappedFood } from '@/lib/openfoodfacts'
 import type { FoodRow } from '@/lib/db/types'
 
@@ -33,11 +42,40 @@ export interface ProductReviewFormProps {
   notFound?: boolean
   /** Show the "AI read these numbers from a photo" notice (label-scan flow). */
   labelNotice?: boolean
-  /** Called with the created food row so the caller can open the add-to-log dialog. */
+  /**
+   * Edit mode: an existing user-owned food to update in place. When set, all
+   * fields (including DASH group and the food's OWN FODMAP levels) prefill from
+   * it, and Save writes via `useUpdateFood` instead of creating a new row.
+   */
+  editFood?: FoodRow | null
+  /** Called with the created/updated food row so the caller can react. */
   onSaved: (food: FoodRow) => void
 }
 
 const FODMAP_OPTIONS: FodmapLevel[] = ['unknown', 'low', 'moderate', 'high']
+
+/** DASH group choices; '' = unclassified (contributes to no serving bucket). */
+const DASH_GROUP_OPTIONS: { value: DashGroup; label: string }[] = [
+  { value: 'grains', label: 'Grains' },
+  { value: 'vegetables', label: 'Vegetables' },
+  { value: 'fruits', label: 'Fruits' },
+  { value: 'dairy', label: 'Dairy' },
+  { value: 'meat-poultry-fish', label: 'Meat/Poultry/Fish' },
+  { value: 'nuts-seeds-legumes', label: 'Nuts/Seeds/Legumes' },
+  { value: 'fats-oils', label: 'Fats/Oils' },
+  { value: 'sweets', label: 'Sweets' },
+]
+
+/** NOOM semantic category; NOOM *color* stays computed from cal/g, not this. */
+const NOOM_CATEGORY_OPTIONS: { value: NoomCategory; label: string }[] = [
+  { value: 'protein', label: 'Protein' },
+  { value: 'whole-grain', label: 'Whole grain' },
+  { value: 'non-starchy-veg', label: 'Non-starchy veg' },
+  { value: 'starchy-veg', label: 'Starchy veg' },
+  { value: 'fruit', label: 'Fruit' },
+  { value: 'fat', label: 'Fat' },
+  { value: 'freebie', label: 'Freebie' },
+]
 
 /** Controlled numeric text → number|null (empty/invalid = null, never 0). */
 function toNum(v: string): number | null {
@@ -55,9 +93,12 @@ export function ProductReviewForm({
   triggerHints,
   notFound,
   labelNotice,
+  editFood,
   onSaved,
 }: ProductReviewFormProps) {
   const createFood = useCreateFood()
+  const updateFood = useUpdateFood()
+  const isEdit = editFood != null
 
   const [name, setName] = useState('')
   const [brand, setBrand] = useState('')
@@ -72,28 +113,52 @@ export function ProductReviewForm({
   // Default 'unknown' on BOTH axes — the only safe default.
   const [fructose, setFructose] = useState<FodmapLevel>('unknown')
   const [fructans, setFructans] = useState<FodmapLevel>('unknown')
+  const [dashGroup, setDashGroup] = useState<DashGroup | ''>('')
+  const [noomCategory, setNoomCategory] = useState<NoomCategory | ''>('')
 
-  // (Re)load the form whenever it opens for a new prefill.
+  // (Re)load the form whenever it opens — from the edited food in edit mode, or
+  // from the scan/manual prefill otherwise.
   useEffect(() => {
     if (!open) return
     const numStr = (n: number | null | undefined) =>
       n == null ? '' : String(n)
-    setName(prefill?.name ?? '')
-    setBrand(prefill?.brand ?? '')
-    setServingDesc(prefill?.serving_desc ?? '')
-    setServingGrams(numStr(prefill?.serving_grams))
-    setCalories(numStr(prefill?.calories))
-    setFiber(numStr(prefill?.fiber_g))
-    setSodium(numStr(prefill?.sodium_mg))
-    setSatFat(numStr(prefill?.sat_fat_g))
-    setPotassium(numStr(prefill?.potassium_mg))
-    setAddedSugar(numStr(prefill?.added_sugar_g))
-    // FODMAP is ALWAYS reset to unknown — prefill cannot carry a known level.
-    setFructose('unknown')
-    setFructans('unknown')
+    if (editFood) {
+      setName(editFood.name)
+      setBrand(editFood.brand ?? '')
+      setServingDesc(editFood.serving_desc)
+      setServingGrams(numStr(editFood.serving_grams))
+      setCalories(numStr(editFood.calories))
+      setFiber(numStr(editFood.fiber_g))
+      setSodium(numStr(editFood.sodium_mg))
+      setSatFat(numStr(editFood.sat_fat_g))
+      setPotassium(numStr(editFood.potassium_mg))
+      setAddedSugar(numStr(editFood.added_sugar_g))
+      // The user owns this food and set these levels — preserve, don't reset.
+      setFructose(editFood.fructose_level)
+      setFructans(editFood.fructans_level)
+      setDashGroup(editFood.dash_group ?? '')
+      setNoomCategory(editFood.noom_category ?? '')
+    } else {
+      setName(prefill?.name ?? '')
+      setBrand(prefill?.brand ?? '')
+      setServingDesc(prefill?.serving_desc ?? '')
+      setServingGrams(numStr(prefill?.serving_grams))
+      setCalories(numStr(prefill?.calories))
+      setFiber(numStr(prefill?.fiber_g))
+      setSodium(numStr(prefill?.sodium_mg))
+      setSatFat(numStr(prefill?.sat_fat_g))
+      setPotassium(numStr(prefill?.potassium_mg))
+      setAddedSugar(numStr(prefill?.added_sugar_g))
+      // FODMAP is ALWAYS reset to unknown — prefill cannot carry a known level.
+      setFructose('unknown')
+      setFructans('unknown')
+      setDashGroup('')
+      setNoomCategory('')
+    }
     createFood.reset()
+    updateFood.reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, prefill])
+  }, [open, prefill, editFood])
 
   const caloriesNum = toNum(calories)
   const gramsNum = toNum(servingGrams)
@@ -126,21 +191,36 @@ export function ProductReviewForm({
       added_sugar_g: toNum(addedSugar),
       fructose_level: fructose,
       fructans_level: fructans,
+      dash_group: dashGroup || null,
+      noom_category: noomCategory || null,
       // Note user-provided FODMAP in source when the user set a level.
       source: userSetFodmap
         ? [prefill?.source, 'FODMAP set by user'].filter(Boolean).join('; ')
         : (prefill?.source ?? null),
       barcode,
     }
-    createFood.mutate(input, { onSuccess: (row) => onSaved(row) })
+    if (editFood) {
+      // Editing keeps the food's existing barcode/source; the user is the
+      // authority for their own row so FODMAP levels flow through as chosen.
+      updateFood.mutate(
+        { ...input, id: editFood.id, source: editFood.source, barcode: editFood.barcode },
+        { onSuccess: (row) => onSaved(row) },
+      )
+    } else {
+      createFood.mutate(input, { onSuccess: (row) => onSaved(row) })
+    }
   }
+
+  const busy = createFood.isPending || updateFood.isPending
+  const saveError = (createFood.error ?? updateFood.error) as Error | null
+  const hasError = createFood.isError || updateFood.isError
 
   return (
     <Dialog
       open={open}
       onClose={onClose}
       variant="sheet"
-      title={notFound ? 'Add product manually' : 'Review product'}
+      title={isEdit ? 'Edit food' : notFound ? 'Add product manually' : 'Review product'}
       description={barcode ? `Barcode ${barcode}` : undefined}
     >
       <div className="space-y-4">
@@ -216,6 +296,44 @@ export function ProductReviewForm({
           </div>
           <div className="pt-1">
             <FodmapBadge fructose={fructose} fructans={fructans} />
+          </div>
+        </div>
+
+        {/* DASH group + NOOM category — manual classification. DASH group is what
+            makes a food count toward its daily serving target; leave blank to keep
+            it unclassified (sodium/potassium still count). */}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label htmlFor="pf-dash">DASH group</Label>
+            <select
+              id="pf-dash"
+              value={dashGroup}
+              onChange={(e) => setDashGroup(e.target.value as DashGroup | '')}
+              className="mt-1 h-10 w-full rounded-md border border-input bg-background px-2 text-sm"
+            >
+              <option value="">— unclassified —</option>
+              {DASH_GROUP_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <Label htmlFor="pf-noom">NOOM category</Label>
+            <select
+              id="pf-noom"
+              value={noomCategory}
+              onChange={(e) => setNoomCategory(e.target.value as NoomCategory | '')}
+              className="mt-1 h-10 w-full rounded-md border border-input bg-background px-2 text-sm"
+            >
+              <option value="">— none —</option>
+              {NOOM_CATEGORY_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -337,9 +455,9 @@ export function ProductReviewForm({
           </div>
         </div>
 
-        {createFood.isError && (
+        {hasError && (
           <p className="text-xs text-destructive">
-            Could not save. {(createFood.error as Error)?.message}
+            Could not save. {saveError?.message}
           </p>
         )}
 
@@ -347,12 +465,8 @@ export function ProductReviewForm({
           <Button type="button" variant="ghost" onClick={onClose}>
             Cancel
           </Button>
-          <Button
-            type="button"
-            onClick={handleSave}
-            disabled={!valid || createFood.isPending}
-          >
-            {createFood.isPending ? 'Saving…' : 'Save & log'}
+          <Button type="button" onClick={handleSave} disabled={!valid || busy}>
+            {busy ? 'Saving…' : isEdit ? 'Save changes' : 'Save & log'}
           </Button>
         </div>
       </div>
