@@ -15,6 +15,7 @@ const DEFAULTS: Record<
   | 'calorie_budget'
   | 'sodium_budget_mg'
   | 'potassium_goal_mg'
+  | 'sat_fat_limit_g'
   | 'fiber_goal_g'
   | 'fiber_per_meal_g',
   string
@@ -22,6 +23,7 @@ const DEFAULTS: Record<
   calorie_budget: '',
   sodium_budget_mg: '2300',
   potassium_goal_mg: '4700', // DASH aim; a floor, not a ceiling
+  sat_fat_limit_g: '13', // ~6% of 2,000 kcal; a ceiling
   fiber_goal_g: '28',
   fiber_per_meal_g: '8',
 }
@@ -66,6 +68,7 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
   const [calorie, setCalorie] = useState(DEFAULTS.calorie_budget)
   const [sodium, setSodium] = useState(DEFAULTS.sodium_budget_mg)
   const [potassium, setPotassium] = useState(DEFAULTS.potassium_goal_mg)
+  const [satFat, setSatFat] = useState(DEFAULTS.sat_fat_limit_g)
   const [fiberDaily, setFiberDaily] = useState(DEFAULTS.fiber_goal_g)
   const [fiberMeal, setFiberMeal] = useState(DEFAULTS.fiber_per_meal_g)
   const [dash, setDash] = useState<Record<DashGroup, string>>(() =>
@@ -80,6 +83,7 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
     setPotassium(
       targets ? toStr(targets.potassium_goal_mg) : DEFAULTS.potassium_goal_mg,
     )
+    setSatFat(targets ? toStr(targets.sat_fat_limit_g) : DEFAULTS.sat_fat_limit_g)
     setFiberDaily(targets ? toStr(targets.fiber_goal_g) : DEFAULTS.fiber_goal_g)
     setFiberMeal(targets ? toStr(targets.fiber_per_meal_g) : DEFAULTS.fiber_per_meal_g)
     setDash(
@@ -101,6 +105,7 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
       calorie_budget: toNum(calorie),
       sodium_budget_mg: toNum(sodium),
       potassium_goal_mg: toNum(potassium),
+      sat_fat_limit_g: toNum(satFat),
       fiber_goal_g: toNum(fiberDaily),
       fiber_per_meal_g: toNum(fiberMeal),
       dash_serving_goals,
@@ -114,13 +119,14 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
       onClose={onClose}
       variant="sheet"
       title="Daily targets"
-      description="Set calorie, sodium, potassium, and fiber goals plus DASH serving goals."
+      description="Set calorie, sodium, potassium, saturated-fat, and fiber goals plus DASH serving goals."
     >
       <div className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
           <Field id="calorie" label="Calorie budget" value={calorie} onChange={setCalorie} />
           <Field id="sodium" label="Sodium budget (mg)" value={sodium} onChange={setSodium} />
           <Field id="potassium" label="Potassium goal (mg/day)" value={potassium} onChange={setPotassium} />
+          <Field id="satFat" label="Sat fat limit (g/day)" value={satFat} onChange={setSatFat} />
           <Field id="fiberDaily" label="Fiber goal (g/day)" value={fiberDaily} onChange={setFiberDaily} />
           <Field id="fiberMeal" label="Fiber per meal (g)" value={fiberMeal} onChange={setFiberMeal} />
         </div>

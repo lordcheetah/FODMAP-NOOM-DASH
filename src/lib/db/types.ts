@@ -98,6 +98,8 @@ export interface DailyTargetsRow {
   sodium_budget_mg: number | null
   /** DASH potassium FLOOR (mg/day) — reach it, unlike the sodium ceiling. */
   potassium_goal_mg: number | null
+  /** DASH saturated-fat CEILING (g/day) — stay under, like the sodium budget. */
+  sat_fat_limit_g: number | null
   fiber_goal_g: number | null
   fiber_per_meal_g: number | null
   /** jsonb; e.g. `{ "vegetables": 5, "fruits": 5 }`. */

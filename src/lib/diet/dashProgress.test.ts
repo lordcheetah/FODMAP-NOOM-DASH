@@ -100,4 +100,17 @@ describe('dashProgress', () => {
         .meetsPotassiumGoal,
     ).toBe(false)
   })
+
+  it('sat-fat limit: over when the total exceeds it (boundary: equal is NOT over)', () => {
+    const at = dashProgress([entry({ sat_fat_g: 13 })], { sat_fat_limit_g: 13 })
+    expect(at.satFatLimitG).toBe(13)
+    expect(at.satFatOverLimit).toBe(false)
+    const over = dashProgress([entry({ sat_fat_g: 14 })], { sat_fat_limit_g: 13 })
+    expect(over.satFatOverLimit).toBe(true)
+  })
+
+  it('sat-fat limit: null/undefined limit is never "over"', () => {
+    expect(dashProgress([entry({ sat_fat_g: 999 })], {}).satFatOverLimit).toBe(false)
+    expect(dashProgress([entry({ sat_fat_g: 999 })], {}).satFatLimitG).toBe(null)
+  })
 })

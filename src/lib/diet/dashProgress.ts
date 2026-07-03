@@ -23,6 +23,8 @@ export interface DashTargets {
   sodium_budget_mg?: number | null
   /** Daily potassium FLOOR (mg) — met when the total reaches it. */
   potassium_goal_mg?: number | null
+  /** Daily saturated-fat CEILING (g) — over when the total exceeds it. */
+  sat_fat_limit_g?: number | null
   dash_serving_goals?: Partial<Record<DashGroup, number>>
 }
 
@@ -34,6 +36,10 @@ export interface DashProgress {
   sodiumBudgetMg: number | null
   sodiumOverBudget: boolean
   satFatG: number
+  /** Daily saturated-fat limit (g), or null when unset. */
+  satFatLimitG: number | null
+  /** True only when a limit is set AND the total exceeds it. */
+  satFatOverLimit: boolean
   potassiumMg: number
   /** Daily potassium goal (mg), or null when unset. */
   potassiumGoalMg: number | null
@@ -103,6 +109,12 @@ export function dashProgress(
       ? targets.potassium_goal_mg
       : null
 
+  const satFatLimitG =
+    typeof targets.sat_fat_limit_g === 'number' &&
+    Number.isFinite(targets.sat_fat_limit_g)
+      ? targets.sat_fat_limit_g
+      : null
+
   return {
     servingsByGroup,
     goalsByGroup: targets.dash_serving_goals ?? {},
@@ -110,6 +122,8 @@ export function dashProgress(
     sodiumBudgetMg,
     sodiumOverBudget: sodiumBudgetMg != null && sodiumMg > sodiumBudgetMg,
     satFatG,
+    satFatLimitG,
+    satFatOverLimit: satFatLimitG != null && satFatG > satFatLimitG,
     potassiumMg,
     potassiumGoalMg,
     meetsPotassiumGoal: potassiumGoalMg != null && potassiumMg >= potassiumGoalMg,

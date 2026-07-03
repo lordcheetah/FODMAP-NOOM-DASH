@@ -192,6 +192,7 @@ describe('daily_targets upsert — optimistic onMutate', () => {
       calorie_budget: 1800,
       sodium_budget_mg: 2300,
       potassium_goal_mg: 4700,
+      sat_fat_limit_g: 13,
       fiber_goal_g: 25,
       fiber_per_meal_g: 8,
       dash_serving_goals: {},

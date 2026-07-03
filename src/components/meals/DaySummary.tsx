@@ -125,6 +125,7 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
   const dash = dashProgress(nutrients, {
     sodium_budget_mg: targets?.sodium_budget_mg ?? null,
     potassium_goal_mg: targets?.potassium_goal_mg ?? null,
+    sat_fat_limit_g: targets?.sat_fat_limit_g ?? null,
     dash_serving_goals: targets?.dash_serving_goals ?? {},
   })
 
@@ -383,6 +384,27 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
         {dash.potassiumGoalMg != null && (
           <div className="mt-1">
             <Bar value={dash.potassiumMg} max={dash.potassiumGoalMg} />
+          </div>
+        )}
+
+        {/* Saturated fat — a CEILING (DASH caps it ~6% of calories), red when over. */}
+        <div className="mt-3 flex items-baseline justify-between text-sm">
+          <span className="font-medium">Saturated fat</span>
+          <span className={cn('tabular-nums', dash.satFatOverLimit && 'text-destructive')}>
+            {round(dash.satFatG, 1)}
+            {dash.satFatLimitG != null ? (
+              <span className="text-muted-foreground"> / {dash.satFatLimitG} g</span>
+            ) : (
+              <span className="text-muted-foreground"> g</span>
+            )}
+          </span>
+        </div>
+        {dash.satFatLimitG != null && (
+          <div className="mt-1">
+            <Bar value={dash.satFatG} max={dash.satFatLimitG} over={dash.satFatOverLimit} />
+            {dash.satFatOverLimit && (
+              <p className="mt-1 text-xs text-destructive">Over saturated-fat limit.</p>
+            )}
           </div>
         )}
 
