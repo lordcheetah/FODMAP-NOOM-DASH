@@ -13,6 +13,8 @@ export const queryKeys = {
   recipe: (id: string) => ['recipe', id] as const,
   foodLog: (userId: string | undefined, date: string) =>
     ['foodLog', userId, date] as const,
+  foodLogRange: (userId: string | undefined, start: string, end: string) =>
+    ['foodLogRange', userId, start, end] as const,
   dailyTargets: (userId: string | undefined) =>
     ['dailyTargets', userId] as const,
   bodyProfile: (userId: string | undefined) => ['bodyProfile', userId] as const,

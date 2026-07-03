@@ -116,6 +116,10 @@ export function toLoggedNutrients(entry: FoodLogEntry): LoggedNutrients {
   }
 }
 
+/** One round-trip select: the log row plus embedded food + recipe (w/ ingredients). */
+const FOOD_LOG_SELECT =
+  '*, food:foods(*), recipe:recipes(*, recipe_ingredients(food_id, quantity, unit, food:foods(name,serving_desc,serving_grams,calories,fiber_g,sodium_mg,sat_fat_g,potassium_mg,fructose_level,fructans_level)))'
+
 /**
  * The day's log for `date` (YYYY-MM-DD), scoped to the signed-in user via RLS,
  * with food + recipe embedded. Disabled when signed out or Supabase unconfigured.
@@ -132,11 +136,36 @@ export function useFoodLog(date: string) {
       if (!supabase) return []
       const { data, error } = await supabase
         .from('food_log')
-        .select(
-          '*, food:foods(*), recipe:recipes(*, recipe_ingredients(food_id, quantity, unit, food:foods(name,serving_desc,serving_grams,calories,fiber_g,sodium_mg,sat_fat_g,potassium_mg,fructose_level,fructans_level)))',
-        )
+        .select(FOOD_LOG_SELECT)
         .eq('logged_on', date)
         .order('created_at', { ascending: true })
+      if (error) throw error
+      return (data ?? []) as FoodLogEntry[]
+    },
+  })
+}
+
+/**
+ * The log across an inclusive date range [start, end] (YYYY-MM-DD), scoped by
+ * RLS, with food + recipe embedded — for weekly trend views. Ordered by day.
+ * Disabled when signed out, unconfigured, or the range is incomplete.
+ */
+export function useFoodLogRange(start: string, end: string) {
+  const { user } = useAuth()
+  const userId = user?.id
+  const enabled = !!userId && supabase !== null && !!start && !!end
+
+  return useQuery({
+    queryKey: queryKeys.foodLogRange(userId, start, end),
+    enabled,
+    queryFn: async (): Promise<FoodLogEntry[]> => {
+      if (!supabase) return []
+      const { data, error } = await supabase
+        .from('food_log')
+        .select(FOOD_LOG_SELECT)
+        .gte('logged_on', start)
+        .lte('logged_on', end)
+        .order('logged_on', { ascending: true })
       if (error) throw error
       return (data ?? []) as FoodLogEntry[]
     },
