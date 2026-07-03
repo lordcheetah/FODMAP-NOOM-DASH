@@ -12,6 +12,8 @@ import {
   type MealType,
   type PlanLoggedItem,
 } from '@/lib/diet'
+import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
+import { SuggestionPicker } from './SuggestionPicker'
 
 const MEAL_LABEL: Record<MealType, string> = {
   breakfast: 'Breakfast',
@@ -56,6 +58,10 @@ export function MealPlanGuide({ date }: MealPlanGuideProps) {
   const log = useFoodLog(day)
   const { data: targets } = useDailyTargets()
   const [deferred, setDeferred] = useState<Set<string>>(new Set())
+  // Tapping a suggestion resolves it to a real food (picker) → add-to-log dialog.
+  const [pick, setPick] = useState<{ term: string; meal: MealType } | null>(null)
+  const [target, setTarget] = useState<AddTarget | null>(null)
+  const [targetMeal, setTargetMeal] = useState<MealType>('breakfast')
 
   const goals = useMemo(() => {
     const g = targets?.dash_serving_goals
@@ -164,11 +170,15 @@ export function MealPlanGuide({ date }: MealPlanGuideProps) {
                       {!met && g.suggestions.length > 0 && (
                         <ul className="mt-1.5 flex flex-wrap gap-1">
                           {g.suggestions.map((s) => (
-                            <li
-                              key={s}
-                              className="rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground"
-                            >
-                              {s}
+                            <li key={s}>
+                              <button
+                                type="button"
+                                onClick={() => setPick({ term: s, meal })}
+                                className="rounded bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground hover:bg-accent hover:text-foreground"
+                                title={`Log ${s} to ${MEAL_LABEL[meal]}`}
+                              >
+                                + {s}
+                              </button>
                             </li>
                           ))}
                         </ul>
@@ -205,8 +215,28 @@ export function MealPlanGuide({ date }: MealPlanGuideProps) {
 
       <p className="text-[10px] text-muted-foreground">
         Suggestions are a general low-FODMAP (fructose/fructans) memory aid, not a
-        verdict about any specific product. Log foods on the Meals tab.
+        verdict about any specific product. Tap one to log it to that meal.
       </p>
+
+      <SuggestionPicker
+        open={pick !== null}
+        term={pick?.term ?? ''}
+        meal={pick?.meal ?? 'breakfast'}
+        onClose={() => setPick(null)}
+        onPick={(t) => {
+          setTargetMeal(pick?.meal ?? 'breakfast')
+          setTarget(t)
+          setPick(null)
+        }}
+      />
+
+      <AddToLogDialog
+        open={target !== null}
+        onClose={() => setTarget(null)}
+        target={target}
+        date={day}
+        defaultMeal={targetMeal}
+      />
     </div>
   )
 }
