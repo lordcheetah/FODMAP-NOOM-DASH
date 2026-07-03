@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Pencil, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow } from '@/components/diet/FoodItemRow'
 import { noomColor, type MealType } from '@/lib/diet'
 import { useRecentFoods } from '@/lib/db/recents'
+import { useAuth } from '@/lib/auth'
+import type { FoodRow } from '@/lib/db/types'
 import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
+import { ProductReviewForm } from './ProductReviewForm'
 
 export interface RecentFoodsProps {
   date: string
@@ -17,8 +20,10 @@ export interface RecentFoodsProps {
  * AddToLogDialog used by search. Hidden when there are no recents.
  */
 export function RecentFoods({ date, mealContext }: RecentFoodsProps) {
+  const { user } = useAuth()
   const recents = useRecentFoods()
   const [target, setTarget] = useState<AddTarget | null>(null)
+  const [editFood, setEditFood] = useState<FoodRow | null>(null)
   const items = recents.data ?? []
   if (items.length === 0) return null
 
@@ -43,20 +48,34 @@ export function RecentFoods({ date, mealContext }: RecentFoodsProps) {
               fructose={it.food?.fructose_level}
               fructans={it.food?.fructans_level}
               action={
-                <Button
-                  size="icon"
-                  variant="outline"
-                  aria-label={`Add ${it.name}`}
-                  onClick={() =>
-                    setTarget(
-                      it.kind === 'food'
-                        ? { name: it.name, food_id: it.food!.id }
-                        : { name: it.name, recipe_id: it.recipe!.id },
-                    )
-                  }
-                >
-                  <Plus className="h-4 w-4" />
-                </Button>
+                <div className="flex gap-1.5">
+                  {/* Edit only the user's OWN foods; seed rows are read-only. */}
+                  {it.kind === 'food' && user && it.food?.user_id === user.id && (
+                    <Button
+                      size="icon"
+                      variant="outline"
+                      aria-label={`Edit ${it.name}`}
+                      title={`Edit ${it.name}`}
+                      onClick={() => setEditFood(it.food)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    aria-label={`Add ${it.name}`}
+                    onClick={() =>
+                      setTarget(
+                        it.kind === 'food'
+                          ? { name: it.name, food_id: it.food!.id }
+                          : { name: it.name, recipe_id: it.recipe!.id },
+                      )
+                    }
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
               }
             />
           </li>
@@ -69,6 +88,15 @@ export function RecentFoods({ date, mealContext }: RecentFoodsProps) {
         target={target}
         date={date}
         defaultMeal={mealContext}
+      />
+
+      <ProductReviewForm
+        open={editFood !== null}
+        onClose={() => setEditFood(null)}
+        prefill={null}
+        barcode={editFood?.barcode ?? null}
+        editFood={editFood}
+        onSaved={() => setEditFood(null)}
       />
     </section>
   )

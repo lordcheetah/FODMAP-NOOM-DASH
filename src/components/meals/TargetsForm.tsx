@@ -74,6 +74,8 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
   const [dash, setDash] = useState<Record<DashGroup, string>>(() =>
     Object.fromEntries(DASH_GROUPS.map((g) => [g, ''])) as Record<DashGroup, string>,
   )
+  // Set after an "Apply" save (keeps the sheet open); cleared on the next edit.
+  const [justSaved, setJustSaved] = useState(false)
 
   // (Re)load form state whenever the sheet opens or the row arrives.
   useEffect(() => {
@@ -91,11 +93,12 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
         DASH_GROUPS.map((g) => [g, toStr(targets?.dash_serving_goals?.[g])]),
       ) as Record<DashGroup, string>,
     )
+    setJustSaved(false)
     upsert.reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, targets])
 
-  const handleSave = () => {
+  const submit = (close: boolean) => {
     const dash_serving_goals: Partial<Record<DashGroup, number>> = {}
     for (const g of DASH_GROUPS) {
       const n = toNum(dash[g])
@@ -110,7 +113,12 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
       fiber_per_meal_g: toNum(fiberMeal),
       dash_serving_goals,
     }
-    upsert.mutate(input, { onSuccess: () => onClose() })
+    upsert.mutate(input, {
+      onSuccess: () => {
+        if (close) onClose()
+        else setJustSaved(true)
+      },
+    })
   }
 
   return (
@@ -121,7 +129,7 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
       title="Daily targets"
       description="Set calorie, sodium, potassium, saturated-fat, and fiber goals plus DASH serving goals."
     >
-      <div className="space-y-4">
+      <div className="space-y-4" onInput={() => justSaved && setJustSaved(false)}>
         <div className="grid grid-cols-2 gap-3">
           <Field id="calorie" label="Calorie budget" value={calorie} onChange={setCalorie} />
           <Field id="sodium" label="Sodium budget (mg)" value={sodium} onChange={setSodium} />
@@ -152,12 +160,23 @@ export function TargetsForm({ open, onClose }: TargetsFormProps) {
           </p>
         )}
 
-        <div className="flex justify-end gap-2 pt-2">
+        <div className="flex items-center justify-end gap-2 pt-2">
+          {justSaved && !upsert.isPending && (
+            <span className="mr-auto text-xs font-medium text-noom-green">✓ Saved</span>
+          )}
           <Button type="button" variant="ghost" onClick={onClose}>
-            Cancel
+            Close
           </Button>
-          <Button type="button" onClick={handleSave} disabled={upsert.isPending}>
-            {upsert.isPending ? 'Saving…' : 'Save'}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => submit(false)}
+            disabled={upsert.isPending}
+          >
+            {upsert.isPending ? 'Saving…' : 'Apply'}
+          </Button>
+          <Button type="button" onClick={() => submit(true)} disabled={upsert.isPending}>
+            {upsert.isPending ? 'Saving…' : 'Save & close'}
           </Button>
         </div>
       </div>

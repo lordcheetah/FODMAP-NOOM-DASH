@@ -170,8 +170,9 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
                         {user && f.user_id === user.id && (
                           <Button
                             size="icon"
-                            variant="ghost"
+                            variant="outline"
                             aria-label={`Edit ${f.name}`}
+                            title={`Edit ${f.name}`}
                             onClick={() => setEditFood(f)}
                           >
                             <Pencil className="h-4 w-4" />

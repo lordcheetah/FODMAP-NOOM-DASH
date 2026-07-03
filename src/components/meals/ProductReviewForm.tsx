@@ -115,6 +115,8 @@ export function ProductReviewForm({
   const [fructans, setFructans] = useState<FodmapLevel>('unknown')
   const [dashGroup, setDashGroup] = useState<DashGroup | ''>('')
   const [noomCategory, setNoomCategory] = useState<NoomCategory | ''>('')
+  // Set after an "Apply" save (keeps the sheet open); cleared on the next edit.
+  const [justSaved, setJustSaved] = useState(false)
 
   // (Re)load the form whenever it opens — from the edited food in edit mode, or
   // from the scan/manual prefill otherwise.
@@ -155,6 +157,7 @@ export function ProductReviewForm({
       setDashGroup('')
       setNoomCategory('')
     }
+    setJustSaved(false)
     createFood.reset()
     updateFood.reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,7 +179,7 @@ export function ProductReviewForm({
 
   const userSetFodmap = fructose !== 'unknown' || fructans !== 'unknown'
 
-  const handleSave = () => {
+  const submit = (close: boolean) => {
     if (!valid) return
     const input: CreateFoodInput = {
       name: name.trim(),
@@ -204,9 +207,15 @@ export function ProductReviewForm({
       // authority for their own row so FODMAP levels flow through as chosen.
       updateFood.mutate(
         { ...input, id: editFood.id, source: editFood.source, barcode: editFood.barcode },
-        { onSuccess: (row) => onSaved(row) },
+        {
+          onSuccess: (row) => {
+            if (close) onSaved(row)
+            else setJustSaved(true)
+          },
+        },
       )
     } else {
+      // Create always closes into the add-to-log flow (Apply isn't offered).
       createFood.mutate(input, { onSuccess: (row) => onSaved(row) })
     }
   }
@@ -223,7 +232,7 @@ export function ProductReviewForm({
       title={isEdit ? 'Edit food' : notFound ? 'Add product manually' : 'Review product'}
       description={barcode ? `Barcode ${barcode}` : undefined}
     >
-      <div className="space-y-4">
+      <div className="space-y-4" onInput={() => justSaved && setJustSaved(false)}>
         {notFound && (
           <p className="rounded-lg border bg-muted p-3 text-sm text-muted-foreground">
             Product not in Open Food Facts — enter it manually. The barcode is
@@ -461,12 +470,25 @@ export function ProductReviewForm({
           </p>
         )}
 
-        <div className="flex justify-end gap-2 pt-1">
+        <div className="flex items-center justify-end gap-2 pt-1">
+          {justSaved && !busy && (
+            <span className="mr-auto text-xs font-medium text-noom-green">✓ Saved</span>
+          )}
           <Button type="button" variant="ghost" onClick={onClose}>
-            Cancel
+            {isEdit ? 'Close' : 'Cancel'}
           </Button>
-          <Button type="button" onClick={handleSave} disabled={!valid || busy}>
-            {busy ? 'Saving…' : isEdit ? 'Save changes' : 'Save & log'}
+          {isEdit && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => submit(false)}
+              disabled={!valid || busy}
+            >
+              {busy ? 'Saving…' : 'Apply'}
+            </Button>
+          )}
+          <Button type="button" onClick={() => submit(true)} disabled={!valid || busy}>
+            {busy ? 'Saving…' : isEdit ? 'Save & close' : 'Save & log'}
           </Button>
         </div>
       </div>
