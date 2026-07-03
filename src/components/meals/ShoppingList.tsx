@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useDailyTargets } from '@/lib/db/dailyTargets'
+import { usePersistentSet } from '@/hooks/usePersistentSet'
 import { buildShoppingList, DEFAULT_DASH_GOALS, type DashGroup } from '@/lib/diet'
 
 const DASH_GROUP_LABEL: Record<DashGroup, string> = {
@@ -35,7 +36,8 @@ function round(n: number): number {
 export function ShoppingList() {
   const { data: targets } = useDailyTargets()
   const [days, setDays] = useState<number>(7)
-  const [checked, setChecked] = useState<Set<string>>(new Set())
+  // Persisted so checked-off items survive a reload while shopping.
+  const { set: checked, toggle, clear } = usePersistentSet('shopping:checked')
 
   const goals = useMemo(() => {
     const g = targets?.dash_serving_goals
@@ -44,14 +46,6 @@ export function ShoppingList() {
 
   const list = useMemo(() => buildShoppingList(goals, days), [goals, days])
   const checkedCount = checked.size
-
-  const toggle = (key: string) =>
-    setChecked((prev) => {
-      const next = new Set(prev)
-      if (next.has(key)) next.delete(key)
-      else next.add(key)
-      return next
-    })
 
   if (!isSupabaseConfigured) return null
 
@@ -62,7 +56,7 @@ export function ShoppingList() {
         {checkedCount > 0 && (
           <button
             type="button"
-            onClick={() => setChecked(new Set())}
+            onClick={clear}
             className="text-[11px] text-muted-foreground underline underline-offset-2"
           >
             Clear {checkedCount}
