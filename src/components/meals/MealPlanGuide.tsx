@@ -7,6 +7,7 @@ import { useDailyTargets } from '@/lib/db/dailyTargets'
 import { usePersistentSet } from '@/hooks/usePersistentSet'
 import {
   buildMealPlan,
+  recipeDashServings,
   DEFAULT_DASH_GOALS,
   PLAN_MEALS,
   type DashGroup,
@@ -77,11 +78,22 @@ export function MealPlanGuide({ date }: MealPlanGuideProps) {
 
   const logged: PlanLoggedItem[] = useMemo(
     () =>
-      (log.data ?? []).map((e) => ({
-        meal: e.meal,
-        dashGroup: e.food?.dash_group ?? null,
-        servings: e.servings,
-      })),
+      (log.data ?? []).flatMap((e): PlanLoggedItem[] => {
+        if (e.food) {
+          return [{ meal: e.meal, dashGroup: e.food.dash_group ?? null, servings: e.servings }]
+        }
+        if (e.recipe) {
+          // A recipe credits each DASH group its ingredients cover (per serving ×
+          // logged servings), so recipes count toward the plan's targets too.
+          const per = recipeDashServings(e.recipe.recipe_ingredients ?? [], e.recipe.servings)
+          return Object.entries(per).map(([g, s]) => ({
+            meal: e.meal,
+            dashGroup: g as DashGroup,
+            servings: (s ?? 0) * e.servings,
+          }))
+        }
+        return []
+      }),
     [log.data],
   )
 

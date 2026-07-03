@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import {
   recipeNutrients,
+  type DashGroup,
   type LoggedNutrients,
   type MealType,
   type RollupFood,
@@ -38,6 +39,8 @@ export type LoggedRecipeIngredient = {
         sodium_mg: number | null
         sat_fat_g: number | null
         potassium_mg: number | null
+        /** Selected in FOOD_LOG_SELECT; optional so lighter embeds still type-check. */
+        dash_group?: DashGroup | null
       })
     | null
 }
@@ -118,7 +121,7 @@ export function toLoggedNutrients(entry: FoodLogEntry): LoggedNutrients {
 
 /** One round-trip select: the log row plus embedded food + recipe (w/ ingredients). */
 const FOOD_LOG_SELECT =
-  '*, food:foods(*), recipe:recipes(*, recipe_ingredients(food_id, quantity, unit, food:foods(name,serving_desc,serving_grams,calories,fiber_g,sodium_mg,sat_fat_g,potassium_mg,fructose_level,fructans_level)))'
+  '*, food:foods(*), recipe:recipes(*, recipe_ingredients(food_id, quantity, unit, food:foods(name,serving_desc,serving_grams,calories,fiber_g,sodium_mg,sat_fat_g,potassium_mg,fructose_level,fructans_level,dash_group)))'
 
 /**
  * The day's log for `date` (YYYY-MM-DD), scoped to the signed-in user via RLS,

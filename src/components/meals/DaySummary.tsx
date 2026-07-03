@@ -7,6 +7,7 @@ import {
   fodmapMealLoad,
   noomColor,
   recipeAxisLevel,
+  recipeDashServings,
   recipeNutrients,
   recipeRollup,
   DASH_GROUPS,
@@ -129,6 +130,17 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
     sat_fat_limit_g: targets?.sat_fat_limit_g ?? null,
     dash_serving_goals: targets?.dash_serving_goals ?? {},
   })
+
+  // Credit recipes to DASH serving groups from their ingredients (dashProgress
+  // already counted foods). Approximate when a recipe has unconvertible parts.
+  const servingsByGroup = { ...dash.servingsByGroup }
+  for (const e of entries) {
+    if (!e.recipe) continue
+    const per = recipeDashServings(e.recipe.recipe_ingredients ?? [], e.recipe.servings)
+    for (const g of Object.keys(per) as DashGroup[]) {
+      servingsByGroup[g] += (per[g] ?? 0) * e.servings
+    }
+  }
 
   // Logged FOODS with no DASH group contribute sodium/potassium but land in no
   // serving bucket — an incomplete rollup that should announce itself rather than
@@ -413,7 +425,7 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
         <p className="mt-3 text-sm font-medium">DASH servings</p>
         <ul className="mt-1 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
           {DASH_GROUPS.map((g) => {
-            const got = dash.servingsByGroup[g]
+            const got = servingsByGroup[g]
             const goal = dash.goalsByGroup[g]
             return (
               <li key={g} className="flex justify-between">
