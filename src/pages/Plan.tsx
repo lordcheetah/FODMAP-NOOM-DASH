@@ -1,4 +1,5 @@
 import { MealPlanGuide } from '@/components/meals/MealPlanGuide'
+import { SampleDayMenu } from '@/components/meals/SampleDayMenu'
 import { ShoppingList } from '@/components/meals/ShoppingList'
 import { Disclaimer } from '@/components/diet/Disclaimer'
 
@@ -11,6 +12,7 @@ export default function Plan() {
   return (
     <div className="space-y-4">
       <MealPlanGuide />
+      <SampleDayMenu />
       <ShoppingList />
       <Disclaimer />
     </div>
