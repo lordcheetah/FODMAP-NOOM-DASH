@@ -1,8 +1,9 @@
 import { Routes, Route, NavLink } from 'react-router-dom'
-import { Apple, Dumbbell, Home, LogOut } from 'lucide-react'
+import { Apple, CalendarCheck, Dumbbell, Home, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Dashboard from '@/pages/Dashboard'
 import Meals from '@/pages/Meals'
+import Plan from '@/pages/Plan'
 import Exercise from '@/pages/Exercise'
 import Login from '@/pages/Login'
 import OfflineBanner from '@/components/OfflineBanner'
@@ -11,6 +12,7 @@ import { useAuth, isSupabaseConfigured } from '@/lib/auth'
 const NAV = [
   { to: '/', label: 'Home', icon: Home, end: true },
   { to: '/meals', label: 'Meals', icon: Apple, end: false },
+  { to: '/plan', label: 'Plan', icon: CalendarCheck, end: false },
   { to: '/exercise', label: 'Exercise', icon: Dumbbell, end: false },
 ] as const
 
@@ -60,6 +62,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/meals" element={<Meals />} />
+          <Route path="/plan" element={<Plan />} />
           <Route path="/exercise" element={<Exercise />} />
         </Routes>
       </main>
