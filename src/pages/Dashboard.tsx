@@ -2,6 +2,7 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 import { Disclaimer } from '@/components/diet/Disclaimer'
 import { WeightTracker } from '@/components/health/WeightTracker'
 import { NutrientTrends } from '@/components/health/NutrientTrends'
+import { DashServingsWeek } from '@/components/health/DashServingsWeek'
 
 /**
  * Home dashboard: weight/BMI tracking, plus a sync-status line. The daily food
@@ -27,6 +28,8 @@ export default function Dashboard() {
       <WeightTracker />
 
       <NutrientTrends />
+
+      <DashServingsWeek />
 
       <Disclaimer />
     </div>
