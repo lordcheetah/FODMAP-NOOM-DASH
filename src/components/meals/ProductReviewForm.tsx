@@ -338,6 +338,19 @@ export function ProductReviewForm({
                 <RefList title="Often high fructose" items={FODMAP_REFERENCE.highFructose} />
                 <RefList title="Often high fructans" items={FODMAP_REFERENCE.highFructans} />
                 <RefList title="Usually low (both)" items={FODMAP_REFERENCE.usuallyLow} />
+
+                <p className="pt-1 font-medium">On the ingredient label:</p>
+                <RefList title="Fructose names" items={FODMAP_REFERENCE.fructoseLabelNames} />
+                <RefList title="Fructans names" items={FODMAP_REFERENCE.fructansLabelNames} />
+                <p>
+                  <span className="font-medium">Polyols (sorbitol &amp; other “-ol” sugars):</span>{' '}
+                  <span className="text-muted-foreground">
+                    {FODMAP_REFERENCE.polyolLabelNames.join(', ')}
+                  </span>{' '}
+                  — a <span className="font-medium">separate</span> FODMAP group, not your
+                  fructose/fructans trigger. Shown for label-reading only; leave the levels
+                  above unchanged for these.
+                </p>
               </div>
             )}
           </div>

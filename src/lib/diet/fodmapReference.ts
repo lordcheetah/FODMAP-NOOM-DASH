@@ -12,6 +12,16 @@ export interface FodmapReference {
   highFructans: readonly string[]
   /** Usually low on BOTH axes at a normal serving — reassurance picks. */
   usuallyLow: readonly string[]
+  /** Ingredient-label aliases that signal added EXCESS FRUCTOSE. */
+  fructoseLabelNames: readonly string[]
+  /** Ingredient-label aliases that signal added FRUCTANS. */
+  fructansLabelNames: readonly string[]
+  /**
+   * Polyols / sugar alcohols — a SEPARATE FODMAP group, NOT the owner's tracked
+   * fructose/fructans trigger. Listed for label-reading awareness only; they do
+   * not set either tracked level.
+   */
+  polyolLabelNames: readonly string[]
 }
 
 export const FODMAP_REFERENCE: FodmapReference = {
@@ -65,5 +75,30 @@ export const FODMAP_REFERENCE: FodmapReference = {
     'oats',
     'quinoa',
     'garlic-infused oil',
+  ],
+  fructoseLabelNames: [
+    'fructose',
+    'crystalline fructose',
+    'high-fructose corn syrup (HFCS)',
+    'agave syrup / nectar',
+    'honey',
+    'fruit-juice concentrate',
+    'invert sugar',
+  ],
+  fructansLabelNames: [
+    'inulin',
+    'chicory root / chicory root fibre',
+    'fructo-oligosaccharides (FOS)',
+    'oligofructose',
+    'wheat / rye / barley fibre',
+  ],
+  polyolLabelNames: [
+    'sorbitol (E420)',
+    'mannitol (E421)',
+    'maltitol (E965)',
+    'isomalt (E953)',
+    'xylitol (E967)',
+    'lactitol (E966)',
+    'erythritol (E968) — usually well tolerated',
   ],
 }

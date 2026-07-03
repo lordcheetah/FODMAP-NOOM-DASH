@@ -18,4 +18,20 @@ describe('FODMAP_REFERENCE (memory aid)', () => {
     expect(FODMAP_REFERENCE.highFructose.length).toBeGreaterThan(0)
     expect(FODMAP_REFERENCE.highFructans.length).toBeGreaterThan(0)
   })
+
+  it('lists label-name aliases for the tracked axes', () => {
+    expect(
+      FODMAP_REFERENCE.fructansLabelNames.some((n) => n.includes('inulin')),
+    ).toBe(true)
+    expect(
+      FODMAP_REFERENCE.fructoseLabelNames.some((n) => n.includes('HFCS')),
+    ).toBe(true)
+  })
+
+  it('lists polyols (separate group) incl. sorbitol, for label-reading only', () => {
+    expect(
+      FODMAP_REFERENCE.polyolLabelNames.some((n) => n.startsWith('sorbitol')),
+    ).toBe(true)
+    expect(FODMAP_REFERENCE.polyolLabelNames.length).toBeGreaterThan(3)
+  })
 })
