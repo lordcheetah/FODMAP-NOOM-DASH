@@ -84,8 +84,8 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
     <section className="rounded-lg border bg-card p-4 text-card-foreground">
       <h3 className="mb-2 text-sm font-semibold">Search foods &amp; recipes</h3>
 
-      <div className="flex gap-2">
-        <div className="relative flex-1">
+      <div className="space-y-2">
+        <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
@@ -93,15 +93,16 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
             placeholder="Search (min 2 characters)…"
             value={term}
             onChange={(e) => setTerm(e.target.value)}
-            className="pl-9"
+            className="h-11 pl-9 text-base"
             aria-label="Search foods and recipes"
           />
         </div>
         {canCapture && (
-          <>
+          <div className="flex flex-wrap gap-2">
             <Button
               type="button"
               variant="outline"
+              size="sm"
               onClick={() => setScanOpen(true)}
               aria-label="Scan barcode"
             >
@@ -111,6 +112,7 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
             <Button
               type="button"
               variant="outline"
+              size="sm"
               onClick={() => setPhotoOpen(true)}
               aria-label="Photo of meal"
             >
@@ -120,13 +122,14 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
             <Button
               type="button"
               variant="outline"
+              size="sm"
               onClick={() => setLabelOpen(true)}
               aria-label="Scan nutrition label"
             >
               <ScanText className="h-4 w-4" />
               Label
             </Button>
-          </>
+          </div>
         )}
       </div>
 
