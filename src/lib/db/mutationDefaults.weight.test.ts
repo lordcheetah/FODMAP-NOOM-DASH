@@ -63,13 +63,23 @@ describe('weight/profile optimistic mutation defaults', () => {
       sex: null,
       weight_unit: 'lb',
       height_unit: 'ftin',
+      on_raas_drug: false,
       updated_at: '2026-06-01T00:00:00Z',
     }
     qc.setQueryData(queryKeys.bodyProfile(uid), prev)
     const d = buildUpsertBodyProfileDefaults(qc)
-    await d.onMutate({ userId: uid, weight_unit: 'kg' })
+    await d.onMutate({ userId: uid, weight_unit: 'kg', on_raas_drug: true })
     const p = qc.getQueryData<BodyProfileRow>(queryKeys.bodyProfile(uid))!
     expect(p.weight_unit).toBe('kg')
+    expect(p.on_raas_drug).toBe(true) // RAAS flag merges through
     expect(p.height_cm).toBe(175) // unchanged fields preserved
+  })
+
+  it('optimistic profile defaults on_raas_drug to false for a brand-new row', async () => {
+    const qc = new QueryClient()
+    const d = buildUpsertBodyProfileDefaults(qc)
+    await d.onMutate({ userId: uid, sex: 'male' })
+    const p = qc.getQueryData<BodyProfileRow>(queryKeys.bodyProfile(uid))!
+    expect(p.on_raas_drug).toBe(false)
   })
 })

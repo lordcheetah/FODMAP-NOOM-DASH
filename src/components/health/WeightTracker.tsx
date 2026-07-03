@@ -84,11 +84,13 @@ export function WeightTracker() {
   const [inch, setInch] = useState('')
   const [cm, setCm] = useState('')
   const [sex, setSex] = useState('')
+  const [raas, setRaas] = useState(false)
 
   // Seed the settings fields when the profile loads / settings opens.
   useEffect(() => {
     if (!showSettings) return
     setSex(p?.sex ?? '')
+    setRaas(!!p?.on_raas_drug)
     if (heightCm != null) {
       const { ft: f, inch: i } = cmToFtIn(heightCm)
       setFt(String(f))
@@ -117,7 +119,11 @@ export function WeightTracker() {
       if (Number.isFinite(c) && c > 0) height_cm = c
     }
     upsertProfile.mutate(
-      { height_cm: height_cm != null ? Number(height_cm.toFixed(2)) : null, sex: sex || null },
+      {
+        height_cm: height_cm != null ? Number(height_cm.toFixed(2)) : null,
+        sex: sex || null,
+        on_raas_drug: raas,
+      },
       { onSuccess: () => setShowSettings(false) },
     )
   }
@@ -342,6 +348,25 @@ export function WeightTracker() {
               BMI and its categories are the same regardless of sex — this is just
               for your records.
             </p>
+          </div>
+
+          <div>
+            <label htmlFor="raas-toggle" className="flex items-start gap-2">
+              <input
+                id="raas-toggle"
+                type="checkbox"
+                checked={raas}
+                onChange={(e) => setRaas(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-input"
+              />
+              <span className="text-sm">
+                I take a blood-pressure medication that retains potassium
+                <span className="block text-[11px] text-muted-foreground">
+                  ACE inhibitor, ARB (“-sartan”), or potassium-sparing diuretic.
+                  Adds a potassium caution — confirm your target with your prescriber.
+                </span>
+              </span>
+            </label>
           </div>
 
           <div className="flex justify-end">

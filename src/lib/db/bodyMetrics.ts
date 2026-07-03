@@ -15,6 +15,8 @@ export interface BodyProfileRow {
   sex: string | null
   weight_unit: string // 'lb' | 'kg'
   height_unit: string // 'ftin' | 'cm'
+  /** On an ACE inhibitor / ARB / K-sparing diuretic — changes potassium guidance. */
+  on_raas_drug: boolean
   updated_at: string
 }
 
@@ -54,6 +56,7 @@ export interface BodyProfileInput {
   sex?: string | null
   weight_unit?: string
   height_unit?: string
+  on_raas_drug?: boolean
 }
 
 /**

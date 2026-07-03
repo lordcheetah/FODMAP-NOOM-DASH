@@ -3,6 +3,7 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 import { useFoodLogRange, toLoggedNutrients } from '@/lib/db/foodLog'
 import { useDailyTargets } from '@/lib/db/dailyTargets'
 import { nutrientTrend, type DatedNutrients } from '@/lib/diet'
+import { RaasCaution } from './RaasCaution'
 
 const DAYS = 7
 
@@ -176,6 +177,7 @@ export function NutrientTrends() {
           {specs.map((spec) => (
             <NutrientBlock key={spec.key} spec={spec} dates={dates} />
           ))}
+          <RaasCaution />
           <p className="text-[10px] text-muted-foreground">
             Green = potassium goal met; red = over a ceiling. Averages cover days
             you logged. Sodium/potassium are the main levers for blood pressure.

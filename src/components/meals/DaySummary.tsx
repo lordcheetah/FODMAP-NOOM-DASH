@@ -20,6 +20,7 @@ import {
 } from '@/lib/diet'
 import { NOOM_DOT_CLASS } from '@/components/diet/NoomDot'
 import { Disclaimer } from '@/components/diet/Disclaimer'
+import { RaasCaution } from '@/components/health/RaasCaution'
 import { toLoggedNutrients, type FoodLogEntry } from '@/lib/db/foodLog'
 import type { DailyTargetsRow } from '@/lib/db/types'
 
@@ -386,6 +387,7 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
             <Bar value={dash.potassiumMg} max={dash.potassiumGoalMg} />
           </div>
         )}
+        <RaasCaution className="mt-2" />
 
         {/* Saturated fat — a CEILING (DASH caps it ~6% of calories), red when over. */}
         <div className="mt-3 flex items-baseline justify-between text-sm">

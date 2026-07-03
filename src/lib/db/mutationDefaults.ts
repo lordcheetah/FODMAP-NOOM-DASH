@@ -738,6 +738,7 @@ function buildUpsertBodyProfileDefaults(qc: QueryClient) {
             height_unit: 'ftin',
             height_cm: null,
             sex: null,
+            on_raas_drug: false,
             ...(old ?? {}),
             ...patch,
             user_id: userId,
