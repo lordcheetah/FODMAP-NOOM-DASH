@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   buildMealPlan,
+  buildShoppingList,
   MEAL_DASH_SHARE,
   PLAN_MEALS,
   type PlanLoggedItem,
@@ -111,5 +112,26 @@ describe('buildMealPlan — defer', () => {
     const plan = buildMealPlan(goals, null, [], new Set(['snack:fruits']))
     // The defer key is ignored at the last meal — fruits still render at snack.
     expect(grp(plan, 'snack', 'fruits')).toBeDefined()
+  })
+})
+
+describe('buildShoppingList', () => {
+  it('scales each group goal by the horizon and attaches low-FODMAP items', () => {
+    const list = buildShoppingList({ vegetables: 5, fruits: 4 }, 7)
+    const veg = list.find((s) => s.group === 'vegetables')!
+    expect(veg.servings).toBe(35) // 5/day × 7 days
+    expect(veg.items.length).toBeGreaterThan(0)
+    const fruit = list.find((s) => s.group === 'fruits')!
+    expect(fruit.servings).toBe(28)
+  })
+
+  it('omits groups with no goal', () => {
+    const list = buildShoppingList({ vegetables: 5 }, 3)
+    expect(list.map((s) => s.group)).toEqual(['vegetables'])
+    expect(list[0].servings).toBe(15)
+  })
+
+  it('treats a non-positive horizon as 1 day', () => {
+    expect(buildShoppingList({ fruits: 4 }, 0)[0].servings).toBe(4)
   })
 })

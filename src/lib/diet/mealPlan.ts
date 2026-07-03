@@ -105,6 +105,36 @@ function servingsOf(v: number): number {
   return Number.isFinite(v) && v > 0 ? v : 0
 }
 
+/** One DASH group's line on the shopping list. */
+export interface ShoppingGroup {
+  group: DashGroup
+  /** Servings to cover across the horizon (daily goal × days). */
+  servings: number
+  /** Low-FODMAP picks to buy for this group. */
+  items: string[]
+}
+
+/**
+ * Forward-looking grocery list: for each DASH group with a goal, the servings
+ * needed across `days` and the low-FODMAP picks to buy. Groups with no goal or
+ * no suggestions are omitted. Pure — the caller supplies goals (its own or the
+ * defaults) and the horizon.
+ */
+export function buildShoppingList(
+  dailyGoals: Partial<Record<DashGroup, number>>,
+  days: number,
+): ShoppingGroup[] {
+  const d = Number.isFinite(days) && days > 0 ? days : 1
+  const out: ShoppingGroup[] = []
+  for (const g of DASH_GROUPS) {
+    const perDay = dailyGoals[g] ?? 0
+    const items = LOW_FODMAP_BY_GROUP[g] ?? []
+    if (perDay <= 0 || items.length === 0) continue
+    out.push({ group: g, servings: perDay * d, items: [...items] })
+  }
+  return out
+}
+
 /**
  * Build the day's guided plan. `deferred` holds `${meal}:${group}` keys the user
  * has pushed to the NEXT meal; a deferred target is carried forward (its servings
