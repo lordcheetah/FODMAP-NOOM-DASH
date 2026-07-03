@@ -40,6 +40,7 @@ import type {
   DailyTargetsRow,
   FoodLogRow,
   FoodRow,
+  PlanStateRow,
   WorkoutLogExerciseRow,
   WorkoutLogRow,
 } from './types'
@@ -55,6 +56,7 @@ export type DeleteFoodLogVars = { id: string; date: string; userId: string }
 export type UpsertDailyTargetsVars = DailyTargetsInput & { userId: string }
 export type CreateFoodVars = CreateFoodInput & { userId: string }
 export type UpdateFoodVars = UpdateFoodInput & { userId: string }
+export type SetPlanStateVars = { key: string; values: string[]; userId: string }
 export type AddWorkoutLogVars = AddWorkoutLogInput & { userId: string }
 export type UpdateWorkoutLogVars = {
   id: string
@@ -410,6 +412,51 @@ function buildUpdateFoodDefaults(qc: QueryClient) {
       })
       void qc.invalidateQueries({ queryKey: ['foodSearch'] })
       void qc.invalidateQueries({ queryKey: queryKeys.recentFoods(vars.userId) })
+    },
+  }
+}
+
+// ---------------------------------------------------------------------------
+// plan_state: keyed string-set upsert (shopping checks / plan defers), synced
+// cross-device. Optimistic replace of the key's values; offline-capable.
+// ---------------------------------------------------------------------------
+
+type PlanStateCtx = { previous: string[] | undefined; userId: string; planKey: string }
+
+async function setPlanStateFn(vars: SetPlanStateVars): Promise<PlanStateRow> {
+  const sb = requireSupabase()
+  const { data, error } = await sb
+    .from('plan_state')
+    .upsert(
+      {
+        user_id: vars.userId,
+        key: vars.key,
+        values: vars.values,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id,key' },
+    )
+    .select('*')
+    .single()
+  if (error) throw error
+  return data as PlanStateRow
+}
+
+function buildSetPlanStateDefaults(qc: QueryClient) {
+  return {
+    mutationFn: setPlanStateFn,
+    onMutate: async (vars: SetPlanStateVars): Promise<PlanStateCtx> => {
+      const key = queryKeys.planState(vars.userId, vars.key)
+      await qc.cancelQueries({ queryKey: key })
+      const previous = qc.getQueryData<string[]>(key)
+      qc.setQueryData<string[]>(key, vars.values)
+      return { previous, userId: vars.userId, planKey: vars.key }
+    },
+    onError: (_e: unknown, _vars: SetPlanStateVars, ctx?: PlanStateCtx) => {
+      if (ctx) qc.setQueryData(queryKeys.planState(ctx.userId, ctx.planKey), ctx.previous)
+    },
+    onSettled: (_d: unknown, _e: unknown, vars: SetPlanStateVars) => {
+      void qc.invalidateQueries({ queryKey: queryKeys.planState(vars.userId, vars.key) })
     },
   }
 }
@@ -779,6 +826,7 @@ export function registerMutationDefaults(qc: QueryClient): void {
   )
   qc.setMutationDefaults(mutationKeys.createFood, buildCreateFoodDefaults(qc))
   qc.setMutationDefaults(mutationKeys.updateFood, buildUpdateFoodDefaults(qc))
+  qc.setMutationDefaults(mutationKeys.setPlanState, buildSetPlanStateDefaults(qc))
   qc.setMutationDefaults(mutationKeys.addWorkoutLog, buildAddWorkoutLogDefaults(qc))
   qc.setMutationDefaults(
     mutationKeys.updateWorkoutLog,
@@ -803,6 +851,7 @@ export {
   buildUpsertDailyTargetsDefaults,
   buildCreateFoodDefaults,
   buildUpdateFoodDefaults,
+  buildSetPlanStateDefaults,
   buildAddWorkoutLogDefaults,
   buildUpdateWorkoutLogDefaults,
   buildDeleteWorkoutLogDefaults,

@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useDailyTargets } from '@/lib/db/dailyTargets'
-import { usePersistentSet } from '@/hooks/usePersistentSet'
+import { useSyncedSet } from '@/lib/db/planState'
 import { buildShoppingList, DEFAULT_DASH_GOALS, type DashGroup } from '@/lib/diet'
 
 const DASH_GROUP_LABEL: Record<DashGroup, string> = {
@@ -36,8 +36,8 @@ function round(n: number): number {
 export function ShoppingList() {
   const { data: targets } = useDailyTargets()
   const [days, setDays] = useState<number>(7)
-  // Persisted so checked-off items survive a reload while shopping.
-  const { set: checked, toggle, clear } = usePersistentSet('shopping:checked')
+  // Synced so checked-off items survive a reload and follow you across devices.
+  const { set: checked, toggle, clear } = useSyncedSet('shopping:checked')
 
   const goals = useMemo(() => {
     const g = targets?.dash_serving_goals

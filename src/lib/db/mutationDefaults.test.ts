@@ -5,9 +5,11 @@ import {
   buildAddFoodLogDefaults,
   buildDeleteFoodLogDefaults,
   buildUpsertDailyTargetsDefaults,
+  buildSetPlanStateDefaults,
   OPTIMISTIC_PREFIX,
   type AddFoodLogVars,
   type DeleteFoodLogVars,
+  type SetPlanStateVars,
   type UpsertDailyTargetsVars,
 } from './mutationDefaults'
 import type { FoodLogEntry } from './foodLog'
@@ -205,6 +207,36 @@ describe('daily_targets upsert — optimistic onMutate', () => {
     defaults.onError(new Error('boom'), vars, ctx)
     const row = qc.getQueryData<DailyTargetsRow>(queryKeys.dailyTargets(USER))!
     expect(row.calorie_budget).toBe(1800)
+  })
+})
+
+describe('plan_state set — optimistic onMutate', () => {
+  let qc: QueryClient
+  beforeEach(() => {
+    qc = makeQc()
+  })
+
+  it('replaces the key values optimistically', async () => {
+    qc.setQueryData(queryKeys.planState(USER, 'shopping:checked'), ['a'])
+    const defaults = buildSetPlanStateDefaults(qc)
+    const vars: SetPlanStateVars = {
+      userId: USER,
+      key: 'shopping:checked',
+      values: ['a', 'b'],
+    }
+    await defaults.onMutate(vars)
+    expect(
+      qc.getQueryData<string[]>(queryKeys.planState(USER, 'shopping:checked')),
+    ).toEqual(['a', 'b'])
+  })
+
+  it('rolls back to the previous values on error', async () => {
+    qc.setQueryData(queryKeys.planState(USER, 'k'), ['x'])
+    const defaults = buildSetPlanStateDefaults(qc)
+    const vars: SetPlanStateVars = { userId: USER, key: 'k', values: ['x', 'y', 'z'] }
+    const ctx = await defaults.onMutate(vars)
+    defaults.onError(new Error('boom'), vars, ctx)
+    expect(qc.getQueryData<string[]>(queryKeys.planState(USER, 'k'))).toEqual(['x'])
   })
 })
 

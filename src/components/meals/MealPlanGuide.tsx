@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useFoodLog } from '@/lib/db/foodLog'
 import { useDailyTargets } from '@/lib/db/dailyTargets'
-import { usePersistentSet } from '@/hooks/usePersistentSet'
+import { useSyncedSet } from '@/lib/db/planState'
 import {
   buildMealPlan,
   recipeDashServings,
@@ -59,10 +59,8 @@ export function MealPlanGuide({ date }: MealPlanGuideProps) {
   const day = date ?? todayISO()
   const log = useFoodLog(day)
   const { data: targets } = useDailyTargets()
-  // Persisted per day so deferrals survive a reload.
-  const { set: deferred, toggle: toggleDefer } = usePersistentSet(
-    `mealplan:defers:${day}`,
-  )
+  // Synced per day so deferrals survive a reload and follow you across devices.
+  const { set: deferred, toggle: toggleDefer } = useSyncedSet(`mealplan:defers:${day}`)
   // Tapping a suggestion resolves it to a real food (picker) → add-to-log dialog.
   const [pick, setPick] = useState<{ term: string; meal: MealType } | null>(null)
   const [target, setTarget] = useState<AddTarget | null>(null)

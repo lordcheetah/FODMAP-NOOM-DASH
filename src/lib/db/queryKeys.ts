@@ -19,6 +19,8 @@ export const queryKeys = {
     ['dailyTargets', userId] as const,
   bodyProfile: (userId: string | undefined) => ['bodyProfile', userId] as const,
   weightLog: (userId: string | undefined) => ['weightLog', userId] as const,
+  planState: (userId: string | undefined, key: string) =>
+    ['planState', userId, key] as const,
 
   // Exercise (Phase 2)
   exercises: (category?: string) => ['exercises', category ?? 'all'] as const,
@@ -57,4 +59,5 @@ export const mutationKeys = {
   addWeight: ['weight_log', 'add'] as const,
   deleteWeight: ['weight_log', 'delete'] as const,
   upsertBodyProfile: ['body_profile', 'upsert'] as const,
+  setPlanState: ['plan_state', 'set'] as const,
 }

@@ -200,6 +200,14 @@ export interface WorkoutLogRow {
   created_at: string
 }
 
+/** `plan_state` — per-user UI state sets synced across devices; PK (user_id, key). */
+export interface PlanStateRow {
+  user_id: string
+  key: string
+  values: string[]
+  updated_at: string
+}
+
 /** `workout_log_exercises` — per-exercise results, child of `workout_log`. */
 export interface WorkoutLogExerciseRow {
   id: string
