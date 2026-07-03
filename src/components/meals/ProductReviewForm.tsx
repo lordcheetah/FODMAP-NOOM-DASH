@@ -7,6 +7,7 @@ import { NoomDot } from '@/components/diet/NoomDot'
 import { FodmapBadge } from '@/components/diet/FodmapBadge'
 import {
   noomColor,
+  FODMAP_REFERENCE,
   type DashGroup,
   type FodmapLevel,
   type NoomCategory,
@@ -85,6 +86,16 @@ function toNum(v: string): number | null {
   return Number.isFinite(n) ? n : null
 }
 
+/** One titled row of comma-separated reference foods. */
+function RefList({ title, items }: { title: string; items: readonly string[] }) {
+  return (
+    <p>
+      <span className="font-medium">{title}:</span>{' '}
+      <span className="text-muted-foreground">{items.join(', ')}</span>
+    </p>
+  )
+}
+
 export function ProductReviewForm({
   open,
   onClose,
@@ -117,6 +128,7 @@ export function ProductReviewForm({
   const [noomCategory, setNoomCategory] = useState<NoomCategory | ''>('')
   // Set after an "Apply" save (keeps the sheet open); cleared on the next edit.
   const [justSaved, setJustSaved] = useState(false)
+  const [showRef, setShowRef] = useState(false)
 
   // (Re)load the form whenever it opens — from the edited food in edit mode, or
   // from the scan/manual prefill otherwise.
@@ -305,6 +317,29 @@ export function ProductReviewForm({
           </div>
           <div className="pt-1">
             <FodmapBadge fructose={fructose} fructans={fructans} />
+          </div>
+
+          {/* Non-authoritative memory aid for hand-labeling. Collapsed by default. */}
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={() => setShowRef((s) => !s)}
+              className="text-xs font-medium underline underline-offset-2"
+            >
+              {showRef ? 'Hide' : 'Show'} common trigger foods (reminder)
+            </button>
+            {showRef && (
+              <div className="mt-2 space-y-2 rounded-md border border-amber-200 bg-amber-100/40 p-2 text-[11px]">
+                <p>
+                  A general memory aid, not a verdict about this food — portion size
+                  matters, and yours may differ. Fructose is often on the label;
+                  fructans rarely are.
+                </p>
+                <RefList title="Often high fructose" items={FODMAP_REFERENCE.highFructose} />
+                <RefList title="Often high fructans" items={FODMAP_REFERENCE.highFructans} />
+                <RefList title="Usually low (both)" items={FODMAP_REFERENCE.usuallyLow} />
+              </div>
+            )}
           </div>
         </div>
 
