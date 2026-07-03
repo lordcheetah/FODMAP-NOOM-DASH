@@ -172,19 +172,32 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
     }),
   )
 
-  // Day-level: DASH group goals met mostly via FODMAP-high foods.
+  // Day-level: DASH group goals met mostly via FODMAP-high items. Foods use their
+  // own group + levels; recipes expand into per-group servings (recipeDashServings)
+  // tagged with the recipe's worst-case FODMAP roll-up as the trigger signal.
   const dashConflicts = dashTargetConflicts(
     entries.flatMap((e): DashTargetInput[] => {
-      const f = e.food
-      if (!f) return []
-      return [
-        {
-          dashGroup: f.dash_group,
-          servings: e.servings,
-          fructoseLevel: f.fructose_level,
-          fructansLevel: f.fructans_level,
-        },
-      ]
+      if (e.food) {
+        return [
+          {
+            dashGroup: e.food.dash_group,
+            servings: e.servings,
+            fructoseLevel: e.food.fructose_level,
+            fructansLevel: e.food.fructans_level,
+          },
+        ]
+      }
+      if (e.recipe) {
+        const rollup = recipeRollup(e.recipe.recipe_ingredients ?? [])
+        const per = recipeDashServings(e.recipe.recipe_ingredients ?? [], e.recipe.servings)
+        return Object.entries(per).map(([g, s]) => ({
+          dashGroup: g as DashGroup,
+          servings: (s ?? 0) * e.servings,
+          fructoseLevel: rollup.fructoseLevel,
+          fructansLevel: rollup.fructansLevel,
+        }))
+      }
+      return []
     }),
     targets?.dash_serving_goals ?? {},
   )
