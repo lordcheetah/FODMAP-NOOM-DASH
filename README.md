@@ -34,9 +34,17 @@ see [`supabase/README.md`](./supabase/README.md).
 |---|---|
 | `npm run dev` | Dev server |
 | `npm run build` / `npm run preview` | Production build + preview (test PWA install here, over HTTPS/LAN) |
+| `npm run host` | Build + serve in one step — for self-hosting on an always-on machine (see [DEPLOY.md](DEPLOY.md)) |
 | `npm run lint` / `npm run typecheck` | Quality gates |
 | `npm test` | Vitest unit tests (diet logic) |
 | `npm run e2e` | Playwright end-to-end tests |
+
+## Hosting & porting to another device
+
+See **[DEPLOY.md](DEPLOY.md)** for the two options: deploy once to Netlify (a URL
+that works everywhere, nothing to keep running) or self-host on an always-on
+laptop over Tailscale. Your data lives in Supabase, so no data is copied — each
+device just signs in.
 
 ## Installing on your devices
 
