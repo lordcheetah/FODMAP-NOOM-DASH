@@ -31,7 +31,7 @@ function round(n: number, digits = 0): number {
 type TargetKind = 'ceiling' | 'floor'
 
 interface NutrientSpec {
-  key: 'sodium' | 'potassium' | 'satfat'
+  key: 'calories' | 'sodium' | 'potassium' | 'satfat' | 'fiber'
   label: string
   unit: string
   digits: number
@@ -128,6 +128,15 @@ export function NutrientTrends() {
 
   const specs: NutrientSpec[] = [
     {
+      key: 'calories',
+      label: 'Calories',
+      unit: 'cal',
+      digits: 0,
+      kind: 'ceiling',
+      values: trend.map((d) => d.calories),
+      target: targets?.calorie_budget ?? null,
+    },
+    {
       key: 'sodium',
       label: 'Sodium',
       unit: 'mg',
@@ -154,11 +163,20 @@ export function NutrientTrends() {
       values: trend.map((d) => d.satFatG),
       target: targets?.sat_fat_limit_g ?? null,
     },
+    {
+      key: 'fiber',
+      label: 'Fiber',
+      unit: 'g',
+      digits: 1,
+      kind: 'floor',
+      values: trend.map((d) => d.fiberG),
+      target: targets?.fiber_goal_g ?? null,
+    },
   ]
 
   return (
     <section className="rounded-lg border bg-card p-4 text-card-foreground">
-      <h3 className="text-sm font-semibold">This week — blood-pressure nutrients</h3>
+      <h3 className="text-sm font-semibold">This week</h3>
 
       {!isSupabaseConfigured && (
         <p className="mt-2 text-xs text-muted-foreground">
@@ -175,12 +193,15 @@ export function NutrientTrends() {
       {isSupabaseConfigured && hasAny && (
         <div className="mt-3 space-y-4">
           {specs.map((spec) => (
-            <NutrientBlock key={spec.key} spec={spec} dates={dates} />
+            <div key={spec.key} className="space-y-2">
+              <NutrientBlock spec={spec} dates={dates} />
+              {spec.key === 'potassium' && <RaasCaution />}
+            </div>
           ))}
-          <RaasCaution />
           <p className="text-[10px] text-muted-foreground">
-            Green = potassium goal met; red = over a ceiling. Averages cover days
-            you logged. Sodium/potassium are the main levers for blood pressure.
+            Green = a floor goal met (potassium, fiber); red = over a ceiling
+            (calories, sodium, saturated fat). Averages cover days you logged.
+            Sodium and potassium are the main levers for blood pressure.
           </p>
         </div>
       )}
