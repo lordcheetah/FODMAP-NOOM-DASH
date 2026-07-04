@@ -10,6 +10,11 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # These VITE_* values are INTENDED to be in the client bundle (the anon key is
+  # public — every table is guarded by RLS). Netlify's secrets scanner otherwise
+  # sees the anon key in dist/ and FAILS the build, leaving the old "not
+  # configured" bundle live. Tell it these keys are safe to appear in the output.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY"
 
 # SPA fallback so client-side routes (e.g. /meals, /exercise) work on reload.
 [[redirects]]
