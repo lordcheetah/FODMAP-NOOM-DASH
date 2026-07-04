@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Camera, Pencil, Plus, ScanBarcode, ScanText, Search } from 'lucide-react'
+import { Camera, Pencil, Plus, PlusCircle, ScanBarcode, ScanText, Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { FoodItemRow, type NutrientChip } from '@/components/diet/FoodItemRow'
@@ -10,6 +10,7 @@ import type { FoodRow, RecipeRow } from '@/lib/db/types'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
+import { AddFoodFlow } from './AddFoodFlow'
 import { ProductReviewForm } from './ProductReviewForm'
 import { ScanFlow } from './ScanFlow'
 import { PhotoMealFlow } from './PhotoMealFlow'
@@ -62,6 +63,7 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
   const debounced = useDebounced(term, DEBOUNCE_MS)
   const [target, setTarget] = useState<AddTarget | null>(null)
   const [editFood, setEditFood] = useState<FoodRow | null>(null)
+  const [addOpen, setAddOpen] = useState(false)
   const [scanOpen, setScanOpen] = useState(false)
   const [photoOpen, setPhotoOpen] = useState(false)
   const [labelOpen, setLabelOpen] = useState(false)
@@ -99,6 +101,16 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
         </div>
         {canCapture && (
           <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="default"
+              size="sm"
+              onClick={() => setAddOpen(true)}
+              aria-label="Add a new food"
+            >
+              <PlusCircle className="h-4 w-4" />
+              Add food
+            </Button>
             <Button
               type="button"
               variant="outline"
@@ -253,6 +265,12 @@ export function FoodSearch({ date, mealContext }: FoodSearchProps) {
 
       {canCapture && (
         <>
+          <AddFoodFlow
+            open={addOpen}
+            onClose={() => setAddOpen(false)}
+            date={date}
+            mealContext={mealContext}
+          />
           <ScanFlow
             open={scanOpen}
             onClose={() => setScanOpen(false)}

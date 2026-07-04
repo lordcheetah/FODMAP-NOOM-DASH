@@ -251,8 +251,9 @@ export function ProductReviewForm({
       <div className="space-y-4" onInput={() => justSaved && setJustSaved(false)}>
         {notFound && (
           <p className="rounded-lg border bg-muted p-3 text-sm text-muted-foreground">
-            Product not in Open Food Facts — enter it manually. The barcode is
-            saved so re-scanning finds it next time.
+            {barcode
+              ? 'Product not in Open Food Facts — enter it manually. The barcode is saved so re-scanning finds it next time.'
+              : 'Enter the food’s details below. It’s saved to your foods so you can log it anytime.'}
           </p>
         )}
 

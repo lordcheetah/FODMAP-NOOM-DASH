@@ -21,6 +21,7 @@
 import type { FoodRow } from '@/lib/db/types'
 
 const OFF_BASE = 'https://world.openfoodfacts.org/api/v2/product'
+const OFF_SEARCH = 'https://world.openfoodfacts.org/cgi/search.pl'
 const APP_NAME = 'fodmap-noom-dash'
 const APP_VERSION = '0.1'
 
@@ -111,6 +112,39 @@ export async function fetchProductByBarcode(
   } catch {
     // Offline / DNS / CORS / JSON parse — surface as a retryable error, never throw.
     return { status: 'error', product: null }
+  }
+}
+
+export interface OffSearchResult {
+  status: 'found' | 'empty' | 'error'
+  products: OffProduct[]
+}
+
+/**
+ * Search Open Food Facts products by name (free-text). Anonymous GET, no key.
+ * Never throws: non-OK / offline / parse failure → 'error'; no matches → 'empty'.
+ * Returns products carrying a `code` (barcode) so a pick can prefill + dedup like
+ * a scan. Only products with a usable name are kept.
+ */
+export async function searchProductsByName(term: string): Promise<OffSearchResult> {
+  const q = term.trim()
+  if (q.length < 2) return { status: 'empty', products: [] }
+
+  const url =
+    `${OFF_SEARCH}?search_terms=${encodeURIComponent(q)}` +
+    `&search_simple=1&action=process&json=1&page_size=20` +
+    `&fields=${FIELDS}&app_name=${APP_NAME}&app_version=${APP_VERSION}`
+
+  try {
+    const res = await fetch(url, { headers: { Accept: 'application/json' } })
+    if (!res.ok) return { status: 'error', products: [] }
+    const body = (await res.json()) as { products?: OffProduct[] }
+    const products = (body.products ?? []).filter(
+      (p) => (p.product_name?.trim() || p.generic_name?.trim())?.length,
+    )
+    return { status: products.length > 0 ? 'found' : 'empty', products }
+  } catch {
+    return { status: 'error', products: [] }
   }
 }
 
