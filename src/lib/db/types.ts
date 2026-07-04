@@ -39,6 +39,8 @@ export interface FoodRow {
   fructans_level: FodmapLevel
   noom_category: NoomCategory | null
   dash_group: DashGroup | null
+  /** DASH servings ONE serving of this food counts as (null = 1). Portion-aware. */
+  dash_servings: number | null
   source: string | null
   /** Retail barcode (EAN/UPC) for scanned products; null for seed + typed customs. */
   barcode: string | null

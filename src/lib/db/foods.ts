@@ -90,6 +90,8 @@ export interface CreateFoodInput {
   fructans_level?: FodmapLevel
   /** DASH food group — manual classification; null = unclassified (counts to no serving bucket). */
   dash_group?: DashGroup | null
+  /** DASH servings one serving of this food counts as (portion-aware); null/absent = 1. */
+  dash_servings?: number | null
   /** NOOM semantic category (protein/fruit/…). NOOM *color* stays computed from cal/g. */
   noom_category?: NoomCategory | null
   source?: string | null

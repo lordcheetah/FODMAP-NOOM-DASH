@@ -125,6 +125,7 @@ export function ProductReviewForm({
   const [fructose, setFructose] = useState<FodmapLevel>('unknown')
   const [fructans, setFructans] = useState<FodmapLevel>('unknown')
   const [dashGroup, setDashGroup] = useState<DashGroup | ''>('')
+  const [dashServings, setDashServings] = useState('')
   const [noomCategory, setNoomCategory] = useState<NoomCategory | ''>('')
   // Set after an "Apply" save (keeps the sheet open); cleared on the next edit.
   const [justSaved, setJustSaved] = useState(false)
@@ -151,6 +152,7 @@ export function ProductReviewForm({
       setFructose(editFood.fructose_level)
       setFructans(editFood.fructans_level)
       setDashGroup(editFood.dash_group ?? '')
+      setDashServings(editFood.dash_servings != null ? String(editFood.dash_servings) : '')
       setNoomCategory(editFood.noom_category ?? '')
     } else {
       setName(prefill?.name ?? '')
@@ -167,6 +169,7 @@ export function ProductReviewForm({
       setFructose('unknown')
       setFructans('unknown')
       setDashGroup('')
+      setDashServings('')
       setNoomCategory('')
     }
     setJustSaved(false)
@@ -207,6 +210,7 @@ export function ProductReviewForm({
       fructose_level: fructose,
       fructans_level: fructans,
       dash_group: dashGroup || null,
+      dash_servings: dashGroup ? toNum(dashServings) : null,
       noom_category: noomCategory || null,
       // Note user-provided FODMAP in source when the user set a level.
       source: userSetFodmap
@@ -393,6 +397,30 @@ export function ProductReviewForm({
             </select>
           </div>
         </div>
+
+        {/* Portion size: a large serving can be worth 2+ DASH servings. Only
+            relevant once a DASH group is set. */}
+        {dashGroup && (
+          <div>
+            <Label htmlFor="pf-dash-servings">DASH servings per serving</Label>
+            <Input
+              id="pf-dash-servings"
+              type="number"
+              inputMode="decimal"
+              min={0}
+              step="0.5"
+              value={dashServings}
+              onChange={(e) => setDashServings(e.target.value)}
+              placeholder="1 (standard)"
+              className="mt-1"
+            />
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              How many DASH {DASH_GROUP_OPTIONS.find((o) => o.value === dashGroup)?.label ?? ''}{' '}
+              servings one serving of this food counts as — e.g. a big bowl of cereal
+              ≈ 2, a large salad ≈ 2–3. Leave blank for a standard 1.
+            </p>
+          </div>
+        )}
 
         {/* Editable fields. */}
         <div className="grid grid-cols-1 gap-3">

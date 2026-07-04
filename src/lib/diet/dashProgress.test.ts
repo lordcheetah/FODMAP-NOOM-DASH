@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { dashProgress, DASH_GROUPS, type LoggedNutrients } from './dashProgress'
+import {
+  dashProgress,
+  foodDashServings,
+  DASH_GROUPS,
+  type LoggedNutrients,
+} from './dashProgress'
 
 function entry(over: Partial<LoggedNutrients>): LoggedNutrients {
   return { meal: 'lunch', servings: 1, ...over }
@@ -76,6 +81,33 @@ describe('dashProgress', () => {
     const r = dashProgress([entry({ dash_group: null, sodium_mg: 500 })], {})
     expect(r.sodiumMg).toBe(500)
     for (const g of DASH_GROUPS) expect(r.servingsByGroup[g]).toBe(0)
+  })
+
+  it('portion size: dashServings multiplies the group count, not nutrient mass', () => {
+    // A 1-cup bowl of cereal worth 2 grain servings; 1 logged serving.
+    const r = dashProgress(
+      [entry({ dash_group: 'grains', servings: 1, dashServings: 2, sodium_mg: 200 })],
+      {},
+    )
+    expect(r.servingsByGroup.grains).toBe(2) // counts as 2 grains
+    expect(r.sodiumMg).toBe(200) // mass unchanged by dashServings
+  })
+
+  it('portion size: logged servings and dashServings compound', () => {
+    const r = dashProgress(
+      [entry({ dash_group: 'vegetables', servings: 2, dashServings: 1.5 })],
+      {},
+    )
+    expect(r.servingsByGroup.vegetables).toBe(3) // 2 × 1.5
+  })
+
+  it('foodDashServings defaults to 1 for null/0/negative/NaN, passes positives', () => {
+    expect(foodDashServings(null)).toBe(1)
+    expect(foodDashServings(undefined)).toBe(1)
+    expect(foodDashServings(0)).toBe(1)
+    expect(foodDashServings(-2)).toBe(1)
+    expect(foodDashServings(NaN)).toBe(1)
+    expect(foodDashServings(2.5)).toBe(2.5)
   })
 
   it('passes through dash_serving_goals', () => {

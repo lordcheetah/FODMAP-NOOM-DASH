@@ -17,6 +17,13 @@ export interface LoggedNutrients {
   meal: MealType
   /** Multiplier applied to the per-serving nutrient fields above. */
   servings: number
+  /** DASH servings one food-serving counts as (portion size); default 1. */
+  dashServings?: number | null
+}
+
+/** Validate a food's DASH-servings multiplier — positive finite, else 1. */
+export function foodDashServings(value: number | null | undefined): number {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : 1
 }
 
 export interface DashTargets {
@@ -91,7 +98,11 @@ export function dashProgress(
 
   for (const e of entries) {
     const servings = num(e.servings)
-    if (e.dash_group) servingsByGroup[e.dash_group] += servings
+    // A large portion can be worth 2+ DASH servings of its group; nutrient masses
+    // still scale by the logged servings only (dashServings is a count, not mass).
+    if (e.dash_group) {
+      servingsByGroup[e.dash_group] += servings * foodDashServings(e.dashServings)
+    }
     sodiumMg += num(e.sodium_mg) * servings
     satFatG += num(e.sat_fat_g) * servings
     potassiumMg += num(e.potassium_mg) * servings

@@ -7,6 +7,7 @@ import { useDailyTargets } from '@/lib/db/dailyTargets'
 import { useSyncedSet } from '@/lib/db/planState'
 import {
   buildMealPlan,
+  foodDashServings,
   recipeDashServings,
   DEFAULT_DASH_GOALS,
   PLAN_MEALS,
@@ -78,7 +79,13 @@ export function MealPlanGuide({ date }: MealPlanGuideProps) {
     () =>
       (log.data ?? []).flatMap((e): PlanLoggedItem[] => {
         if (e.food) {
-          return [{ meal: e.meal, dashGroup: e.food.dash_group ?? null, servings: e.servings }]
+          return [
+            {
+              meal: e.meal,
+              dashGroup: e.food.dash_group ?? null,
+              servings: e.servings * foodDashServings(e.food.dash_servings),
+            },
+          ]
         }
         if (e.recipe) {
           // A recipe credits each DASH group its ingredients cover (per serving ×

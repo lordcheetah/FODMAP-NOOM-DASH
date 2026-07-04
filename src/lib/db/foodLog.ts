@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import {
+  foodDashServings,
   recipeNutrients,
   type DashGroup,
   type LoggedNutrients,
@@ -88,6 +89,7 @@ export function toLoggedNutrients(entry: FoodLogEntry): LoggedNutrients {
       meal,
       servings,
       dash_group: f.dash_group,
+      dashServings: foodDashServings(f.dash_servings),
       sodium_mg: f.sodium_mg,
       sat_fat_g: f.sat_fat_g,
       potassium_mg: f.potassium_mg,
