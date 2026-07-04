@@ -271,7 +271,7 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
                 className={cn(
                   'rounded-md border p-2 text-xs',
                   c.tone === 'warn'
-                    ? 'border-amber-300 bg-amber-50 text-amber-900'
+                    ? 'border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200'
                     : 'border-noom-green/30 bg-noom-green/10',
                 )}
               >
@@ -283,7 +283,7 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
             {dashConflicts.map((c) => (
               <li
                 key={`dash-${c.group}`}
-                className="rounded-md border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900"
+                className="rounded-md border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200"
               >
                 {c.message}
               </li>

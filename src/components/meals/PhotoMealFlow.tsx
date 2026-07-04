@@ -45,7 +45,7 @@ export interface PhotoMealFlowProps {
 // IDENTIFICATION, not whether the food is diet-safe. Avoid green (it reads as a
 // NOOM/"safe" signal). Low confidence gets an amber caution.
 const CONFIDENCE_STYLE: Record<AnalyzedItem['confidence'], string> = {
-  low: 'bg-amber-100 text-amber-900',
+  low: 'bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200',
   medium: 'bg-muted text-muted-foreground',
   high: 'bg-secondary text-secondary-foreground',
 }
@@ -220,7 +220,7 @@ export function PhotoMealFlow({
       >
         {reviewItem && step.kind === 'review' && (
           <div className="space-y-4">
-            <p className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+            <p className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
               {PRIVACY_NOTICE}
             </p>
 

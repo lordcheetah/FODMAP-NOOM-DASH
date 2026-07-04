@@ -28,7 +28,7 @@ export default function OfflineBanner() {
       <div
         role="status"
         aria-live="polite"
-        className="flex items-center gap-2 border-b bg-amber-50 px-4 py-1.5 text-xs text-amber-800"
+        className="flex items-center gap-2 border-b bg-amber-50 px-4 py-1.5 text-xs text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
       >
         <CloudOff className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
         <span>

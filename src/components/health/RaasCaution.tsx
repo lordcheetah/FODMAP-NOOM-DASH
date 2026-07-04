@@ -14,7 +14,7 @@ export function RaasCaution({ className }: { className?: string }) {
   return (
     <p
       className={cn(
-        'rounded-md border border-amber-300 bg-amber-50 p-2 text-[11px] text-amber-900',
+        'rounded-md border border-amber-300 bg-amber-50 p-2 text-[11px] text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200',
         className,
       )}
     >

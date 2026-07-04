@@ -10,6 +10,18 @@
       content="Plan, cook, and track low-FODMAP (fructose/fructans), NOOM, and DASH meals plus exercise."
     />
     <title>FODMAP / NOOM / DASH Tracker</title>
+    <!-- Apply the saved/system theme before paint to avoid a flash of the wrong mode. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme')
+          if (t !== 'light' && t !== 'dark') {
+            t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          }
+          if (t === 'dark') document.documentElement.classList.add('dark')
+        } catch (e) {}
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -25,7 +25,7 @@ import {
 import { sparklinePolyline } from '@/lib/health/sparkline'
 
 const CATEGORY_CLASS: Record<BmiCategory, string> = {
-  underweight: 'bg-amber-100 text-amber-900',
+  underweight: 'bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200',
   normal: 'bg-noom-green/15 text-noom-green',
   overweight: 'bg-noom-yellow/20 text-yellow-700',
   obese: 'bg-destructive/10 text-destructive',

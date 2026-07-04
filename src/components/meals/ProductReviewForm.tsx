@@ -258,7 +258,7 @@ export function ProductReviewForm({
         )}
 
         {labelNotice && (
-          <p className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900">
+          <p className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
             AI read these numbers from a photo of the Nutrition Facts panel —
             double-check them before saving. The photo is sent to Anthropic for
             analysis and not stored.
@@ -275,7 +275,7 @@ export function ProductReviewForm({
         </div>
 
         {/* FODMAP not-verified notice + optional manual selectors. */}
-        <div className="space-y-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-amber-900">
+        <div className="space-y-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200">
           <p className="text-sm font-medium">FODMAP not verified</p>
           <p className="text-xs">
             Open Food Facts has no fructose/fructans data. This product stays
@@ -334,7 +334,7 @@ export function ProductReviewForm({
               {showRef ? 'Hide' : 'Show'} common trigger foods (reminder)
             </button>
             {showRef && (
-              <div className="mt-2 space-y-2 rounded-md border border-amber-200 bg-amber-100/40 p-2 text-[11px]">
+              <div className="mt-2 space-y-2 rounded-md border border-amber-200 bg-amber-100/40 p-2 text-[11px] dark:border-amber-800 dark:bg-amber-950/30">
                 <p>
                   A general memory aid, not a verdict about this food — portion size
                   matters, and yours may differ. Fructose is often on the label;

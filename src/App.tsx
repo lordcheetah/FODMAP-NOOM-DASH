@@ -1,6 +1,7 @@
 import { Routes, Route, NavLink } from 'react-router-dom'
-import { Apple, CalendarCheck, Dumbbell, Home, LogOut } from 'lucide-react'
+import { Apple, CalendarCheck, Dumbbell, Home, LogOut, Moon, Sun } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTheme } from '@/hooks/useTheme'
 import Dashboard from '@/pages/Dashboard'
 import Meals from '@/pages/Meals'
 import Plan from '@/pages/Plan'
@@ -18,6 +19,7 @@ const NAV = [
 
 export default function App() {
   const { user, loading, signOut } = useAuth()
+  const { theme, toggle: toggleTheme } = useTheme()
 
   // When Supabase is configured, require sign-in before showing the app.
   // (Without it, the app stays usable as an offline/demo shell.)
@@ -41,17 +43,28 @@ export default function App() {
             Fructose/fructans-aware meal &amp; exercise tracking
           </p>
         </div>
-        {user && (
+        <div className="flex items-center gap-1">
           <button
             type="button"
-            onClick={() => void signOut()}
-            title={`Sign out (${user.email})`}
-            className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-accent"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="rounded-md p-2 text-muted-foreground hover:bg-accent"
           >
-            <LogOut className="h-4 w-4" />
-            Sign out
+            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
-        )}
+          {user && (
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              title={`Sign out (${user.email})`}
+              className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-accent"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          )}
+        </div>
       </header>
 
       {/* Sync-state indicator (offline notice / "syncing N changes"). Reflects
