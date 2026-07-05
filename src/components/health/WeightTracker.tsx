@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { Settings, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -157,7 +157,14 @@ export function WeightTracker() {
     <section className="space-y-4 rounded-lg border bg-card p-4 text-card-foreground">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold">Weight &amp; BMI</h3>
-        <Button size="sm" variant="ghost" onClick={() => setShowSettings((s) => !s)}>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setShowSettings((s) => !s)}
+          aria-expanded={showSettings}
+          aria-label="Height, units, sex, and medication settings"
+        >
+          <Settings className="h-4 w-4" />
           {showSettings ? 'Close' : 'Height / units'}
         </Button>
       </div>
