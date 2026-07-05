@@ -7,13 +7,12 @@ test('app shell loads with header and bottom nav', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Exercise' })).toBeVisible()
 })
 
-test('shows the medical disclaimer and never marks unknown food as safe', async ({ page }) => {
+test('shows the medical disclaimer on the home page', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByText(/not medical advice/i)).toBeVisible()
-  // The demo "Unlabeled snack" has unknown FODMAP levels — must read "Not verified".
-  const row = page.locator('li', { hasText: 'Unlabeled snack' })
-  await expect(row).toContainText('Not verified')
-  await expect(row).not.toContainText('Safe')
+  // The "unknown FODMAP never renders as Safe" invariant is verified at the unit
+  // level now: src/components/diet/FodmapBadge.test.tsx (render) +
+  // healthSafety.test.ts (logic). The demo food this e2e once used is gone.
 })
 
 test('client-side routing works', async ({ page }) => {
