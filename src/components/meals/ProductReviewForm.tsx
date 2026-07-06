@@ -130,6 +130,9 @@ export function ProductReviewForm({
   // Set after an "Apply" save (keeps the sheet open); cleared on the next edit.
   const [justSaved, setJustSaved] = useState(false)
   const [showRef, setShowRef] = useState(false)
+  // The grams the current nutrient numbers correspond to; lets a serving-size
+  // change rescale them (a scan defaults to per-100 g).
+  const [gramsBasis, setGramsBasis] = useState<number | null>(null)
 
   // (Re)load the form whenever it opens — from the edited food in edit mode, or
   // from the scan/manual prefill otherwise.
@@ -142,6 +145,7 @@ export function ProductReviewForm({
       setBrand(editFood.brand ?? '')
       setServingDesc(editFood.serving_desc)
       setServingGrams(numStr(editFood.serving_grams))
+      setGramsBasis(editFood.serving_grams)
       setCalories(numStr(editFood.calories))
       setFiber(numStr(editFood.fiber_g))
       setSodium(numStr(editFood.sodium_mg))
@@ -159,6 +163,7 @@ export function ProductReviewForm({
       setBrand(prefill?.brand ?? '')
       setServingDesc(prefill?.serving_desc ?? '')
       setServingGrams(numStr(prefill?.serving_grams))
+      setGramsBasis(prefill?.serving_grams ?? null)
       setCalories(numStr(prefill?.calories))
       setFiber(numStr(prefill?.fiber_g))
       setSodium(numStr(prefill?.sodium_mg))
@@ -193,6 +198,39 @@ export function ProductReviewForm({
   const valid = nameOk && servingOk
 
   const userSetFodmap = fructose !== 'unknown' || fructans !== 'unknown'
+
+  /**
+   * When the serving grams is committed, scale the per-serving nutrient numbers
+   * from the previous grams (e.g. a scan's 100 g) to the new amount, so entering
+   * a real serving size rescales everything. Custom serving descriptions are left
+   * alone; a "<n> g" one is kept in sync.
+   */
+  const rescaleToGrams = (newStr: string) => {
+    const newG = toNum(newStr)
+    if (newG == null || newG <= 0) return
+    const basis = gramsBasis
+    if (basis == null || basis <= 0) {
+      setGramsBasis(newG) // establish a basis so later changes scale
+      return
+    }
+    if (newG === basis) return
+    const ratio = newG / basis
+    const scale = (s: string): string => {
+      const n = toNum(s)
+      return n == null ? s : String(Number((n * ratio).toFixed(2)))
+    }
+    setCalories(scale)
+    setFiber(scale)
+    setSodium(scale)
+    setSatFat(scale)
+    setPotassium(scale)
+    setAddedSugar(scale)
+    setServingDesc((d) => {
+      const t = d.trim().toLowerCase()
+      return t === `${basis} g` || t === `${basis}g` ? `${newG} g` : d
+    })
+    setGramsBasis(newG)
+  }
 
   const submit = (close: boolean) => {
     if (!valid) return
@@ -467,8 +505,12 @@ export function ProductReviewForm({
                 inputMode="decimal"
                 value={servingGrams}
                 onChange={(e) => setServingGrams(e.target.value)}
+                onBlur={(e) => rescaleToGrams(e.target.value)}
                 className="mt-1"
               />
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Change this to your serving and the nutrition rescales to match.
+              </p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
