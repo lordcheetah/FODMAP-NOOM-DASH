@@ -169,6 +169,8 @@ function buildAddFoodLogDefaults(qc: QueryClient) {
       void qc.invalidateQueries({
         queryKey: queryKeys.foodLog(vars.userId, vars.date),
       })
+      // Prefix match refreshes every per-meal recents list.
+      void qc.invalidateQueries({ queryKey: ['recentFoods', vars.userId] })
     },
   }
 }
@@ -341,6 +343,7 @@ async function createFoodFn(vars: CreateFoodVars): Promise<FoodRow> {
       fructans_level: vars.fructans_level ?? 'unknown',
       dash_group: vars.dash_group ?? null,
       dash_servings: vars.dash_servings ?? null,
+      fodmap_exempt: vars.fodmap_exempt ?? false,
       noom_category: vars.noom_category ?? null,
       source: vars.source ?? null,
       barcode: vars.barcode ?? null,
@@ -362,7 +365,7 @@ function buildCreateFoodDefaults(qc: QueryClient) {
         queryKey: queryKeys.foodByBarcode(vars.userId, vars.barcode ?? null),
       })
       void qc.invalidateQueries({ queryKey: ['foodSearch'] })
-      void qc.invalidateQueries({ queryKey: queryKeys.recentFoods(vars.userId) })
+      void qc.invalidateQueries({ queryKey: ['recentFoods', vars.userId] })
     },
   }
 }
@@ -391,6 +394,7 @@ async function updateFoodFn(vars: UpdateFoodVars): Promise<FoodRow> {
       fructans_level: vars.fructans_level ?? 'unknown',
       dash_group: vars.dash_group ?? null,
       dash_servings: vars.dash_servings ?? null,
+      fodmap_exempt: vars.fodmap_exempt ?? false,
       noom_category: vars.noom_category ?? null,
       source: vars.source ?? null,
       barcode: vars.barcode ?? null,
@@ -413,7 +417,7 @@ function buildUpdateFoodDefaults(qc: QueryClient) {
         queryKey: queryKeys.foodByBarcode(vars.userId, vars.barcode ?? null),
       })
       void qc.invalidateQueries({ queryKey: ['foodSearch'] })
-      void qc.invalidateQueries({ queryKey: queryKeys.recentFoods(vars.userId) })
+      void qc.invalidateQueries({ queryKey: ['recentFoods', vars.userId] })
     },
   }
 }

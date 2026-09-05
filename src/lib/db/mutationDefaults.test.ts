@@ -87,6 +87,7 @@ describe('food_log add — optimistic onMutate', () => {
       noom_category: null,
       dash_group: 'fruits',
       dash_servings: null,
+      fodmap_exempt: false,
       source: null,
       barcode: null,
       created_at: '2026-06-01T00:00:00.000Z',

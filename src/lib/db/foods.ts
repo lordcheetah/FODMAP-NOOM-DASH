@@ -92,6 +92,8 @@ export interface CreateFoodInput {
   dash_group?: DashGroup | null
   /** DASH servings one serving of this food counts as (portion-aware); null/absent = 1. */
   dash_servings?: number | null
+  /** Exclude from FODMAP meal-load stacking (supplements/spices); default false. */
+  fodmap_exempt?: boolean
   /** NOOM semantic category (protein/fruit/…). NOOM *color* stays computed from cal/g. */
   noom_category?: NoomCategory | null
   source?: string | null

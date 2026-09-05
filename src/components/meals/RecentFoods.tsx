@@ -4,6 +4,13 @@ import { Button } from '@/components/ui/button'
 import { FoodItemRow } from '@/components/diet/FoodItemRow'
 import { noomColor, type MealType } from '@/lib/diet'
 import { useRecentFoods } from '@/lib/db/recents'
+
+const MEAL_LABEL: Record<MealType, string> = {
+  breakfast: 'breakfast',
+  lunch: 'lunch',
+  dinner: 'dinner',
+  snack: 'snacks',
+}
 import { useAuth } from '@/lib/auth'
 import type { FoodRow } from '@/lib/db/types'
 import { AddToLogDialog, type AddTarget } from './AddToLogDialog'
@@ -21,7 +28,7 @@ export interface RecentFoodsProps {
  */
 export function RecentFoods({ date, mealContext }: RecentFoodsProps) {
   const { user } = useAuth()
-  const recents = useRecentFoods()
+  const recents = useRecentFoods(mealContext)
   const [target, setTarget] = useState<AddTarget | null>(null)
   const [editFood, setEditFood] = useState<FoodRow | null>(null)
   const items = recents.data ?? []
@@ -29,7 +36,7 @@ export function RecentFoods({ date, mealContext }: RecentFoodsProps) {
 
   return (
     <section className="rounded-lg border bg-card p-4 text-card-foreground">
-      <h3 className="mb-2 text-sm font-semibold">Recent</h3>
+      <h3 className="mb-2 text-sm font-semibold">Recent for {MEAL_LABEL[mealContext]}</h3>
       <ul className="divide-y">
         {items.map((it) => (
           <li key={it.key}>

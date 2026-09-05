@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/lib/auth'
 import { queryKeys } from './queryKeys'
+import type { MealType } from '@/lib/diet'
 import type { ExerciseRow, FoodRow, RecipeRow } from './types'
 
 /**
@@ -35,23 +36,26 @@ export interface RecentFood {
 
 /**
  * The user's most recently logged foods/recipes, distinct and most-recent-first.
- * Null-guarded for the offline/demo shell.
+ * Scoped to a meal when `meal` is given (so dinner items don't crowd out the
+ * breakfast/lunch lists). Null-guarded for the offline/demo shell.
  */
-export function useRecentFoods(limit = 8) {
+export function useRecentFoods(meal?: MealType, limit = 8) {
   const { user } = useAuth()
   const userId = user?.id
   const enabled = !!userId && supabase !== null
 
   return useQuery({
-    queryKey: queryKeys.recentFoods(userId),
+    queryKey: queryKeys.recentFoods(userId, meal),
     enabled,
     queryFn: async (): Promise<RecentFood[]> => {
       if (!supabase) return []
-      const { data, error } = await supabase
+      let query = supabase
         .from('food_log')
         .select('food_id, recipe_id, created_at, food:foods(*), recipe:recipes(*)')
         .order('created_at', { ascending: false })
         .limit(60)
+      if (meal) query = query.eq('meal', meal)
+      const { data, error } = await query
       if (error) throw error
       type Row = {
         food_id: string | null

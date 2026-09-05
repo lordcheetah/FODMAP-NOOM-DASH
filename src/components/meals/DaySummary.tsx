@@ -208,6 +208,9 @@ export function DaySummary({ entries, targets }: DaySummaryProps) {
   const mealLoads = fodmapMealLoad(
     entries.flatMap((e): FodmapStackInput[] => {
       if (e.food) {
+        // Supplements/spices marked exempt don't stack a meal's FODMAP load
+        // (e.g. 10 psyllium tablets shouldn't read "high").
+        if (e.food.fodmap_exempt) return []
         return [
           {
             meal: e.meal,

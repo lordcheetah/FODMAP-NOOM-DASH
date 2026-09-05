@@ -41,6 +41,8 @@ export interface FoodRow {
   dash_group: DashGroup | null
   /** DASH servings ONE serving of this food counts as (null = 1). Portion-aware. */
   dash_servings: number | null
+  /** Exclude from FODMAP meal-load stacking (supplements/spices); nutrients still count. */
+  fodmap_exempt: boolean
   source: string | null
   /** Retail barcode (EAN/UPC) for scanned products; null for seed + typed customs. */
   barcode: string | null

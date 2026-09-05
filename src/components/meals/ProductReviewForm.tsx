@@ -127,6 +127,8 @@ export function ProductReviewForm({
   const [dashGroup, setDashGroup] = useState<DashGroup | ''>('')
   const [dashServings, setDashServings] = useState('')
   const [noomCategory, setNoomCategory] = useState<NoomCategory | ''>('')
+  // Supplements/spices: don't let many of them stack a meal's FODMAP load.
+  const [fodmapExempt, setFodmapExempt] = useState(false)
   // Set after an "Apply" save (keeps the sheet open); cleared on the next edit.
   const [justSaved, setJustSaved] = useState(false)
   const [showRef, setShowRef] = useState(false)
@@ -158,6 +160,7 @@ export function ProductReviewForm({
       setDashGroup(editFood.dash_group ?? '')
       setDashServings(editFood.dash_servings != null ? String(editFood.dash_servings) : '')
       setNoomCategory(editFood.noom_category ?? '')
+      setFodmapExempt(!!editFood.fodmap_exempt)
     } else {
       setName(prefill?.name ?? '')
       setBrand(prefill?.brand ?? '')
@@ -176,6 +179,7 @@ export function ProductReviewForm({
       setDashGroup('')
       setDashServings('')
       setNoomCategory('')
+      setFodmapExempt(false)
     }
     setJustSaved(false)
     createFood.reset()
@@ -249,6 +253,7 @@ export function ProductReviewForm({
       fructans_level: fructans,
       dash_group: dashGroup || null,
       dash_servings: dashGroup ? toNum(dashServings) : null,
+      fodmap_exempt: fodmapExempt,
       noom_category: noomCategory || null,
       // Note user-provided FODMAP in source when the user set a level.
       source: userSetFodmap
@@ -397,6 +402,26 @@ export function ProductReviewForm({
               </div>
             )}
           </div>
+        </div>
+
+        {/* Supplements/spices: exclude from the meal FODMAP-load stacking. */}
+        <div>
+          <label htmlFor="pf-fodmap-exempt" className="flex items-start gap-2">
+            <input
+              id="pf-fodmap-exempt"
+              type="checkbox"
+              checked={fodmapExempt}
+              onChange={(e) => setFodmapExempt(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border-input"
+            />
+            <span className="text-sm">
+              Don’t count toward a meal’s FODMAP load
+              <span className="block text-[11px] text-muted-foreground">
+                For supplements, spices, or tiny amounts (e.g. psyllium tablets), so
+                logging many doesn’t flag a meal “high”. Fiber and DASH still count.
+              </span>
+            </span>
+          </label>
         </div>
 
         {/* DASH group + NOOM category — manual classification. DASH group is what
